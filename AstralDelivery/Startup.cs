@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using AstralDelivery.Domain;
 using AstralDelivery.Identity;
 using Microsoft.Extensions.Configuration;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace AstralDelivery
 {
@@ -52,6 +53,10 @@ namespace AstralDelivery
                 });
             }
 
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+            });
             services.AddMvc();
         }
 
@@ -62,7 +67,15 @@ namespace AstralDelivery
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                options.RoutePrefix = "api/help";
+            });
+            
             app.UseStaticFiles();
+            app.UseMvc();
             app.UseAuthentication();
             app.UseSession();
         }

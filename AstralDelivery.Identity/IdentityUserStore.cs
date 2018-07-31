@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AstralDelivery.Database;
@@ -11,7 +12,7 @@ namespace AstralDelivery.Identity
     /// <summary>
     /// Храниоище удостоверений на основе сертификатов абонента
     /// </summary>
-    public class IdentityUserStore : IUserLockoutStore<User>
+    public class IdentityUserStore : IUserLockoutStore<User>, IUserRoleStore<User>
     {
         private readonly DatabaseContext _context;
 
@@ -25,6 +26,55 @@ namespace AstralDelivery.Identity
         public void Dispose()
         {
             _context.Dispose();
+        }
+
+        /// <summary/>
+        public Task AddToRoleAsync(User user, string roleName, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary/>
+        public Task RemoveFromRoleAsync(User user, string roleName, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Получение роли
+        /// </summary>
+        /// <param name="user">Пользователь</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public Task<IList<string>> GetRolesAsync(User user, CancellationToken cancellationToken)
+        {
+            var result = (IList<string>) new List<string>();
+            //result.Add(user.RoleId.ToString());
+            return Task.FromResult(result);
+        }
+
+        /// <summary>
+        /// Проверка пользователя на налицие роли
+        /// </summary>
+        /// <param name="user">Пользователь</param>
+        /// <param name="roleName">Название роли</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public Task<bool> IsInRoleAsync(User user, string roleName, CancellationToken cancellationToken)
+        {
+            //return Task.FromResult(user.RoleId.ToString() == roleName);
+            return Task.FromResult(true);
+        }
+
+        /// <summary>
+        /// Получение коллекции пользователей находящихся в роли
+        /// </summary>
+        /// <param name="roleName">Название роли</param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public Task<IList<User>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc />
@@ -86,14 +136,15 @@ namespace AstralDelivery.Identity
         /// <inheritdoc />
         public async Task<User> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(c => c.UserGuid.ToString() == normalizedUserName, cancellationToken);
+            var user = await _context.Users.FirstOrDefaultAsync(c => c.UserGuid.ToString() == normalizedUserName,
+                cancellationToken);
             return user;
         }
 
         /// <inheritdoc />
         public Task<DateTimeOffset?> GetLockoutEndDateAsync(User user, CancellationToken cancellationToken)
         {
-            return Task.FromResult((DateTimeOffset?)null);
+            return Task.FromResult((DateTimeOffset?) null);
         }
 
         /// <inheritdoc />

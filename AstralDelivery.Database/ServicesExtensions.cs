@@ -18,7 +18,7 @@ namespace AstralDelivery.Database
         {
             services.AddDbContext<DatabaseContext>(options =>
             {
-                options.UseNpgsql(connectionString, o => o.MigrationsAssembly("AstralNotes"));
+                options.UseNpgsql(connectionString, o => o.MigrationsAssembly("AstralDelivery"));
             });
 
             return services;
