@@ -25,8 +25,9 @@ namespace AstralDelivery
 
                 var dbcontext = services.GetRequiredService<DatabaseContext>();
                 var userService = services.GetRequiredService<IUserService>();
+                var mailService = services.GetRequiredService<IMailService>();
                 var options = services.GetRequiredService<ConfigurationOptions>();
-                UsersInitializer.InitializeAsync(dbcontext, userService, options);
+                UsersInitializer.InitializeAsync(dbcontext, userService, mailService, options);
             }
 
             BuildWebHost(args).Run();

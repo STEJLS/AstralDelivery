@@ -11,15 +11,13 @@ namespace AstralDelivery.Controllers
     /// Контроллер главной страницы пользователя
     /// </summary>
     [Authorize]
-    [Route("Home")]
     public class HomeController : Controller
     {
         /// <summary>
         /// Главная страница
         /// </summary>
         /// <returns></returns>
-        [Route("Index")]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             return View();
         }

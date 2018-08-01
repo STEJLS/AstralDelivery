@@ -26,12 +26,12 @@ namespace AstralDelivery.Controllers
             _authorizationService = authorizationService;
         }
 
-        ///// <summary/>
-        //[HttpGet("Login")]
-        //public async Task<IActionResult> Login()
-        //{
-        //    return View();
-        //}
+        /// <summary/>
+        [HttpGet("Login")]
+        public IActionResult Login()
+        {
+            return View();
+        }
 
         /// <summary>
         /// Авторизация пользователя
@@ -49,7 +49,7 @@ namespace AstralDelivery.Controllers
             }
             else
             {
-                RedirectToAction("Home", "Index");
+                RedirectToAction("Index", "Home");
             }
         }
 
@@ -62,7 +62,7 @@ namespace AstralDelivery.Controllers
         public async Task<IActionResult> Logout()
         {
             await _authorizationService.Logout();
-            return RedirectToAction("Account", "Login");
+            return RedirectToAction("Login", "Account");
         }
     }
 }
