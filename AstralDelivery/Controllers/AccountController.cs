@@ -26,6 +26,13 @@ namespace AstralDelivery.Controllers
             _authorizationService = authorizationService;
         }
 
+        ///// <summary/>
+        //[HttpGet("Login")]
+        //public async Task<IActionResult> Login()
+        //{
+        //    return View();
+        //}
+
         /// <summary>
         /// Авторизация пользователя
         /// </summary>

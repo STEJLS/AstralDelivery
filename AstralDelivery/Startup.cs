@@ -44,6 +44,10 @@ namespace AstralDelivery
                 services.AddDomainUtilsStub(options =>
                 {
                     options.Salt = Configuration["Salt"];
+                    options.ServiceEmail = Configuration["ServiceEmail"];
+                    options.ServicePassword = Configuration["ServicePassword"];
+                    options.AdminEmail = Configuration["AdminEmail"];
+                    options.AdminLogin = Configuration["AdminLogin"];
                 });
             }
             else
@@ -51,6 +55,10 @@ namespace AstralDelivery
                 services.AddDomainUtils(options =>
                 {
                     options.Salt = Configuration["Salt"];
+                    options.ServiceEmail = Configuration["ServiceEmail"];
+                    options.ServicePassword = Configuration["ServicePassword"];
+                    options.AdminEmail = Configuration["AdminEmail"];
+                    options.AdminLogin = Configuration["AdminLogin"];
                 });
             }
 

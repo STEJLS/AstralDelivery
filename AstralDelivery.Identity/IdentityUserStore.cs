@@ -49,7 +49,7 @@ namespace AstralDelivery.Identity
         public Task<IList<string>> GetRolesAsync(User user, CancellationToken cancellationToken)
         {
             var result = (IList<string>) new List<string>();
-            //result.Add(user.RoleId.ToString());
+            result.Add(user.Role.ToString());
             return Task.FromResult(result);
         }
 
@@ -62,8 +62,7 @@ namespace AstralDelivery.Identity
         /// <returns></returns>
         public Task<bool> IsInRoleAsync(User user, string roleName, CancellationToken cancellationToken)
         {
-            //return Task.FromResult(user.RoleId.ToString() == roleName);
-            return Task.FromResult(true);
+            return Task.FromResult(user.Role.ToString() == roleName);
         }
 
         /// <summary>

@@ -28,7 +28,7 @@ namespace AstralDelivery.Domain.Services
         /// <inheritdoc />
         public async Task Create(string login, string password, string email, Role role)
         {
-            User user = new User(login, password, email, role);
+            User user = new User(login, _hashingService.Get(password), email, role);
             await _dbContext.Users.AddAsync(user);
             await _dbContext.SaveChangesAsync();  
         }
