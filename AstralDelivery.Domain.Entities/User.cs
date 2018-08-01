@@ -16,31 +16,44 @@ namespace AstralDelivery.Domain.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid UserGuid { get; set; }
         /// <summary>
-        /// Тема
+        /// Логин
         /// </summary>
         public string Login { get; set; }
         /// <summary>
-        /// Текст
+        /// Пароль
         /// </summary>
         public string Password { get; set; }
         /// <summary>
-        /// Изображение
+        /// Почта
         /// </summary>
         public string Email { get; set; }
+        /// <summary>
+        /// Роль
+        /// </summary>
+        public Role Role { get; set; }
 
-        /// <summary />
+        /// <summary>
+        /// Конструктор по умолчанию 
+        /// </summary>
         public User()
         {
 
         }
 
-        /// <summary />
-        public User(string login, string password, string email)
+        /// <summary>
+        /// Конструтор с четырьмя параметрами string, string, string, Role
+        /// </summary>
+        /// <param name="login"> Логин </param>
+        /// <param name="password"> Пароль </param>
+        /// <param name="email"> Почта </param>
+        /// <param name="role"> Роль </param>
+        public User(string login, string password, string email, Role role)
         {
             UserGuid = Guid.NewGuid();
             Login = login;
             Password = password;
             Email = email;
+            Role = role;
         }
     }
 }

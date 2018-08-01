@@ -10,7 +10,7 @@ namespace AstralDelivery.Database
     {
         /// <summary />
         public DbSet<User> Users { get; set; }
-        
+
         /// <summary />
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
         {
@@ -22,8 +22,8 @@ namespace AstralDelivery.Database
         {
             base.OnModelCreating(modelBuilder);
 
-            //modelBuilder.Entity<User>().HasIndex(a => a.Login).IsUnique();
-            //modelBuilder.Entity<User>().HasIndex(a => a.Email).IsUnique();
+            modelBuilder.Entity<User>().HasIndex(a => a.Login).IsUnique();
+            modelBuilder.Entity<User>().HasIndex(a => a.Email).IsUnique();
         }
     }
 

@@ -6,7 +6,7 @@ namespace AstralDelivery.Database
     /// <summary>
     /// Методы расширения для регистрации сервисов данных 
     /// </summary>
-    public static class ServicesExtensions 
+    public static class ServicesExtensions
     {
         /// <summary>
         /// Регистрация сервисов слоя доступа к данным

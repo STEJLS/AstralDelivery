@@ -16,7 +16,7 @@ namespace AstralDelivery.Domain.Models
         [JsonProperty("isAuthorized")]
         public bool Authorized { get; set; }
         /// <summary>
-        /// Идентификатор юзера
+        /// Идентификатор пользователя
         /// </summary>
         public Guid UserGuid { get; set; }
         /// <summary>

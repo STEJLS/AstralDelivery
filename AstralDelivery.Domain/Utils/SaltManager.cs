@@ -11,9 +11,9 @@ namespace AstralDelivery.Domain.Utils
         private readonly byte[] _salt;
 
         /// <summary>
-        /// Конструктор, принимающий один параметр объект конфигурации
+        /// Конструктор, принимающий один параметр объект ConfigurationOptions
         /// </summary>
-        /// <param name="options">Параметры конфигурации</param>
+        /// <param name="options"> <see cref="ConfigurationOptions"/> </param>
         public SaltManager(ConfigurationOptions options)
         {
             _salt = Encoding.UTF8.GetBytes(options.Salt);
@@ -22,7 +22,7 @@ namespace AstralDelivery.Domain.Utils
         /// <summary>
         /// Возвращет соль в виде массива байт
         /// </summary>
-        /// <returns></returns>
+        /// <returns> Соль </returns>
         public byte[] Get() => _salt;
     }
 }

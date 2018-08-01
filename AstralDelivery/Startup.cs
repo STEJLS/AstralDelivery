@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using AstralDelivery.Database;
+using AstralDelivery.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using AstralDelivery.Domain;
 using AstralDelivery.Identity;
@@ -57,7 +58,13 @@ namespace AstralDelivery
             {
                 options.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
             });
-            services.AddMvc();
+            services.AddMvc()
+                .AddMvcOptions(options =>
+                {
+                    options.Filters.AddService(typeof(ErrorHandler));
+                });
+
+            services.AddScoped<ErrorHandler>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
