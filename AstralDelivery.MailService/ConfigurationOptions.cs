@@ -16,14 +16,13 @@ namespace AstralDelivery.MailService
 
         public ConfigurationOptions()
         {
-            Directory.SetCurrentDirectory("../AstralDelivery.MailService");
             var builder = new ConfigurationBuilder()
            .SetBasePath(Directory.GetCurrentDirectory())
-           .AddJsonFile("appsettings.json");
+           .AddJsonFile("appsettings.Production.json");
 
             var config = builder.Build();
  
-            ServiceName = config["Service:Name"];
+             ServiceName = config["Service:Name"];
             ServiceEmail = config["Service:Email"];
             ServicePassword = config["Service:Password"];
             SMTPHost = config["smtp:Host"];
