@@ -3,22 +3,22 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using AstralDelivery.Domain.Abstractions;
 using AstralDelivery.Domain.Entities;
-using AstralDelivery.ViewModels;
+using AstralDelivery.Domain.Models;
 
 namespace AstralDelivery.Controllers
 {
     /// <summary>
     /// Контроллер управления аккаунтом
     /// </summary>
-    [Route("Account")]
-    public class AccountController : Controller
+    [Route("Authorize")]
+    public class AuthorizeController : Controller
     {
         private readonly IUserService _userService;
         private readonly IAuthorizationService _authorizationService;
         private readonly SignInManager<User> _signInManager;
 
         /// <summary />
-        public AccountController(IUserService userService, SignInManager<User> signInManager,
+        public AuthorizeController(IUserService userService, SignInManager<User> signInManager,
             IAuthorizationService authorizationService)
         {
             _userService = userService;
@@ -26,31 +26,15 @@ namespace AstralDelivery.Controllers
             _authorizationService = authorizationService;
         }
 
-        /// <summary/>
-        [HttpGet("Login")]
-        public IActionResult Login()
-        {
-            return View();
-        }
-
         /// <summary>
         /// Авторизация пользователя
         /// </summary>
         /// <param name="model"> Модель авторизации </param>
         /// <returns></returns>
-        [HttpPost("Login")]
-        public async Task Login([FromQuery]LoginViewModel model)
+        [HttpPost]
+        public async Task<User> Login([FromBody]LoginModel model)
         {
-            await _authorizationService.Login(model.Login, model.Password, model.RememberMe);
-
-            if (string.IsNullOrEmpty(model.ReturnUrl) && Url.IsLocalUrl(model.ReturnUrl))
-            {
-                Redirect(model.ReturnUrl);
-            }
-            else
-            {
-                RedirectToAction("Index", "Home");
-            }
+            return await _authorizationService.Login(model.Email, model.Password, model.RememberMe);
         }
 
         /// <summary>
@@ -58,11 +42,10 @@ namespace AstralDelivery.Controllers
         /// </summary>
         /// <returns></returns>
         [Microsoft.AspNetCore.Authorization.Authorize]
-        [HttpPost("Logout")]
-        public async Task<IActionResult> Logout()
+        [HttpDelete]
+        public async void Logout()
         {
             await _authorizationService.Logout();
-            return RedirectToAction("Login", "Account");
         }
     }
 }

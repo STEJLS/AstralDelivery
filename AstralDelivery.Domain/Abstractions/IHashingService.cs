@@ -1,7 +1,4 @@
-﻿/// <summary>
-/// Сервис хэширования
-/// </summary>
-namespace AstralDelivery.Domain.Abstractions
+﻿namespace AstralDelivery.Domain.Abstractions
 {
     /// <summary>
     /// Сервис хэширования

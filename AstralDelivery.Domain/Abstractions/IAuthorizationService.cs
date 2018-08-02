@@ -11,10 +11,11 @@ namespace AstralDelivery.Domain.Abstractions
         /// <summary>
         /// Авторизация
         /// </summary>
-        /// <param name="login">Логин</param>
-        /// <param name="password">Пароль</param>
+        /// <param name="email"> Почта </param>
+        /// <param name="password"> Пароль </param>
+        /// <param name="rememberMe"> Сохранять ли авторизацию после закрытия браузера </param>
         /// <returns></returns>
-        Task Login(string login, string password, bool rememberMe);
+        Task<User> Login(string email, string password, bool rememberMe);
 
         /// <summary>
         /// Выход из системы

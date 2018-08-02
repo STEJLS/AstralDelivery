@@ -22,8 +22,8 @@
         /// </summary>
         public string AdminEmail { get; set; }
         /// <summary>
-        /// Логин администратора
+        /// Пароль администратора
         /// </summary>
-        public string AdminLogin { get; set; }
+        public string AdminPassword { get; set; }
     }
 }

@@ -29,12 +29,12 @@ namespace AstralDelivery.Domain.Services
         }
 
         /// <inheritdoc />
-        public async Task Create(string login, string password, string email, Role role)
+        public async Task Create(string email, string password, Role role)
         {
-            User user = new User(login, _hashingService.Get(password), email, role);
+            User user = new User(email, _hashingService.Get(password), role);
             await _dbContext.Users.AddAsync(user);
             await _mailService.Send(password, "Пароль от аккаунта");
-            await _dbContext.SaveChangesAsync();  
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

@@ -17,6 +17,6 @@ namespace AstralDelivery.Domain.Abstractions
         /// <param name="email"> Почта </param>
         /// <param name="role"> Роль </param>
         /// <returns></returns>
-        Task Create(string login, string password, string email, Role role);
+        Task Create(string email, string password, Role role);
     }
 }

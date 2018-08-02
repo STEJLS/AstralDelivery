@@ -23,15 +23,15 @@ namespace AstralDelivery.Domain
 
         public async Task InitializeAsync()
         {
-            await InitializeUser();
+            await InitializeAdmin();
         }
 
-        private async Task InitializeUser()
+        private async Task InitializeAdmin()
         {
             if (!await _databaseContext.Users.AnyAsync())
             {
                 string password = Guid.NewGuid().ToString().Replace("-", string.Empty).Substring(0, 10);
-                await _userService.Create(_options.AdminLogin, password, _options.AdminEmail, Role.Admin);
+                await _userService.Create(_options.AdminEmail, _options.AdminPassword, Role.Admin);
             }
         }
     }

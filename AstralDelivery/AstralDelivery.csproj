@@ -14,5 +14,6 @@
     <ProjectReference Include="..\AstralDelivery.Database\AstralDelivery.Database.csproj" />
     <ProjectReference Include="..\AstralDelivery.Domain\AstralDelivery.Domain.csproj" />
     <ProjectReference Include="..\AstralDelivery.Identity\AstralDelivery.Identity.csproj" />
+    <ProjectReference Include="..\AstralDelivery.MailService\AstralDelivery.MailService.csproj" />
   </ItemGroup>
 </Project>

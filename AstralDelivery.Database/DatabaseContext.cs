@@ -22,7 +22,6 @@ namespace AstralDelivery.Database
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<User>().HasIndex(a => a.Login).IsUnique();
             modelBuilder.Entity<User>().HasIndex(a => a.Email).IsUnique();
         }
     }

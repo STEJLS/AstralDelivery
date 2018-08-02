@@ -1,25 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+using AstralDelivery.Domain.Models;
 
 namespace AstralDelivery.Controllers
 {
     /// <summary>
     /// Контроллер главной страницы пользователя
     /// </summary>
-    [Authorize]
     public class HomeController : Controller
     {
+        private readonly SessionContext _sessionContext;
+
+        public HomeController(SessionContext sessionContext)
+        {
+            _sessionContext = sessionContext;
+        }
         /// <summary>
         /// Главная страница
         /// </summary>
         /// <returns></returns>
-        public IActionResult Index()
+        public IActionResult Default()
         {
-            return View();
+            if (_sessionContext.Authorized)
+                return View("Index");
+
+            return View("Login");
         }
     }
 }

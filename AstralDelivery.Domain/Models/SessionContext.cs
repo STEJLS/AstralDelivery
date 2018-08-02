@@ -20,10 +20,6 @@ namespace AstralDelivery.Domain.Models
         /// </summary>
         public Guid UserGuid { get; set; }
         /// <summary>
-        /// Логин
-        /// </summary>
-        public string Login { get; set; }
-        /// <summary>
         /// Почта
         /// </summary>
         public string Email { get; set; }
@@ -39,7 +35,6 @@ namespace AstralDelivery.Domain.Models
         {
             Authorized = true;
             UserGuid = user.UserGuid;
-            Login = user.Login;
             Email = user.Email;
         }
     }

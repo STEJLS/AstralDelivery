@@ -30,23 +30,24 @@ namespace AstralDelivery.Domain.Services
         }
 
         /// <inheritdoc />
-        public async Task Login(string login, string password, bool rememberMe)
+        public async Task<User> Login(string email, string password, bool rememberMe)
         {
-            if (login == null || password == null)
+            if (email == null || password == null)
             {
                 throw new Exception("Некорректный логин/пароль");
             }
 
-            login = login.Trim().ToLower();
+            email = email.Trim().ToLower();
             password = _hashingService.Get(password);
 
-            var user = await _dbContext.Users.FirstOrDefaultAsync(a => a.Login.ToLower() == login && a.Password == password);
+            var user = await _dbContext.Users.FirstOrDefaultAsync(a => a.Email.ToLower() == email && a.Password == password);
             if (user == null)
             {
                 throw new InvalidOperationException("Пользователь с указаной парой Логин/Пароль не найден.");
             }
 
             await _signInManager.SignInAsync(user, rememberMe);
+            return user;
         }
 
         /// <inheritdoc />

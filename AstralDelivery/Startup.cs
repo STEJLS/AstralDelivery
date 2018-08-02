@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using AstralDelivery.Database;
-using AstralDelivery.Utils;
+using AstralDelivery.Utils.ExceptionFilter;
 using Microsoft.Extensions.DependencyInjection;
 using AstralDelivery.Domain;
 using AstralDelivery.Identity;
+using AstralDelivery.MailService;
 using Microsoft.Extensions.Configuration;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -36,6 +37,7 @@ namespace AstralDelivery
             // Identity
             services.AddSession(options => options.IdleTimeout = TimeSpan.FromHours(24));
             services.AddAstralNotesIdentity();
+            services.AddMailService();
 
             //Логика
             services.AddDomainServices();
@@ -44,10 +46,10 @@ namespace AstralDelivery
                 services.AddDomainUtilsStub(options =>
                 {
                     options.Salt = Configuration["Salt"];
-                    options.ServiceEmail = Configuration["ServiceEmail"];
-                    options.ServicePassword = Configuration["ServicePassword"];
-                    options.AdminEmail = Configuration["AdminEmail"];
-                    options.AdminLogin = Configuration["AdminLogin"];
+                    options.ServiceEmail = Configuration["ServicEmail:Email"];
+                    options.ServicePassword = Configuration["ServicEmail:Password"];
+                    options.AdminEmail = Configuration["Admin:Email"];
+                    options.AdminPassword = Configuration["Admin:Password"];
                 });
             }
             else
@@ -55,10 +57,10 @@ namespace AstralDelivery
                 services.AddDomainUtils(options =>
                 {
                     options.Salt = Configuration["Salt"];
-                    options.ServiceEmail = Configuration["ServiceEmail"];
-                    options.ServicePassword = Configuration["ServicePassword"];
-                    options.AdminEmail = Configuration["AdminEmail"];
-                    options.AdminLogin = Configuration["AdminLogin"];
+                    options.ServiceEmail = Configuration["ServicEmail:Email"];
+                    options.ServicePassword = Configuration["ServicEmail:Password"];
+                    options.AdminEmail = Configuration["Admin:Email"];
+                    options.AdminPassword = Configuration["Admin:Password"];
                 });
             }
 
@@ -69,10 +71,10 @@ namespace AstralDelivery
             services.AddMvc()
                 .AddMvcOptions(options =>
                 {
-                    options.Filters.AddService(typeof(ErrorHandler));
+                    options.Filters.AddService(typeof(ExceptionFilter));
                 });
 
-            services.AddScoped<ErrorHandler>();
+            services.AddScoped<ExceptionFilter>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -90,14 +92,16 @@ namespace AstralDelivery
             });
             
             app.UseStaticFiles();
+            app.UseAuthentication();
+            app.UseSession();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}");
+                    "default",
+                    "{*catchall}",
+                    new { controller = "Home", action = "Default" });
             });
-            app.UseAuthentication();
-            app.UseSession();
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Text;
 
 namespace AstralDelivery.Domain.Services
 {
+    /// <inheritdoc />
     class HashingService : IHashingService
     {
         private readonly SaltManager _saltManager;

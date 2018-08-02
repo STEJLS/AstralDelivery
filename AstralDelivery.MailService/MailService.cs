@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using AstralDelivery.Domain.Abstractions;
 using AstralDelivery.Domain.Models;
 
-namespace AstralDelivery.Domain.Services
+namespace AstralDelivery.MailService
 {
     public class MailService : IMailService
     {
