@@ -18,7 +18,8 @@ namespace AstralDelivery
         {
             var host = BuildWebHost(args);
             host.MigrateDatabase<DatabaseContext>()
-                .SetUpWithService<DataInitializer>(init => Task.WaitAll(init.InitializeAsync()));
+                .SetUpWithService<DataInitializer>(init =>
+                Task.WaitAll(init.InitializeAsync()));
 
             host.Run();
         }

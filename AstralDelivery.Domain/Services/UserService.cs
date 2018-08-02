@@ -13,7 +13,7 @@ namespace AstralDelivery.Domain.Services
     {
         private readonly DatabaseContext _dbContext;
         private readonly IHashingService _hashingService;
-        private readonly IMailService _mailService;
+        //private readonly IMailService _mailService;
 
         /// <summary>
         /// Конструктор с двумя параметрами DatabaseContext и IHashingService
@@ -21,10 +21,10 @@ namespace AstralDelivery.Domain.Services
         /// <param name="databaseContext"> <see cref="DatabaseContext"/> </param>
         /// <param name="hashingService"> <see cref="IHashingService"/> </param>
         /// <param name="mailService" cref="IMailService"/>
-        public UserService(DatabaseContext databaseContext, IHashingService hashingService, IMailService mailService)
+        public UserService(DatabaseContext databaseContext, IHashingService hashingService)
         {
             _hashingService = hashingService;
-            _mailService = mailService;
+            //_mailService = mailService;
             _dbContext = databaseContext;
         }
 
@@ -33,7 +33,7 @@ namespace AstralDelivery.Domain.Services
         {
             User user = new User(email, _hashingService.Get(password), role);
             await _dbContext.Users.AddAsync(user);
-            await _mailService.Send(password, "Пароль от аккаунта");
+            //await _mailService.Send(password, "Пароль от аккаунта");
             await _dbContext.SaveChangesAsync();
         }
     }

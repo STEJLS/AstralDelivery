@@ -6,7 +6,6 @@ using AstralDelivery.Utils.ExceptionFilter;
 using Microsoft.Extensions.DependencyInjection;
 using AstralDelivery.Domain;
 using AstralDelivery.Identity;
-using AstralDelivery.MailService;
 using Microsoft.Extensions.Configuration;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -37,7 +36,6 @@ namespace AstralDelivery
             // Identity
             services.AddSession(options => options.IdleTimeout = TimeSpan.FromHours(24));
             services.AddAstralNotesIdentity();
-            services.AddMailService();
 
             //Логика
             services.AddDomainServices();
@@ -46,8 +44,8 @@ namespace AstralDelivery
                 services.AddDomainUtilsStub(options =>
                 {
                     options.Salt = Configuration["Salt"];
-                    options.ServiceEmail = Configuration["ServicEmail:Email"];
-                    options.ServicePassword = Configuration["ServicEmail:Password"];
+                    options.ServiceEmail = Configuration["ServiceEmail:Email"];
+                    options.ServicePassword = Configuration["ServiceEmail:Password"];
                     options.AdminEmail = Configuration["Admin:Email"];
                     options.AdminPassword = Configuration["Admin:Password"];
                 });

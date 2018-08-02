@@ -1,41 +1,40 @@
-﻿using System.Net;
-using MimeKit;
-using MailKit.Net.Smtp;
-using System.Threading.Tasks;
-using AstralDelivery.Domain.Abstractions;
-using AstralDelivery.Domain.Models;
+﻿//using System.Net;
+//using MimeKit;
+//using MailKit.Net.Smtp;
+//using System.Threading.Tasks;
 
-namespace AstralDelivery.MailService
-{
-    public class MailService : IMailService
-    {
-        private readonly ConfigurationOptions _options;
 
-        public MailService(ConfigurationOptions options)
-        {
-            _options = options;
-        }
+//namespace AstralDelivery.MailService
+//{
+//    public class MailService : IMailService
+//    {
+//        private readonly ConfigurationOptions _options;
 
-        public async Task Send(string message, string subject)
-        {
-            var emailMessage = new MimeMessage();
+//        public MailService(ConfigurationOptions options)
+//        {
+//            _options = options;
+//        }
 
-            emailMessage.From.Add(new MailboxAddress("Администрация сайта", _options.ServiceEmail));
-            emailMessage.To.Add(new MailboxAddress("", _options.AdminEmail));
-            emailMessage.Subject = subject;
-            emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
-            {
-                Text = message
-            };
+//        public async Task Send(string message, string subject)
+//        {
+//            var emailMessage = new MimeMessage();
 
-            using (var client = new SmtpClient())
-            {
-                await client.ConnectAsync("smtp.yandex.ru", 465, true);
-                await client.AuthenticateAsync(new NetworkCredential(_options.ServiceEmail, _options.ServicePassword));
-                await client.SendAsync(emailMessage);
+//            emailMessage.From.Add(new MailboxAddress("Администрация сайта", _options.ServiceEmail));
+//            emailMessage.To.Add(new MailboxAddress("", _options.AdminEmail));
+//            emailMessage.Subject = subject;
+//            emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+//            {
+//                Text = message
+//            };
 
-                await client.DisconnectAsync(true);
-            }
-        }
-    }
-}
+//            using (var client = new SmtpClient())
+//            {
+//                await client.ConnectAsync("smtp.yandex.ru", 465, true);
+//                await client.AuthenticateAsync(new NetworkCredential(_options.ServiceEmail, _options.ServicePassword));
+//                await client.SendAsync(emailMessage);
+
+//                await client.DisconnectAsync(true);
+//            }
+//        }
+//    }
+//}

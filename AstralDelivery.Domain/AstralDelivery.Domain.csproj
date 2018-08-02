@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AstralDelivery.Database\AstralDelivery.Database.csproj" />
     <ProjectReference Include="..\AstralDelivery.Domain.Entities\AstralDelivery.Domain.Entities.csproj" />
+    <ProjectReference Include="..\AstralDelivery.MailService\AstralDelivery.MailService.csproj" />
   </ItemGroup>
 
 </Project>
