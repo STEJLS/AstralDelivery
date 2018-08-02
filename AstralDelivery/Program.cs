@@ -17,20 +17,10 @@ namespace AstralDelivery
         public static void Main(string[] args)
         {
             var host = BuildWebHost(args);
-            host.MigrateDatabase<DatabaseContext>();
+            host.MigrateDatabase<DatabaseContext>()
+                .SetUpWithService<DataInitializer>(init => Task.WaitAll(init.InitializeAsync()));
 
-            using (var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-
-                var dbcontext = services.GetRequiredService<DatabaseContext>();
-                var userService = services.GetRequiredService<IUserService>();
-                var mailService = services.GetRequiredService<IMailService>();
-                var options = services.GetRequiredService<ConfigurationOptions>();
-                UsersInitializer.InitializeAsync(dbcontext, userService, mailService, options);
-            }
-
-            BuildWebHost(args).Run();
+            host.Run();
         }
 
         /// <summary />

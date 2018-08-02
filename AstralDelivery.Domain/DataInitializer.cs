@@ -1,0 +1,38 @@
+﻿using System;
+using AstralDelivery.Domain.Abstractions;
+using AstralDelivery.Domain.Models;
+using AstralDelivery.Domain.Entities;
+using System.Threading.Tasks;
+using AstralDelivery.Database;
+using Microsoft.EntityFrameworkCore;
+
+namespace AstralDelivery.Domain
+{
+    public class DataInitializer
+    {
+        private readonly DatabaseContext _databaseContext;
+        private readonly IUserService _userService;
+        private readonly ConfigurationOptions _options;
+
+        public DataInitializer(DatabaseContext databaseContext, IUserService userService, ConfigurationOptions options)
+        {
+            _databaseContext = databaseContext;
+            _userService = userService;
+            _options = options;
+        }
+
+        public async Task InitializeAsync()
+        {
+            await InitializeUser();
+        }
+
+        private async Task InitializeUser()
+        {
+            if (!await _databaseContext.Users.AnyAsync())
+            {
+                string password = Guid.NewGuid().ToString().Replace("-", string.Empty).Substring(0, 10);
+                await _userService.Create(_options.AdminLogin, password, _options.AdminEmail, Role.Admin);
+            }
+        }
+    }
+}

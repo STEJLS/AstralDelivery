@@ -1,4 +1,5 @@
-﻿using MimeKit;
+﻿using System.Net;
+using MimeKit;
 using MailKit.Net.Smtp;
 using System.Threading.Tasks;
 using AstralDelivery.Domain.Abstractions;
@@ -29,8 +30,8 @@ namespace AstralDelivery.Domain.Services
 
             using (var client = new SmtpClient())
             {
-                await client.ConnectAsync("smtp.yandex.ru", 25, false);
-                await client.AuthenticateAsync(_options.ServiceEmail, _options.ServicePassword);
+                await client.ConnectAsync("smtp.yandex.ru", 465, true);
+                await client.AuthenticateAsync(new NetworkCredential(_options.ServiceEmail, _options.ServicePassword));
                 await client.SendAsync(emailMessage);
 
                 await client.DisconnectAsync(true);
