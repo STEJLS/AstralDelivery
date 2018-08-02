@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using AstralDelivery.Database;
 using AstralDelivery.Utils.ExceptionFilter;
+using AstralDelivery.MailService;
 using Microsoft.Extensions.DependencyInjection;
 using AstralDelivery.Domain;
 using AstralDelivery.Identity;
@@ -73,6 +74,7 @@ namespace AstralDelivery
                 });
 
             services.AddScoped<ExceptionFilter>();
+            services.AddSingleton<MailSender>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
