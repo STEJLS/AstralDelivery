@@ -10,6 +10,8 @@ namespace AstralDelivery.Database
     {
         /// <summary />
         public DbSet<User> Users { get; set; }
+        /// <summary />
+        public DbSet<PasswordRecovery> passwordRecoveries { get; set; }
 
         /// <summary />
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)

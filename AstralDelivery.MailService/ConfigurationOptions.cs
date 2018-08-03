@@ -21,8 +21,8 @@ namespace AstralDelivery.MailService
            .AddJsonFile("appsettings.Production.json");
 
             var config = builder.Build();
- 
-             ServiceName = config["Service:Name"];
+
+            ServiceName = config["Service:Name"];
             ServiceEmail = config["Service:Email"];
             ServicePassword = config["Service:Password"];
             SMTPHost = config["smtp:Host"];

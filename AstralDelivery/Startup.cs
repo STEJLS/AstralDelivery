@@ -90,13 +90,17 @@ namespace AstralDelivery
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                 options.RoutePrefix = "api/help";
             });
-            
+
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseSession();
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    "PasswordRecovery",
+                    "{*catchall}",
+                    new { controller = "Account", action = "CheckToken" });
                 routes.MapRoute(
                     "default",
                     "{*catchall}",

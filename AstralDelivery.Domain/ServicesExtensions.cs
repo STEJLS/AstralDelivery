@@ -22,6 +22,7 @@ namespace AstralDelivery.Domain
             services.AddScoped<IHashingService, HashingService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthorizationService, AuthorizationService>();
+            services.AddScoped<IRecoveryPasswordService, RecoveryPasswordService>();
             services.AddScoped<DataInitializer>();
             services.AddSingleton<SaltManager>();
 

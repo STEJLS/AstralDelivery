@@ -1,51 +1,60 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
+﻿using System;
 using AstralDelivery.Domain.Abstractions;
-using AstralDelivery.Domain.Entities;
 using AstralDelivery.Domain.Models;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace AstralDelivery.Controllers
 {
     /// <summary>
     /// Контроллер управления аккаунтом
     /// </summary>
-    [Route("Authorize")]
-    public class AuthorizeController : Controller
+    [Route("Account")]
+    public class AccountController : Controller
     {
-        private readonly IUserService _userService;
-        private readonly IAuthorizationService _authorizationService;
-        private readonly SignInManager<User> _signInManager;
+        private readonly IRecoveryPasswordService _recoveryService;
 
-        /// <summary />
-        public AuthorizeController(IUserService userService, SignInManager<User> signInManager,
-            IAuthorizationService authorizationService)
+        public AccountController(IRecoveryPasswordService recoveryService)
         {
-            _userService = userService;
-            _signInManager = signInManager;
-            _authorizationService = authorizationService;
+            _recoveryService = recoveryService;
         }
 
         /// <summary>
-        /// Авторизация пользователя
+        /// Проверяет токен восстановления
         /// </summary>
-        /// <param name="model"> Модель авторизации </param>
+        /// <param name="token"> Токен</param>
         /// <returns></returns>
-        [HttpPost]
-        public async Task<User> Login([FromBody]LoginModel model)
+        [HttpGet("CheckToken")]
+        public async Task<IActionResult> CheckToken([FromQuery] Guid token)
         {
-            return await _authorizationService.Login(model.Email, model.Password, model.RememberMe);
+            if (await _recoveryService.CheckToken(token))
+                return View("RecoveryPasswordForm");
+
+            return RedirectToAction("Default", "Home");
         }
 
         /// <summary>
-        /// Вывод из системы
+        /// Создает токен для восстановления пароля
         /// </summary>
+        /// <param name="email"> Почта для восстановления </param>
         /// <returns></returns>
-        [Microsoft.AspNetCore.Authorization.Authorize]
-        [HttpDelete]
-        public async void Logout()
+        [HttpPost("RecoveryTokenCreation")]
+        public async Task RecoveryTokenCreation([FromBody] string email)
         {
-            await _authorizationService.Logout();
+            await _recoveryService.CreateToken(email, HttpContext.Request.Host.Value);  
+        }
+
+        /// <summary>
+        /// Изменяет пароль пользователя
+        /// </summary>
+        /// <param name="model"> Модель PasswordRecovery </param>
+        /// <returns></returns>
+        [HttpPut("RecoveryPasswordChange")]
+        public async Task RecoveryPasswordChange([FromBody] PasswordRecoveryModel model)
+        {
+            await _recoveryService.ChangePassword(model.Token, model.NewPassword);
         }
     }
 }
