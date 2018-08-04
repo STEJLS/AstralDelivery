@@ -4,11 +4,8 @@ using AstralDelivery.Domain.Entities;
 using AstralDelivery.MailService;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using AstralDelivery.Database;
-using Microsoft.AspNetCore.Http;
 
 namespace AstralDelivery.Domain.Services
 {
@@ -17,12 +14,14 @@ namespace AstralDelivery.Domain.Services
     {
         private readonly DatabaseContext _dbContext;
         private readonly IHashingService _hashingService;
+        private readonly ConfigurationOptions _options;
         private readonly MailSender _mailSender;
 
-        public RecoveryPasswordService(DatabaseContext dbContext, IHashingService hashingService, MailSender mailSender)
+        public RecoveryPasswordService(DatabaseContext dbContext, IHashingService hashingService, ConfigurationOptions options, MailSender mailSender)
         {
             _dbContext = dbContext;
             _hashingService = hashingService;
+            _options = options;
             _mailSender = mailSender;
         }
 
@@ -80,7 +79,7 @@ namespace AstralDelivery.Domain.Services
         private bool ValidatePasswordRecovery(PasswordRecovery recovery)
         {
             var diff = DateTime.Now - recovery.CreationDate;
-            if (diff < new TimeSpan(0, 3, 0))
+            if (diff < new TimeSpan(0, _options.PasswordRecoveryTokenLifeTime, 0))
             {
                 return true;
             }

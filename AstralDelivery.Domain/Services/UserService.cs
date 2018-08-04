@@ -1,10 +1,9 @@
 ﻿using AstralDelivery.Domain.Abstractions;
 using AstralDelivery.Domain.Entities;
 using AstralDelivery.Database;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using AstralDelivery.MailService;
 using System.Threading.Tasks;
+using System;
 
 namespace AstralDelivery.Domain.Services
 {
@@ -13,7 +12,7 @@ namespace AstralDelivery.Domain.Services
     {
         private readonly DatabaseContext _dbContext;
         private readonly IHashingService _hashingService;
-        //private readonly IMailService _mailService;
+        private readonly MailSender _mailSender;
 
         /// <summary>
         /// Конструктор с двумя параметрами DatabaseContext и IHashingService
@@ -21,19 +20,28 @@ namespace AstralDelivery.Domain.Services
         /// <param name="databaseContext"> <see cref="DatabaseContext"/> </param>
         /// <param name="hashingService"> <see cref="IHashingService"/> </param>
         /// <param name="mailService" cref="IMailService"/>
-        public UserService(DatabaseContext databaseContext, IHashingService hashingService)
+        public UserService(DatabaseContext databaseContext, IHashingService hashingService, MailSender mailSender)
         {
             _hashingService = hashingService;
-            //_mailService = mailService;
+            _mailSender = mailSender;
             _dbContext = databaseContext;
         }
 
         /// <inheritdoc />
-        public async Task Create(string email, string password, Role role)
+        public async Task Create(string email, string password)
         {
-            User user = new User(email, _hashingService.Get(password), role);
+            User user = new User(email, _hashingService.Get(password), Role.Admin);
             await _dbContext.Users.AddAsync(user);
-            //await _mailService.Send(password, "Пароль от аккаунта");
+            await _dbContext.SaveChangesAsync();
+        }
+
+        /// <inheritdoc />
+        public async Task Create(string email, string city, string surname, string name, string patronymic, Role role)
+        {
+            string password = Guid.NewGuid().ToString().Replace("-", string.Empty).Substring(0, 10);
+            User user = new User(email, _hashingService.Get(password),city, surname,name,patronymic, role);
+            await _dbContext.Users.AddAsync(user);
+            await _mailSender.SendAsync(email, password, "Пароль от учетной записи");
             await _dbContext.SaveChangesAsync();
         }
     }

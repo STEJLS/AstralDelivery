@@ -13,15 +13,12 @@ namespace AstralDelivery.Controllers
     [Route("Authorize")]
     public class AuthorizeController : Controller
     {
-        private readonly IUserService _userService;
         private readonly IAuthorizationService _authorizationService;
         private readonly SignInManager<User> _signInManager;
 
         /// <summary />
-        public AuthorizeController(IUserService userService, SignInManager<User> signInManager,
-            IAuthorizationService authorizationService)
+        public AuthorizeController(SignInManager<User> signInManager, IAuthorizationService authorizationService)
         {
-            _userService = userService;
             _signInManager = signInManager;
             _authorizationService = authorizationService;
         }

@@ -1,7 +1,5 @@
-﻿using System;
-using AstralDelivery.Domain.Abstractions;
+﻿using AstralDelivery.Domain.Abstractions;
 using AstralDelivery.Domain.Models;
-using AstralDelivery.Domain.Entities;
 using System.Threading.Tasks;
 using AstralDelivery.Database;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +28,7 @@ namespace AstralDelivery.Domain
         {
             if (!await _databaseContext.Users.AnyAsync())
             {
-                await _userService.Create(_options.AdminEmail, _options.AdminPassword, Role.Admin);
+                await _userService.Create(_options.AdminEmail, _options.AdminPassword);
             }
         }
     }

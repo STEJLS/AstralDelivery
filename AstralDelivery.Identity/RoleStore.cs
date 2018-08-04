@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using AstralDelivery.Database;
 using Microsoft.AspNetCore.Identity;
 
-
 namespace AstralDelivery.Identity
 {
     /// <summary>

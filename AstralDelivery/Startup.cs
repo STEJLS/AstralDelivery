@@ -49,6 +49,7 @@ namespace AstralDelivery
                     options.ServicePassword = Configuration["ServiceEmail:Password"];
                     options.AdminEmail = Configuration["Admin:Email"];
                     options.AdminPassword = Configuration["Admin:Password"];
+                    options.PasswordRecoveryTokenLifeTime = int.Parse(Configuration["PasswordRecovery:TokenLifeTime"]);
                 });
             }
             else
@@ -60,6 +61,7 @@ namespace AstralDelivery
                     options.ServicePassword = Configuration["ServicEmail:Password"];
                     options.AdminEmail = Configuration["Admin:Email"];
                     options.AdminPassword = Configuration["Admin:Password"];
+                    options.PasswordRecoveryTokenLifeTime = int.Parse(Configuration["PasswordRecovery:TokenLifeTime"]);
                 });
             }
 

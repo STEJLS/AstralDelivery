@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 
 namespace AstralDelivery.Domain.Models
 {
-    
     /// <summary>
     /// Контекст сессии
     /// </summary>

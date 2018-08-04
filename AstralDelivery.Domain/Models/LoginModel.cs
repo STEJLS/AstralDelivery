@@ -1,11 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace AstralDelivery.Domain.Models
+﻿namespace AstralDelivery.Domain.Models
 {
     public class LoginModel
     {
+        /// <summary>
+        /// Почта
+        /// </summary>
         public string Email { get; set; }
+        /// <summary>
+        /// Пароль
+        /// </summary>
         public string Password { get; set; }
+        /// <summary>
+        /// Прекращать ли сессию при закрытии браузера
+        /// </summary>
         public bool RememberMe { get; set; }
     }
 }

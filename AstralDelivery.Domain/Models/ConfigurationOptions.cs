@@ -25,5 +25,9 @@
         /// Пароль администратора
         /// </summary>
         public string AdminPassword { get; set; }
+        /// <summary>
+        /// Время действительности токена восстановления пароля в минутах
+        /// </summary>
+        public int PasswordRecoveryTokenLifeTime { get; set; }
     }
 }

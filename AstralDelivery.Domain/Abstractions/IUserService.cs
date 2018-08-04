@@ -1,7 +1,6 @@
 ﻿using AstralDelivery.Domain.Entities;
 using System.Threading.Tasks;
 
-
 namespace AstralDelivery.Domain.Abstractions
 {
     /// <summary>
@@ -10,13 +9,23 @@ namespace AstralDelivery.Domain.Abstractions
     public interface IUserService
     {
         /// <summary>
-        /// Соездает нового пользователя 
+        /// Соездает администратора
         /// </summary>
-        /// <param name="login"> Логин </param>
         /// <param name="password"> Пароль </param>
         /// <param name="email"> Почта </param>
+        /// <returns></returns>
+        Task Create(string email, string password);
+
+        /// <summary>
+        /// Соездает нового пользователя 
+        /// </summary>
+        /// <param name="email"> Почта </param>
+        /// <param name="city"> Город </param>
+        /// <param name="surname"> Фамилия </param>
+        /// <param name="name"> Имя </param>
+        /// <param name="patronymic"> Отчетсво </param>
         /// <param name="role"> Роль </param>
         /// <returns></returns>
-        Task Create(string email, string password, Role role);
+        Task Create(string email, string city, string surname, string name, string patronymic, Role role);
     }
 }
