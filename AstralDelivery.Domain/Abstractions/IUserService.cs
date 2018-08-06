@@ -1,4 +1,7 @@
 ﻿using AstralDelivery.Domain.Entities;
+using AstralDelivery.Domain.Models;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace AstralDelivery.Domain.Abstractions
@@ -27,5 +30,11 @@ namespace AstralDelivery.Domain.Abstractions
         /// <param name="role"> Роль </param>
         /// <returns></returns>
         Task Create(string email, string city, string surname, string name, string patronymic, Role role);
+
+        /// <summary>
+        /// Возвращает всех менеджеров
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<UserModel> GetManagers();
     }
 }

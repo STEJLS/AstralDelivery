@@ -29,7 +29,7 @@ namespace AstralDelivery.Controllers
         /// <param name="model"> Модель авторизации </param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<User> Login([FromBody]LoginModel model)
+        public async Task<UserModel> Login([FromBody]LoginModel model)
         {
             return await _authorizationService.Login(model.Email, model.Password, model.RememberMe);
         }

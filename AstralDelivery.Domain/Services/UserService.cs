@@ -4,6 +4,9 @@ using AstralDelivery.Database;
 using AstralDelivery.MailService;
 using System.Threading.Tasks;
 using System;
+using System.Linq;
+using AstralDelivery.Domain.Models;
+using System.Collections.Generic;
 
 namespace AstralDelivery.Domain.Services
 {
@@ -39,10 +42,17 @@ namespace AstralDelivery.Domain.Services
         public async Task Create(string email, string city, string surname, string name, string patronymic, Role role)
         {
             string password = Guid.NewGuid().ToString().Replace("-", string.Empty).Substring(0, 10);
-            User user = new User(email, _hashingService.Get(password),city, surname,name,patronymic, role);
+            User user = new User(email, _hashingService.Get(password), city, surname, name, patronymic, role);
             await _dbContext.Users.AddAsync(user);
             await _mailSender.SendAsync(email, password, "Пароль от учетной записи");
             await _dbContext.SaveChangesAsync();
+        }
+
+        /// <inheritdoc />
+        public IEnumerable<UserModel> GetManagers()
+        {
+            var managers = _dbContext.Users.Where(u => u.Role == Role.Manager).Select(u => new UserModel(u)).ToList();
+            return managers;
         }
     }
 }

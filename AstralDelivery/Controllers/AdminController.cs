@@ -4,11 +4,12 @@ using AstralDelivery.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
 
 namespace AstralDelivery.Controllers
 {
     /// <summary>
-    /// Контроллер управляющий деятельность админа
+    /// Контроллер управляющий деятельностью админа
     /// </summary>
     public class AdminController : Controller
     {
@@ -29,6 +30,17 @@ namespace AstralDelivery.Controllers
         public async Task CreateManager([FromBody] ManagerModel model)
         {
             await _userService.Create(model.Email, model.City, model.Surname, model.Name, model.Patronymic, Role.Manager);
+        }
+
+        /// <summary>
+        /// Возвращает всех менеджеров
+        /// </summary>
+        /// <returns></returns>
+        [Authorize(Roles = nameof(Role.Admin))]
+        [HttpGet("GetManagers")]
+        public IEnumerable<UserModel> GetManagers()
+        {
+            return _userService.GetManagers();
         }
     }
 }
