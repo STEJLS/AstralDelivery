@@ -68,5 +68,12 @@ namespace AstralDelivery.Domain.Abstractions
         /// <param name="model"> <see cref="ChangePasswordModel"/> </param>
         /// <returns></returns>
         Task ChangePassword(ChangePasswordModel model);
+
+        /// <summary>
+        /// Осуществляет поиск по строке
+        /// </summary>
+        /// <param name="searchString"> Строка для поиска </param>
+        /// <returns></returns>
+        List<UserModel> SearchManagers(string searchString);
     }
 }

@@ -108,11 +108,7 @@ namespace AstralDelivery.Domain.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        /// <summary>
-        /// Изменяет пароль пользователя
-        /// </summary>
-        /// <param name="model"> <see cref="ChangePasswordModel"/> </param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public async Task ChangePassword(ChangePasswordModel model)
         {
             User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == _sessionContext.UserGuid && u.IsDeleted == false);
@@ -129,6 +125,21 @@ namespace AstralDelivery.Domain.Services
             user.Password = _hashingService.Get(model.NewPassword);
             user.IsActivated = true;
             await _dbContext.SaveChangesAsync();
+        }
+
+        /// <inheritdoc />
+        public List<UserModel> SearchManagers(string searchString)
+        {
+            searchString = searchString.ToUpper();
+            var managers = _dbContext.Users.Where(u => u.Role == Role.Manager && u.IsDeleted == false
+            && (u.Email.ToUpper().Contains(searchString) ||
+            u.City.ToUpper().Contains(searchString) ||
+            u.Surname.ToUpper().Contains(searchString) ||
+            u.Name.ToUpper().Contains(searchString) ||
+            u.Patronymic.ToUpper().Contains(searchString))
+            ).Select(u => new UserModel(u)).ToList();
+
+            return managers;
         }
     }
 }

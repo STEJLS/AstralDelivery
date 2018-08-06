@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 using System;
+using AstralDelivery.Domain.Utils;
 
 namespace AstralDelivery.Controllers
 {
@@ -66,6 +67,21 @@ namespace AstralDelivery.Controllers
         public IEnumerable<UserModel> GetManagers()
         {
             return _userService.GetManagers();
+        }
+
+        /// <summary>
+        /// Поиск и сортировка менеджеров
+        /// </summary>
+        /// <returns></returns>
+        [Authorize(Roles = nameof(Role.Admin))]
+        [HttpPost("SearchManagers")]
+        public ManagerSearchResult SearchManagers([FromBody] SearchManagerModel model)
+        {
+            var managers = _userService.SearchManagers(model.SearchString);
+
+            return new ManagerSearchResult(
+                managers.Count,
+                UserSortManager.Sort(managers, model.Field, model.Direction, model.Count, model.Offset));
         }
     }
 }
