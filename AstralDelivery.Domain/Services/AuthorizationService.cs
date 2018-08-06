@@ -39,7 +39,7 @@ namespace AstralDelivery.Domain.Services
             email = email.Trim().ToLower();
             password = _hashingService.Get(password);
 
-            var user = await _dbContext.Users.FirstOrDefaultAsync(a => a.Email.ToLower() == email && a.Password == password);
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == email && u.Password == password && u.IsDeleted == false);
             if (user == null)
             {
                 throw new InvalidOperationException("Пользователь с указаной парой Логин/Пароль не найден.");

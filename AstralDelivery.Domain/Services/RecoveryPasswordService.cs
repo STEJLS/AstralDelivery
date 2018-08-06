@@ -28,7 +28,7 @@ namespace AstralDelivery.Domain.Services
         /// <inheritdoc />
         public async Task CreateToken(string email, string host)
         {
-            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
+            var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == email && u.IsDeleted == false);
             if (user == null)
             {
                 throw new Exception("Пользователя с такой почтой не существует.");

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
+using System;
 
 namespace AstralDelivery.Controllers
 {
@@ -38,10 +39,22 @@ namespace AstralDelivery.Controllers
         /// <param name="model"> <see cref="UserModel"/> </param>
         /// <returns></returns>
         [Authorize(Roles = nameof(Role.Admin))]
-        [HttpPost("EditUser")]
+        [HttpPut("EditUser")]
         public async Task EditUser([FromBody] UserModel model)
         {
             await _userService.Edit(model);
+        }
+
+        /// <summary>
+        /// Удаляет пользователя
+        /// </summary>
+        /// <param name="model"> <see cref="Guid"/> </param>
+        /// <returns></returns>
+        [Authorize(Roles = nameof(Role.Admin))]
+        [HttpDelete("DeleteUser")]
+        public async Task DeleteUser([FromBody] Guid userGuid)
+        {
+            await _userService.Delete(userGuid);
         }
 
         /// <summary>

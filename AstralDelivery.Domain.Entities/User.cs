@@ -45,6 +45,11 @@ namespace AstralDelivery.Domain.Entities
         public Role Role { get; set; }
 
         /// <summary>
+        /// Удален ли пользователь
+        /// </summary>
+        public bool IsDeleted { get; set; }
+
+        /// <summary>
         /// Конструктор по умолчанию 
         /// </summary>
         public User()
@@ -62,6 +67,7 @@ namespace AstralDelivery.Domain.Entities
             Email = email;
             Password = password;
             Role = role;
+            IsDeleted = false;
         }
 
         /// <summary/>
@@ -78,6 +84,7 @@ namespace AstralDelivery.Domain.Entities
             Surname = surname;
             Name = name;
             Patronymic = patronymic;
+            IsDeleted = false;
         }
     }
 }

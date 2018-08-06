@@ -1,6 +1,6 @@
 ﻿using AstralDelivery.Domain.Entities;
 using AstralDelivery.Domain.Models;
-using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -43,5 +43,12 @@ namespace AstralDelivery.Domain.Abstractions
         /// <param name="userModel"> <see cref="UserModel"/> </param>
         /// <returns></returns>
         Task Edit(UserModel userModel);
+
+        /// <summary>
+        /// Удаляет пользователя
+        /// </summary>
+        /// <param name="UserGuid"> Идентификатор </param>
+        /// <returns></returns>
+        Task Delete(Guid UserGuid);
     }
 }

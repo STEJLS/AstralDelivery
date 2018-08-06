@@ -2,6 +2,7 @@
 using AstralDelivery.Domain.Entities;
 using AstralDelivery.Database;
 using AstralDelivery.MailService;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System;
 using System.Linq;
@@ -51,14 +52,14 @@ namespace AstralDelivery.Domain.Services
         /// <inheritdoc />
         public IEnumerable<UserModel> GetManagers()
         {
-            var managers = _dbContext.Users.Where(u => u.Role == Role.Manager).Select(u => new UserModel(u)).ToList();
+            var managers = _dbContext.Users.Where(u => u.Role == Role.Manager && u.IsDeleted == false).Select(u => new UserModel(u)).ToList();
             return managers;
         }
 
         /// <inheritdoc />
         public async Task Edit(UserModel userModel)
         {
-            User user = _dbContext.Users.FirstOrDefault(u => u.UserGuid == userModel.UserGuid);
+            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == userModel.UserGuid && u.IsDeleted == false);
             if (user == null)
             {
                 throw new Exception("Пользователя с таким идентификатором не существует");
@@ -70,6 +71,20 @@ namespace AstralDelivery.Domain.Services
             user.Name = userModel.Name;
             user.Patronymic = userModel.Patronymic;
             user.Role = userModel.Role;
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+        /// <inheritdoc />
+        public async Task Delete(Guid UserGuid)
+        {
+            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == UserGuid && u.IsDeleted == false);
+            if (user == null)
+            {
+                throw new Exception("Пользователя с таким идентификатором не существует");
+            }
+
+            user.IsDeleted = true;
 
             await _dbContext.SaveChangesAsync();
         }

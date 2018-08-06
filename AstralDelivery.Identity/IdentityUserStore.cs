@@ -48,7 +48,7 @@ namespace AstralDelivery.Identity
         /// <returns></returns>
         public Task<IList<string>> GetRolesAsync(User user, CancellationToken cancellationToken)
         {
-            var result = (IList<string>) new List<string>();
+            var result = (IList<string>)new List<string>();
             result.Add(user.Role.ToString());
             return Task.FromResult(result);
         }
@@ -128,14 +128,14 @@ namespace AstralDelivery.Identity
         public async Task<User> FindByIdAsync(string userId, CancellationToken cancellationToken)
         {
             var guid = Guid.Parse(userId);
-            var user = await _context.Users.FirstOrDefaultAsync(c => c.UserGuid == guid, cancellationToken);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserGuid == guid && u.IsDeleted == false, cancellationToken);
             return user;
         }
 
         /// <inheritdoc />
         public async Task<User> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(c => c.UserGuid.ToString() == normalizedUserName,
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserGuid.ToString() == normalizedUserName && u.IsDeleted == false,
                 cancellationToken);
             return user;
         }
@@ -143,7 +143,7 @@ namespace AstralDelivery.Identity
         /// <inheritdoc />
         public Task<DateTimeOffset?> GetLockoutEndDateAsync(User user, CancellationToken cancellationToken)
         {
-            return Task.FromResult((DateTimeOffset?) null);
+            return Task.FromResult((DateTimeOffset?)null);
         }
 
         /// <inheritdoc />
