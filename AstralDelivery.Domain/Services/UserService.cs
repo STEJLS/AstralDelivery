@@ -59,6 +59,23 @@ namespace AstralDelivery.Domain.Services
         }
 
         /// <inheritdoc />
+        public async Task Edit(Guid guid, string email, string surname, string name, string patronymic)
+        {
+            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == guid && u.IsDeleted == false);
+            if (user == null)
+            {
+                throw new Exception("Пользователя с таким идентификатором не существует");
+            }
+
+            user.Email = email;
+            user.Surname = surname;
+            user.Name = name;
+            user.Patronymic = patronymic;
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+        /// <inheritdoc />
         public async Task Edit(UserModel userModel)
         {
             User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == userModel.UserGuid && u.IsDeleted == false);

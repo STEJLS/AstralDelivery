@@ -69,5 +69,17 @@ namespace AstralDelivery.Controllers
         {
             await _userService.ChangePassword(model);
         }
+
+        /// <summary>
+        /// Редактирует данные пользователя
+        /// </summary>
+        /// <param name="model"> <see cref="EditUserModel"/> </param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpPut("Edit")]
+        public async Task Edit([FromBody] EditUserModel model)
+        {
+            await _userService.Edit(model.UserGuid, model.Email, model.Surname, model.Name, model.Patronymic);
+        }
     }
 }

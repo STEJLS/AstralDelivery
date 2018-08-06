@@ -45,6 +45,17 @@ namespace AstralDelivery.Domain.Abstractions
         Task Edit(UserModel userModel);
 
         /// <summary>
+        /// Редактирует данные пользователя
+        /// </summary>
+        /// <param name="guid"> Идентификатор </param>
+        /// <param name="email"> Почта </param>
+        /// <param name="surname"> Фамилия </param>
+        /// <param name="name"> Имя </param>
+        /// <param name="patronymic"> Отчество </param>
+        /// <returns></returns>
+        Task Edit(Guid guid, string email, string surname, string name, string patronymic);
+
+        /// <summary>
         /// Удаляет пользователя
         /// </summary>
         /// <param name="UserGuid"> Идентификатор </param>
