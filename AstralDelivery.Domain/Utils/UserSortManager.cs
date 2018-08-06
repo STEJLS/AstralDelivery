@@ -17,28 +17,28 @@ namespace AstralDelivery.Domain.Utils
         /// <returns></returns>
         public static IEnumerable<UserModel> Sort(List<UserModel> managers, SortField field, bool direction, int count, int offset)
         {
-            IEnumerable<UserModel> result = null;
+            IOrderedEnumerable<UserModel> result = null;
             if (direction)
             {
                 switch (field)
                 {
                     case SortField.Email:
-                        result = managers.OrderBy(m => m.Email).Skip(offset).Take(count);
+                        result = managers.OrderBy(m => m.Email);
                         break;
                     case SortField.City:
-                        result = managers.OrderBy(m => m.City).Skip(offset).Take(count);
+                        result = managers.OrderBy(m => m.City);
                         break;
                     case SortField.Surname:
-                        result = managers.OrderBy(m => m.Surname).Skip(offset).Take(count);
+                        result = managers.OrderBy(m => m.Surname);
                         break;
                     case SortField.Name:
-                        result = managers.OrderBy(m => m.Name).Skip(offset).Take(count);
+                        result = managers.OrderBy(m => m.Name);
                         break;
                     case SortField.Patronymic:
-                        result = managers.OrderBy(m => m.Patronymic).Skip(offset).Take(count);
+                        result = managers.OrderBy(m => m.Patronymic);
                         break;
                     case SortField.IsActivated:
-                        result = managers.OrderBy(m => m.IsActivated).Skip(offset).Take(count);
+                        result = managers.OrderBy(m => m.IsActivated);
                         break;
                     default:
                         break;
@@ -49,28 +49,28 @@ namespace AstralDelivery.Domain.Utils
                 switch (field)
                 {
                     case SortField.Email:
-                        result = managers.OrderByDescending(m => m.Email).Skip(offset).Take(count);
+                        result = managers.OrderByDescending(m => m.Email);
                         break;
                     case SortField.City:
-                        result = managers.OrderByDescending(m => m.City).Skip(offset).Take(count);
+                        result = managers.OrderByDescending(m => m.City);
                         break;
                     case SortField.Surname:
-                        result = managers.OrderByDescending(m => m.Surname).Skip(offset).Take(count);
+                        result = managers.OrderByDescending(m => m.Surname);
                         break;
                     case SortField.Name:
-                        result = managers.OrderByDescending(m => m.Name).Skip(offset).Take(count);
+                        result = managers.OrderByDescending(m => m.Name);
                         break;
                     case SortField.Patronymic:
-                        result = managers.OrderByDescending(m => m.Patronymic).Skip(offset).Take(count);
+                        result = managers.OrderByDescending(m => m.Patronymic);
                         break;
                     case SortField.IsActivated:
-                        result = managers.OrderByDescending(m => m.IsActivated).Skip(offset).Take(count);
+                        result = managers.OrderByDescending(m => m.IsActivated);
                         break;
                     default:
                         break;
                 }
             }
-            return result;
+            return result.Skip(offset).Take(count);
         }
     }
 }
