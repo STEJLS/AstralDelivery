@@ -3,6 +3,7 @@ using AstralDelivery.Domain.Abstractions;
 using AstralDelivery.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AstralDelivery.Controllers
 {
@@ -13,10 +14,12 @@ namespace AstralDelivery.Controllers
     public class AccountController : Controller
     {
         private readonly IRecoveryPasswordService _recoveryService;
+        private readonly IUserService _userService;
 
-        public AccountController(IRecoveryPasswordService recoveryService)
+        public AccountController(IRecoveryPasswordService recoveryService, IUserService userService)
         {
             _recoveryService = recoveryService;
+            _userService = userService;
         }
 
         /// <summary>
@@ -41,11 +44,11 @@ namespace AstralDelivery.Controllers
         [HttpPost("RecoveryTokenCreation")]
         public async Task RecoveryTokenCreation([FromBody] string email)
         {
-            await _recoveryService.CreateToken(email, HttpContext.Request.Host.Value);  
+            await _recoveryService.CreateToken(email, HttpContext.Request.Host.Value);
         }
 
         /// <summary>
-        /// Изменяет пароль пользователя
+        /// Восстанавливает пароль пользователя
         /// </summary>
         /// <param name="model"> Модель PasswordRecovery </param>
         /// <returns></returns>
@@ -53,6 +56,18 @@ namespace AstralDelivery.Controllers
         public async Task RecoveryPasswordChange([FromBody] PasswordRecoveryModel model)
         {
             await _recoveryService.ChangePassword(model.Token, model.NewPassword);
+        }
+
+        /// <summary>
+        /// Изменяет пароль пользователя
+        /// </summary>
+        /// <param name="model"> <see cref="ChangePasswordModel"/> </param>
+        /// <returns></returns>
+        [Authorize]
+        [HttpPut("ChangePassword")]
+        public async Task ChangePassword([FromBody] ChangePasswordModel model)
+        {
+            await _userService.ChangePassword(model);
         }
     }
 }

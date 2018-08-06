@@ -1,7 +1,5 @@
 ﻿using AstralDelivery.Domain.Entities;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AstralDelivery.Domain.Models
 {
@@ -38,6 +36,10 @@ namespace AstralDelivery.Domain.Models
         /// Роль
         /// </summary>
         public Role Role { get; set; }
+        /// <summary>
+        /// Активированный ли аккаунт
+        /// </summary>
+        public bool IsActivated { get; set; }
 
         public UserModel()
         {
@@ -53,6 +55,7 @@ namespace AstralDelivery.Domain.Models
             Name = user.Name;
             Patronymic = user.Patronymic;
             Role = user.Role;
+            IsActivated = user.IsActivated;
         }
     }
 }

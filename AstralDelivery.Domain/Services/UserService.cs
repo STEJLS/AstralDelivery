@@ -17,6 +17,7 @@ namespace AstralDelivery.Domain.Services
         private readonly DatabaseContext _dbContext;
         private readonly IHashingService _hashingService;
         private readonly MailSender _mailSender;
+        private readonly SessionContext _sessionContext;
 
         /// <summary>
         /// Конструктор с двумя параметрами DatabaseContext и IHashingService
@@ -24,11 +25,12 @@ namespace AstralDelivery.Domain.Services
         /// <param name="databaseContext"> <see cref="DatabaseContext"/> </param>
         /// <param name="hashingService"> <see cref="IHashingService"/> </param>
         /// <param name="mailService" cref="IMailService"/>
-        public UserService(DatabaseContext databaseContext, IHashingService hashingService, MailSender mailSender)
+        public UserService(DatabaseContext databaseContext, IHashingService hashingService, MailSender mailSender, SessionContext sessionContext)
         {
             _hashingService = hashingService;
             _mailSender = mailSender;
             _dbContext = databaseContext;
+            _sessionContext = sessionContext;
         }
 
         /// <inheritdoc />
@@ -86,6 +88,29 @@ namespace AstralDelivery.Domain.Services
 
             user.IsDeleted = true;
 
+            await _dbContext.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Изменяет пароль пользователя
+        /// </summary>
+        /// <param name="model"> <see cref="ChangePasswordModel"/> </param>
+        /// <returns></returns>
+        public async Task ChangePassword(ChangePasswordModel model)
+        {
+            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == _sessionContext.UserGuid && u.IsDeleted == false);
+            if (user == null)
+            {
+                throw new Exception("Пользователя с таким идентификатором не существует");
+            }
+
+            if (user.Password != _hashingService.Get(model.OldPassword))
+            {
+                throw new Exception("Неверный пароль");
+            }
+
+            user.Password = _hashingService.Get(model.NewPassword);
+            user.IsActivated = true;
             await _dbContext.SaveChangesAsync();
         }
     }

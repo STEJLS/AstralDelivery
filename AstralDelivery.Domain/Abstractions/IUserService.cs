@@ -50,5 +50,12 @@ namespace AstralDelivery.Domain.Abstractions
         /// <param name="UserGuid"> Идентификатор </param>
         /// <returns></returns>
         Task Delete(Guid UserGuid);
+
+        /// <summary>
+        /// Изменяет пароль пользователя
+        /// </summary>
+        /// <param name="model"> <see cref="ChangePasswordModel"/> </param>
+        /// <returns></returns>
+        Task ChangePassword(ChangePasswordModel model);
     }
 }
