@@ -54,5 +54,24 @@ namespace AstralDelivery.Domain.Services
             var managers = _dbContext.Users.Where(u => u.Role == Role.Manager).Select(u => new UserModel(u)).ToList();
             return managers;
         }
+
+        /// <inheritdoc />
+        public async Task Edit(UserModel userModel)
+        {
+            User user = _dbContext.Users.FirstOrDefault(u => u.UserGuid == userModel.UserGuid);
+            if (user == null)
+            {
+                throw new Exception("Пользователя с таким идентификатором не существует");
+            }
+
+            user.Email = userModel.Email;
+            user.City = userModel.City;
+            user.Surname = userModel.Surname;
+            user.Name = userModel.Name;
+            user.Patronymic = userModel.Patronymic;
+            user.Role = userModel.Role;
+
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

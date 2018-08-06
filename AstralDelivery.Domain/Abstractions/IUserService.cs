@@ -36,5 +36,12 @@ namespace AstralDelivery.Domain.Abstractions
         /// </summary>
         /// <returns></returns>
         IEnumerable<UserModel> GetManagers();
+
+        /// <summary>
+        /// Редактирует данные пользователя
+        /// </summary>
+        /// <param name="userModel"> <see cref="UserModel"/> </param>
+        /// <returns></returns>
+        Task Edit(UserModel userModel);
     }
 }

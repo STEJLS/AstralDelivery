@@ -33,6 +33,18 @@ namespace AstralDelivery.Controllers
         }
 
         /// <summary>
+        /// Редактирует данные пользователя
+        /// </summary>
+        /// <param name="model"> <see cref="UserModel"/> </param>
+        /// <returns></returns>
+        [Authorize(Roles = nameof(Role.Admin))]
+        [HttpPost("EditUser")]
+        public async Task EditUser([FromBody] UserModel model)
+        {
+            await _userService.Edit(model);
+        }
+
+        /// <summary>
         /// Возвращает всех менеджеров
         /// </summary>
         /// <returns></returns>
