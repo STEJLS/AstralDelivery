@@ -1,20 +1,20 @@
 ﻿using AstralDelivery.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AstralDelivery.Domain.Models
 {
-    public class EditUserModel
+    /// <summary>
+    /// Модель для создания менеджера
+    /// </summary>
+    public class UserInfo
     {
-        /// <summary>
-        /// Идентификатор
-        /// </summary>
-        public Guid UserGuid { get; set; }
         /// <summary>
         /// Почта
         /// </summary>
         public string Email { get; set; }
+        /// <summary>
+        /// Город
+        /// </summary>
+        public string City { get; set; }
         /// <summary>
         /// Фамилия
         /// </summary>
@@ -27,5 +27,9 @@ namespace AstralDelivery.Domain.Models
         /// Отчество
         /// </summary>
         public string Patronymic { get; set; }
+        /// <summary>
+        /// Роль
+        /// </summary>
+        public Role Role{ get; set; }
     }
 }

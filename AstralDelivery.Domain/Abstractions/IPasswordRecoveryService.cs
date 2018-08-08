@@ -6,7 +6,7 @@ namespace AstralDelivery.Domain.Abstractions
     /// <summary>
     /// Cервис восстановления пароля
     /// </summary>
-    public interface IRecoveryPasswordService
+    public interface IPasswordRecoveryService
     {
         /// <summary>
         /// Создает уникальный токен для восстановления пароля

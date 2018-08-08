@@ -1,10 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using Microsoft.Extensions.Configuration;
 
 namespace AstralDelivery.MailService
 {
+    /// <summary>
+    /// Конфиг
+    /// </summary>
     class ConfigurationOptions
     {
         public string ServiceName { get; set; }

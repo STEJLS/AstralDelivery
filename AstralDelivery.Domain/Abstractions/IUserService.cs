@@ -17,43 +17,30 @@ namespace AstralDelivery.Domain.Abstractions
         /// <param name="password"> Пароль </param>
         /// <param name="email"> Почта </param>
         /// <returns></returns>
-        Task Create(string email, string password);
+        Task<Guid> Create(string email, string password);
 
         /// <summary>
         /// Соездает нового пользователя 
         /// </summary>
-        /// <param name="email"> Почта </param>
-        /// <param name="city"> Город </param>
-        /// <param name="surname"> Фамилия </param>
-        /// <param name="name"> Имя </param>
-        /// <param name="patronymic"> Отчетсво </param>
-        /// <param name="role"> Роль </param>
+        /// <param name="model"> <see cref="UserInfo"/> </param>
         /// <returns></returns>
-        Task Create(string email, string city, string surname, string name, string patronymic, Role role);
-
-        /// <summary>
-        /// Возвращает всех менеджеров
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<UserModel> GetManagers();
-
-        /// <summary>
-        /// Редактирует данные пользователя
-        /// </summary>
-        /// <param name="userModel"> <see cref="UserModel"/> </param>
-        /// <returns></returns>
-        Task Edit(UserModel userModel);
+        Task<Guid> Create(UserInfo model);
 
         /// <summary>
         /// Редактирует данные пользователя
         /// </summary>
         /// <param name="guid"> Идентификатор </param>
-        /// <param name="email"> Почта </param>
-        /// <param name="surname"> Фамилия </param>
-        /// <param name="name"> Имя </param>
-        /// <param name="patronymic"> Отчество </param>
+        /// <param name="model"> <see cref="UserInfo"/> </param>
         /// <returns></returns>
-        Task Edit(Guid guid, string email, string surname, string name, string patronymic);
+        Task AdminEdit(Guid guid, UserInfo model);
+
+        /// <summary>
+        /// Редактирует данные пользователя
+        /// </summary>
+        /// <param name="guid"> Идентификатор </param>
+        /// <param name="model"> <see cref="UserInfo"/> </param>
+        /// <returns></returns>
+        Task Edit(Guid guid, UserInfo model);
 
         /// <summary>
         /// Удаляет пользователя
@@ -74,6 +61,6 @@ namespace AstralDelivery.Domain.Abstractions
         /// </summary>
         /// <param name="searchString"> Строка для поиска </param>
         /// <returns></returns>
-        List<UserModel> SearchManagers(string searchString);
+        IEnumerable<User> SearchManagers(string searchString);
     }
 }

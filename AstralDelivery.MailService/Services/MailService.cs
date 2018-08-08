@@ -2,13 +2,12 @@
 using MimeKit;
 using MailKit.Net.Smtp;
 using System.Threading.Tasks;
+using AstralDelivery.MailService.Abstractions;
 
 namespace AstralDelivery.MailService
 {
-    /// <summary>
-    /// Сервис для отправки сообщений на электронную почту
-    /// </summary>
-    public class MailSender
+    /// <inheritdoc />
+    public class MailService : IMailService
     {
         /// <summary>
         /// Конфиг
@@ -18,18 +17,12 @@ namespace AstralDelivery.MailService
         /// <summary>
         /// Конструктор без параметров, который устанавливает объект конфигурации
         /// </summary>
-        public MailSender()
+        public MailService()
         {
             _options = new ConfigurationOptions();
         }
 
-        /// <summary>
-        /// Отправляет сообщение на электронную почту
-        /// </summary>
-        /// <param name="destination"> Электронный адрес получателя </param>
-        /// <param name="message"> Сообщение </param>
-        /// <param name="subject"> Тема </param>
-        /// <returns></returns>
+        /// <inheritdoc />
         public async Task SendAsync(string destination, string message, string subject)
         {
             var emailMessage = new MimeMessage();

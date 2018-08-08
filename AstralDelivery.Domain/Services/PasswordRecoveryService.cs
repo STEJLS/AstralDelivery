@@ -6,23 +6,24 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 using AstralDelivery.Database;
+using AstralDelivery.MailService.Abstractions;
 
 namespace AstralDelivery.Domain.Services
 {
     /// <inheritdoc />
-    public class RecoveryPasswordService : IRecoveryPasswordService
+    public class PasswordRecoveryService : IPasswordRecoveryService
     {
         private readonly DatabaseContext _dbContext;
         private readonly IHashingService _hashingService;
         private readonly ConfigurationOptions _options;
-        private readonly MailSender _mailSender;
+        private readonly IMailService _mailService;
 
-        public RecoveryPasswordService(DatabaseContext dbContext, IHashingService hashingService, ConfigurationOptions options, MailSender mailSender)
+        public PasswordRecoveryService(DatabaseContext dbContext, IHashingService hashingService, ConfigurationOptions options, IMailService mailService)
         {
             _dbContext = dbContext;
             _hashingService = hashingService;
             _options = options;
-            _mailSender = mailSender;
+            _mailService = mailService;
         }
 
         /// <inheritdoc />
@@ -44,7 +45,7 @@ namespace AstralDelivery.Domain.Services
             await _dbContext.passwordRecoveries.AddAsync(recovery);
             await _dbContext.SaveChangesAsync();
 
-            await _mailSender.SendAsync(email, "Ссылка для восстановления пароля: http://" + host + "/Account/CheckToken?token=" + recovery.Token.ToString(), "Восстановление пароля");
+            await _mailService.SendAsync(email, "Ссылка для восстановления пароля: http://" + host + "/Home/PasswordRecovery/" + recovery.Token.ToString(), "Восстановление пароля");
 
         }
 
@@ -79,12 +80,8 @@ namespace AstralDelivery.Domain.Services
         private bool ValidatePasswordRecovery(PasswordRecovery recovery)
         {
             var diff = DateTime.Now - recovery.CreationDate;
-            if (diff < new TimeSpan(0, _options.PasswordRecoveryTokenLifeTime, 0))
-            {
-                return true;
-            }
 
-            return false;
+            return diff < new TimeSpan(0, _options.PasswordRecoveryTokenLifeTime, 0);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AstralDelivery.Domain.Models;
 using System.Linq;
 using System.Collections.Generic;
+using AstralDelivery.Domain.Entities;
 
 namespace AstralDelivery.Domain.Utils
 {
@@ -15,9 +16,9 @@ namespace AstralDelivery.Domain.Utils
         /// <param name="count"> Необходимое количество элементов</param>
         /// <param name="offset"> Сколько элементов необходимо пропустить </param>
         /// <returns></returns>
-        public static IEnumerable<UserModel> Sort(List<UserModel> managers, SortField field, bool direction, int count, int offset)
+        public static IEnumerable<UserModel> Sort(IEnumerable<User> managers, SortField field, bool direction, int count, int offset)
         {
-            IOrderedEnumerable<UserModel> result = null;
+            IOrderedEnumerable<User> result = null;
             if (direction)
             {
                 switch (field)
@@ -70,7 +71,7 @@ namespace AstralDelivery.Domain.Utils
                         break;
                 }
             }
-            return result.Skip(offset).Take(count);
+            return result.Skip(offset).Take(count).Select(u => new UserModel(u));
         }
     }
 }

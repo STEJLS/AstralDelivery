@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace AstralDelivery.Domain.Abstractions
+namespace AstralDelivery.MailService.Abstractions
 {
     /// <summary>
     /// Сервис отправки сообщений на электронную почту
@@ -10,9 +10,10 @@ namespace AstralDelivery.Domain.Abstractions
         /// <summary>
         /// Отправляет сообщение на электронную почту
         /// </summary>
-        /// <param name="message"> Текст сообщения </param>
-        /// <param name="subject"> Тема сообщения </param>
+        /// <param name="destination"> Электронный адрес получателя </param>
+        /// <param name="message"> Сообщение </param>
+        /// <param name="subject"> Тема </param>
         /// <returns></returns>
-        Task Send(string message, string subject);
+        Task SendAsync(string destination, string message, string subject);
     }
 }

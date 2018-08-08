@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 using AstralDelivery.Domain.Models;
 using System.Collections.Generic;
+using AstralDelivery.MailService.Abstractions;
 
 namespace AstralDelivery.Domain.Services
 {
@@ -16,7 +17,7 @@ namespace AstralDelivery.Domain.Services
     {
         private readonly DatabaseContext _dbContext;
         private readonly IHashingService _hashingService;
-        private readonly MailSender _mailSender;
+        private readonly IMailService _mailService;
         private readonly SessionContext _sessionContext;
 
         /// <summary>
@@ -25,41 +26,43 @@ namespace AstralDelivery.Domain.Services
         /// <param name="databaseContext"> <see cref="DatabaseContext"/> </param>
         /// <param name="hashingService"> <see cref="IHashingService"/> </param>
         /// <param name="mailService" cref="IMailService"/>
-        public UserService(DatabaseContext databaseContext, IHashingService hashingService, MailSender mailSender, SessionContext sessionContext)
+        public UserService(DatabaseContext databaseContext, IHashingService hashingService, IMailService mailService, SessionContext sessionContext)
         {
             _hashingService = hashingService;
-            _mailSender = mailSender;
+            _mailService = mailService;
             _dbContext = databaseContext;
             _sessionContext = sessionContext;
         }
 
         /// <inheritdoc />
-        public async Task Create(string email, string password)
+        public async Task<Guid> Create(string email, string password)
         {
             User user = new User(email, _hashingService.Get(password), Role.Admin);
             await _dbContext.Users.AddAsync(user);
             await _dbContext.SaveChangesAsync();
+            return user.UserGuid;
         }
 
         /// <inheritdoc />
-        public async Task Create(string email, string city, string surname, string name, string patronymic, Role role)
+        public async Task<Guid> Create(UserInfo model)
         {
+            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
+            if (user != null)
+            {
+                throw new Exception("Пользователь с указанной почтой уже существует");
+            }
+
             string password = Guid.NewGuid().ToString().Replace("-", string.Empty).Substring(0, 10);
-            User user = new User(email, _hashingService.Get(password), city, surname, name, patronymic, role);
+            user = new User(model.Email, _hashingService.Get(password), model.City, model.Surname, model.Name, model.Patronymic, model.Role);
             await _dbContext.Users.AddAsync(user);
-            await _mailSender.SendAsync(email, password, "Пароль от учетной записи");
+            await _mailService.SendAsync(model.Email, password, "Пароль от учетной записи");
             await _dbContext.SaveChangesAsync();
+
+            return user.UserGuid;
         }
 
         /// <inheritdoc />
-        public IEnumerable<UserModel> GetManagers()
-        {
-            var managers = _dbContext.Users.Where(u => u.Role == Role.Manager && u.IsDeleted == false).Select(u => new UserModel(u)).ToList();
-            return managers;
-        }
-
-        /// <inheritdoc />
-        public async Task Edit(Guid guid, string email, string surname, string name, string patronymic)
+        public async Task Edit(Guid guid, UserInfo model)
         {
             User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == guid && u.IsDeleted == false);
             if (user == null)
@@ -67,18 +70,18 @@ namespace AstralDelivery.Domain.Services
                 throw new Exception("Пользователя с таким идентификатором не существует");
             }
 
-            user.Email = email;
-            user.Surname = surname;
-            user.Name = name;
-            user.Patronymic = patronymic;
+            user.Email = model.Email;
+            user.Surname = model.Surname;
+            user.Name = model.Name;
+            user.Patronymic = model.Patronymic;
 
             await _dbContext.SaveChangesAsync();
         }
 
         /// <inheritdoc />
-        public async Task Edit(UserModel userModel)
+        public async Task AdminEdit(Guid guid, UserInfo userModel)
         {
-            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == userModel.UserGuid && u.IsDeleted == false);
+            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == guid && u.IsDeleted == false);
             if (user == null)
             {
                 throw new Exception("Пользователя с таким идентификатором не существует");
@@ -128,16 +131,19 @@ namespace AstralDelivery.Domain.Services
         }
 
         /// <inheritdoc />
-        public List<UserModel> SearchManagers(string searchString)
+        public IEnumerable<User> SearchManagers(string searchString)
         {
-            searchString = searchString.ToUpper();
-            var managers = _dbContext.Users.Where(u => u.Role == Role.Manager && u.IsDeleted == false
-            && (u.Email.ToUpper().Contains(searchString) ||
-            u.City.ToUpper().Contains(searchString) ||
-            u.Surname.ToUpper().Contains(searchString) ||
-            u.Name.ToUpper().Contains(searchString) ||
-            u.Patronymic.ToUpper().Contains(searchString))
-            ).Select(u => new UserModel(u)).ToList();
+            var managers = _dbContext.Users.AsNoTracking()
+                    .Where(u => u.Role == Role.Manager)
+                    .Where(u => u.IsDeleted == false);
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.Trim().ToUpper();
+                managers = managers.Where(u => u.Email.ToUpper().Contains(searchString) ||
+                     u.City.ToUpper().Contains(searchString) ||
+                    $"{u.Surname} {u.Name} {u.Patronymic}".ToUpper().Contains(searchString));
+            }
 
             return managers;
         }

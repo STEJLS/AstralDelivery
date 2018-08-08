@@ -9,6 +9,8 @@ using AstralDelivery.Domain;
 using AstralDelivery.Identity;
 using Microsoft.Extensions.Configuration;
 using Swashbuckle.AspNetCore.Swagger;
+using AstralDelivery.Domain.Abstractions;
+using Microsoft.Extensions.Logging;
 
 namespace AstralDelivery
 {
@@ -51,6 +53,7 @@ namespace AstralDelivery
                     options.AdminPassword = Configuration["Admin:Password"];
                     options.PasswordRecoveryTokenLifeTime = int.Parse(Configuration["PasswordRecovery:TokenLifeTime"]);
                 });
+                services.AddMailServicesStub();
             }
             else
             {
@@ -63,6 +66,8 @@ namespace AstralDelivery
                     options.AdminPassword = Configuration["Admin:Password"];
                     options.PasswordRecoveryTokenLifeTime = int.Parse(Configuration["PasswordRecovery:TokenLifeTime"]);
                 });
+
+                services.AddMailServices();
             }
 
             services.AddSwaggerGen(options =>
@@ -76,15 +81,16 @@ namespace AstralDelivery
                 });
 
             services.AddScoped<ExceptionFilter>();
-            services.AddSingleton<MailSender>();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            loggerFactory.AddConsole();
 
             app.UseSwagger();
             app.UseSwaggerUI(options =>
@@ -101,8 +107,8 @@ namespace AstralDelivery
             {
                 routes.MapRoute(
                     "PasswordRecovery",
-                    "{*catchall}",
-                    new { controller = "Account", action = "CheckToken" });
+                    "Home/PasswordRecovery/{token}",
+                    new { controller = "Home", action = "PasswordRecovery" });
                 routes.MapRoute(
                     "default",
                     "{*catchall}",
