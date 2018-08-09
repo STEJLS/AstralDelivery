@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace AstralDelivery.Identity
 {
     /// <summary>
-    /// Храниоище удостоверений на основе сертификатов абонента
+    /// Хранилище удостоверений на основе сертификатов абонента
     /// </summary>
     public class IdentityUserStore : IUserLockoutStore<User>, IUserRoleStore<User>
     {
@@ -54,7 +54,7 @@ namespace AstralDelivery.Identity
         }
 
         /// <summary>
-        /// Проверка пользователя на налицие роли
+        /// Проверка пользователя на наличие роли
         /// </summary>
         /// <param name="user">Пользователь</param>
         /// <param name="roleName">Название роли</param>

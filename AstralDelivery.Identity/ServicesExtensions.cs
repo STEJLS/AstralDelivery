@@ -16,7 +16,7 @@ namespace AstralDelivery.Identity
         /// </summary>
         /// <param name="services"> <see cref="IServiceCollection"/> </param>
         /// <returns> <see cref="IServiceCollection"/> </returns>
-        public static IServiceCollection AddAstralNotesIdentity(this IServiceCollection services)
+        public static IServiceCollection AddAstralDeliveryIdentity(this IServiceCollection services)
         {
             services.AddIdentity<User, AccessPolicy>()
                 .AddUserStore<IdentityUserStore>()

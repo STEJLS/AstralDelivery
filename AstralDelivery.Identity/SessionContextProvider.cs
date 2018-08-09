@@ -37,6 +37,5 @@ namespace AstralDelivery.Identity
                 ? new SessionContext()
                 : new SessionContext(user);
         }
-
     }
 }

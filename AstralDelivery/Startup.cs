@@ -9,7 +9,6 @@ using AstralDelivery.Domain;
 using AstralDelivery.Identity;
 using Microsoft.Extensions.Configuration;
 using Swashbuckle.AspNetCore.Swagger;
-using AstralDelivery.Domain.Abstractions;
 using Microsoft.Extensions.Logging;
 
 namespace AstralDelivery
@@ -38,7 +37,7 @@ namespace AstralDelivery
 
             // Identity
             services.AddSession(options => options.IdleTimeout = TimeSpan.FromHours(24));
-            services.AddAstralNotesIdentity();
+            services.AddAstralDeliveryIdentity();
 
             //Логика
             services.AddDomainServices();

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace AstralDelivery.Controllers
 {
     /// <summary>
-    /// Контроллер главной страницы пользователя
+    /// Контроллер-заглушка для страниц пользователя
     /// </summary>
     public class HomeController : Controller
     {

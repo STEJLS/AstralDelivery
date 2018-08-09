@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace AstralDelivery.Domain.Abstractions
 {
     /// <summary>
-    /// Сервис создания новых пользователей
+    /// Сервис по работе с пользователями
     /// </summary>
     public interface IUserService
     {
@@ -17,7 +17,7 @@ namespace AstralDelivery.Domain.Abstractions
         /// <param name="password"> Пароль </param>
         /// <param name="email"> Почта </param>
         /// <returns></returns>
-        Task<Guid> Create(string email, string password);
+        Task<Guid> CreateAdmin(string email, string password);
 
         /// <summary>
         /// Соездает нового пользователя 
@@ -27,7 +27,8 @@ namespace AstralDelivery.Domain.Abstractions
         Task<Guid> Create(UserInfo model);
 
         /// <summary>
-        /// Редактирует данные пользователя
+        /// Редактирует данные пользователя(Для администратора).
+        /// Для редактирования дуступны все поля кроме пароля.
         /// </summary>
         /// <param name="guid"> Идентификатор </param>
         /// <param name="model"> <see cref="UserInfo"/> </param>

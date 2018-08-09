@@ -11,10 +11,7 @@ namespace AstralDelivery.Domain.Services
     {
         private readonly SaltManager _saltManager;
 
-        /// <summary>
-        /// Конструктор с одним параметром SaltManager
-        /// </summary>
-        /// <param name="saltManager"> Объект, предоставляющий соль </param>
+        /// <summary />
         public HashingService(SaltManager saltManager)
         {
             _saltManager = saltManager;

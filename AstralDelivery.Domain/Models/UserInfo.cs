@@ -3,7 +3,7 @@
 namespace AstralDelivery.Domain.Models
 {
     /// <summary>
-    /// Модель для создания менеджера
+    /// Входная модель пользователя
     /// </summary>
     public class UserInfo
     {
@@ -30,6 +30,6 @@ namespace AstralDelivery.Domain.Models
         /// <summary>
         /// Роль
         /// </summary>
-        public Role Role{ get; set; }
+        public Role Role { get; set; }
     }
 }

@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace AstralDelivery.Domain
+﻿namespace AstralDelivery.Domain
 {
     /// <summary>
-    /// Роли пользователей
+    /// Поля по которым ведется сортировка менеджеров
     /// </summary>
     public enum SortField
     {

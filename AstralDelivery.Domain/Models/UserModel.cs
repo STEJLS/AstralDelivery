@@ -4,7 +4,7 @@ using System;
 namespace AstralDelivery.Domain.Models
 {
     /// <summary>
-    /// Модель пользователя
+    /// Выходная модель пользователя
     /// </summary>
     public class UserModel
     {

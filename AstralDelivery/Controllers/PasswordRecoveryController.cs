@@ -33,7 +33,7 @@ namespace AstralDelivery.Controllers
         /// <summary>
         /// Восстанавливает пароль пользователя
         /// </summary>
-        /// <param name="model"> Модель PasswordRecovery </param>
+        /// <param name="model"> <see cref="PasswordRecoveryModel"/> </param>
         /// <returns></returns>
         [HttpPut("ChangePassword")]
         public async Task ChangePassword([FromBody] PasswordRecoveryModel model)

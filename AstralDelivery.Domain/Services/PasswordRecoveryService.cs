@@ -1,12 +1,11 @@
 ﻿using AstralDelivery.Domain.Abstractions;
 using AstralDelivery.Domain.Models;
 using AstralDelivery.Domain.Entities;
-using AstralDelivery.MailService;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Threading.Tasks;
 using AstralDelivery.Database;
 using AstralDelivery.MailService.Abstractions;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+using System;
 
 namespace AstralDelivery.Domain.Services
 {
@@ -46,7 +45,6 @@ namespace AstralDelivery.Domain.Services
             await _dbContext.SaveChangesAsync();
 
             await _mailService.SendAsync(email, "Ссылка для восстановления пароля: http://" + host + "/Home/PasswordRecovery/" + recovery.Token.ToString(), "Восстановление пароля");
-
         }
 
         /// <inheritdoc />
@@ -57,7 +55,6 @@ namespace AstralDelivery.Domain.Services
             {
                 throw new Exception("Токен устарел.");
             }
-
 
             _dbContext.Entry(recovery).Navigation("User").Load();
 

@@ -2,6 +2,9 @@
 
 namespace AstralDelivery.Domain.Models
 {
+    /// <summary>
+    /// Модель для восстановления пароля
+    /// </summary>
     public class PasswordRecoveryModel
     {
         /// <summary>

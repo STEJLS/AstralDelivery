@@ -1,5 +1,8 @@
 ﻿namespace AstralDelivery.Domain.Models
 {
+    /// <summary>
+    /// Модель для входа в систему
+    /// </summary>
     public class LoginModel
     {
         /// <summary>

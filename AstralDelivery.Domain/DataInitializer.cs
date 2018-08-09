@@ -28,7 +28,7 @@ namespace AstralDelivery.Domain
         {
             if (!await _databaseContext.Users.AnyAsync())
             {
-                await _userService.Create(_options.AdminEmail, _options.AdminPassword);
+                await _userService.CreateAdmin(_options.AdminEmail, _options.AdminPassword);
             }
         }
     }

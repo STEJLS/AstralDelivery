@@ -10,6 +10,7 @@ namespace AstralDelivery.Controllers
     /// <summary>
     /// Контроллер управления аккаунтом
     /// </summary>
+    [Authorize]
     [Route("Account")]
     public class AccountController : Controller
     {
@@ -25,7 +26,6 @@ namespace AstralDelivery.Controllers
         /// </summary>
         /// <param name="model"> <see cref="ChangePasswordModel"/> </param>
         /// <returns></returns>
-        [Authorize]
         [HttpPut("ChangePassword")]
         public async Task ChangePassword([FromBody] ChangePasswordModel model)
         {
@@ -37,7 +37,6 @@ namespace AstralDelivery.Controllers
         /// </summary>
         /// <param name="model"> <see cref="EditUserModel"/> </param>
         /// <returns></returns>
-        [Authorize]
         [HttpPut("Edit/{userGuid}")]
         public async Task Edit([FromRoute] Guid userGuid, [FromBody] UserInfo model)
         {

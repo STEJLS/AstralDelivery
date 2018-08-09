@@ -16,11 +16,7 @@ namespace AstralDelivery.Domain.Services
         private readonly SignInManager<User> _signInManager;
         private readonly IHashingService _hashingService;
 
-        /// <summary>
-        /// Конструктор с двумя параметрами DatabaseContext и IHashingService
-        /// </summary>
-        /// <param name="dbContext"> <see cref="DatabaseContext"/> </param>
-        /// <param name="hashingService"> <see cref="IHashingService"/> </param>
+        /// <summary />
         public AuthorizationService(DatabaseContext dbContext, SignInManager<User> signInManager, IHashingService hashingService)
         {
             _dbContext = dbContext;
@@ -31,7 +27,7 @@ namespace AstralDelivery.Domain.Services
         /// <inheritdoc />
         public async Task<UserModel> Login(string email, string password, bool rememberMe)
         {
-            if (email == null || password == null)
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
                 throw new Exception("Некорректный логин/пароль");
             }

@@ -5,14 +5,13 @@ using AstralDelivery.Domain.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace AstralDelivery.Controllers.Admin
 {
     /// <summary>
-    /// Контроллер управляющий созданием пользователей
+    /// Контроллер администратора управляющий менеджерами
     /// </summary>
     [Route("Admin")]
     [Authorize(Roles = nameof(Role.Admin))]
@@ -37,9 +36,9 @@ namespace AstralDelivery.Controllers.Admin
         }
 
         /// <summary>
-        /// Редактирует данные пользователя
+        /// Редактирует данные менеджера
         /// </summary>
-        /// <param name="model"> <see cref="UserModel"/> </param>
+        /// <param name="model"> <see cref="UserInfo"/> </param>
         /// <returns></returns>
         [HttpPut("User/{userGuid}")]
         public new async Task User([FromRoute] Guid userGuid, [FromBody] UserInfo model)
@@ -48,7 +47,7 @@ namespace AstralDelivery.Controllers.Admin
         }
 
         /// <summary>
-        /// Удаляет пользователя
+        /// Удаляет менеджера
         /// </summary>
         /// <param name="model"> <see cref="Guid"/> </param>
         /// <returns></returns>

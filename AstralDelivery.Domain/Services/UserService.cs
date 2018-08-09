@@ -1,7 +1,6 @@
 ﻿using AstralDelivery.Domain.Abstractions;
 using AstralDelivery.Domain.Entities;
 using AstralDelivery.Database;
-using AstralDelivery.MailService;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using System;
@@ -20,12 +19,7 @@ namespace AstralDelivery.Domain.Services
         private readonly IMailService _mailService;
         private readonly SessionContext _sessionContext;
 
-        /// <summary>
-        /// Конструктор с двумя параметрами DatabaseContext и IHashingService
-        /// </summary>
-        /// <param name="databaseContext"> <see cref="DatabaseContext"/> </param>
-        /// <param name="hashingService"> <see cref="IHashingService"/> </param>
-        /// <param name="mailService" cref="IMailService"/>
+        /// <summary />
         public UserService(DatabaseContext databaseContext, IHashingService hashingService, IMailService mailService, SessionContext sessionContext)
         {
             _hashingService = hashingService;
@@ -35,7 +29,7 @@ namespace AstralDelivery.Domain.Services
         }
 
         /// <inheritdoc />
-        public async Task<Guid> Create(string email, string password)
+        public async Task<Guid> CreateAdmin(string email, string password)
         {
             User user = new User(email, _hashingService.Get(password), Role.Admin);
             await _dbContext.Users.AddAsync(user);
