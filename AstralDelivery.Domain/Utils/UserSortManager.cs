@@ -41,6 +41,9 @@ namespace AstralDelivery.Domain.Utils
                     case SortField.IsActivated:
                         result = managers.OrderBy(m => m.IsActivated);
                         break;
+                    case SortField.Date:
+                        result = managers.OrderBy(m => m.Date);
+                        break;
                     default:
                         break;
                 }
@@ -66,6 +69,9 @@ namespace AstralDelivery.Domain.Utils
                         break;
                     case SortField.IsActivated:
                         result = managers.OrderByDescending(m => m.IsActivated);
+                        break;
+                    case SortField.Date:
+                        result = managers.OrderByDescending(m => m.Date);
                         break;
                     default:
                         break;

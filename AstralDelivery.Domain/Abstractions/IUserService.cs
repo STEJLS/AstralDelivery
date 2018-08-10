@@ -17,7 +17,7 @@ namespace AstralDelivery.Domain.Abstractions
         /// <param name="password"> Пароль </param>
         /// <param name="email"> Почта </param>
         /// <returns></returns>
-        Task<Guid> CreateAdmin(string email, string password);
+        Task<Guid> CreateAdmin(string email, string password, Guid deliveryPointGuid);
 
         /// <summary>
         /// Соездает нового пользователя 

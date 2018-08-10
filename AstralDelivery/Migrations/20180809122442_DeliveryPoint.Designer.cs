@@ -3,15 +3,17 @@ using System;
 using AstralDelivery.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AstralDelivery.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20180809122442_DeliveryPoint")]
+    partial class DeliveryPoint
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,8 +32,6 @@ namespace AstralDelivery.Migrations
                     b.Property<string>("Corpus");
 
                     b.Property<DateTime>("Date");
-
-                    b.Property<bool>("IsDeleted");
 
                     b.Property<string>("Name");
 
@@ -98,19 +98,19 @@ namespace AstralDelivery.Migrations
 
             modelBuilder.Entity("AstralDelivery.Domain.Entities.WorkTime", b =>
                 {
-                    b.Property<Guid>("DeliveryPointGuid");
-
-                    b.Property<int>("DayOfWeek");
+                    b.Property<Guid>("Guid");
 
                     b.Property<TimeSpan>("Begin");
 
+                    b.Property<Guid?>("DeliveryPointGuid");
+
                     b.Property<TimeSpan>("End");
 
-                    b.HasKey("DeliveryPointGuid", "DayOfWeek");
+                    b.HasKey("Guid");
 
-                    b.HasAlternateKey("DayOfWeek", "DeliveryPointGuid");
+                    b.HasIndex("DeliveryPointGuid");
 
-                    b.ToTable("WorkTimes");
+                    b.ToTable("WorkTime");
                 });
 
             modelBuilder.Entity("AstralDelivery.Domain.Entities.PasswordRecovery", b =>
@@ -133,8 +133,7 @@ namespace AstralDelivery.Migrations
                 {
                     b.HasOne("AstralDelivery.Domain.Entities.DeliveryPoint")
                         .WithMany("WorksSchedule")
-                        .HasForeignKey("DeliveryPointGuid")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("DeliveryPointGuid");
                 });
 #pragma warning restore 612, 618
         }

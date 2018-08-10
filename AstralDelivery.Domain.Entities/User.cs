@@ -51,6 +51,14 @@ namespace AstralDelivery.Domain.Entities
         /// Активирован ли аккаунт
         /// </summary>
         public bool IsActivated { get; set; }
+        /// <summary>   
+        /// Дата создания
+        /// </summary>
+        public DateTime Date { get; set; }
+
+        [ForeignKey(nameof(DeliveryPoint))]
+        public Guid DeliveryPointGuid { get; set; }
+        public DeliveryPoint DeliveryPoint { get; set; }
 
         /// <summary>
         /// Конструктор по умолчанию 
@@ -64,7 +72,7 @@ namespace AstralDelivery.Domain.Entities
         /// <param name="email"> Почта </param>
         /// <param name="password"> Пароль /param>
         /// <param name="role"> Роль </param>
-        public User(string email, string password, Role role)
+        public User(string email, string password, Role role, Guid deliveryPointGuid)
         {
             UserGuid = Guid.NewGuid();
             Email = email;
@@ -72,6 +80,7 @@ namespace AstralDelivery.Domain.Entities
             Role = role;
             IsDeleted = false;
             IsActivated = false;
+            DeliveryPointGuid = deliveryPointGuid;
         }
 
         /// <summary/>
@@ -82,7 +91,7 @@ namespace AstralDelivery.Domain.Entities
         /// <param name="name"> Имя </param>
         /// <param name="patronymic"> Отчество </param>
         /// <param name="role"> Роль </param>
-        public User(string email, string password, string city, string surname, string name, string patronymic, Role role) : this(email, password, role)
+        public User(string email, string password, string city, string surname, string name, string patronymic, Role role, Guid deliveryPointGuid) : this(email, password, role, deliveryPointGuid)
         {
             City = city;
             Surname = surname;

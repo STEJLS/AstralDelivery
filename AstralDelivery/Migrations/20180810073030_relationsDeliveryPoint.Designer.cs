@@ -3,15 +3,17 @@ using System;
 using AstralDelivery.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AstralDelivery.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20180810073030_relationsDeliveryPoint")]
+    partial class relationsDeliveryPoint
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,8 +32,6 @@ namespace AstralDelivery.Migrations
                     b.Property<string>("Corpus");
 
                     b.Property<DateTime>("Date");
-
-                    b.Property<bool>("IsDeleted");
 
                     b.Property<string>("Name");
 
@@ -110,7 +110,7 @@ namespace AstralDelivery.Migrations
 
                     b.HasAlternateKey("DayOfWeek", "DeliveryPointGuid");
 
-                    b.ToTable("WorkTimes");
+                    b.ToTable("WorkTime");
                 });
 
             modelBuilder.Entity("AstralDelivery.Domain.Entities.PasswordRecovery", b =>

@@ -34,14 +34,14 @@ namespace AstralDelivery.Domain.Services
                 throw new Exception("Пользователя с такой почтой не существует.");
             }
 
-            var recovery = await _dbContext.passwordRecoveries.FirstOrDefaultAsync(r => r.UserGuid == user.UserGuid);
+            var recovery = await _dbContext.PasswordRecoveries.FirstOrDefaultAsync(r => r.UserGuid == user.UserGuid);
             if (recovery != null)
             {
-                _dbContext.passwordRecoveries.Remove(recovery);
+                _dbContext.PasswordRecoveries.Remove(recovery);
             }
 
             recovery = new PasswordRecovery(user.UserGuid);
-            await _dbContext.passwordRecoveries.AddAsync(recovery);
+            await _dbContext.PasswordRecoveries.AddAsync(recovery);
             await _dbContext.SaveChangesAsync();
 
             await _mailService.SendAsync(email, "Ссылка для восстановления пароля: http://" + host + "/Home/PasswordRecovery/" + recovery.Token.ToString(), "Восстановление пароля");
@@ -50,7 +50,7 @@ namespace AstralDelivery.Domain.Services
         /// <inheritdoc />
         public async Task ChangePassword(Guid token, string newPassword)
         {
-            var recovery = await _dbContext.passwordRecoveries.FirstOrDefaultAsync(r => r.Token == token);
+            var recovery = await _dbContext.PasswordRecoveries.FirstOrDefaultAsync(r => r.Token == token);
             if (recovery == null || !ValidatePasswordRecovery(recovery))
             {
                 throw new Exception("Токен устарел.");
@@ -59,13 +59,13 @@ namespace AstralDelivery.Domain.Services
             _dbContext.Entry(recovery).Navigation("User").Load();
 
             recovery.User.Password = _hashingService.Get(newPassword);
-            _dbContext.passwordRecoveries.Remove(recovery);
+            _dbContext.PasswordRecoveries.Remove(recovery);
             await _dbContext.SaveChangesAsync();
         }
 
         public async Task<bool> CheckToken(Guid token)
         {
-            var recovery = await _dbContext.passwordRecoveries.FirstOrDefaultAsync(r => r.Token == token);
+            var recovery = await _dbContext.PasswordRecoveries.FirstOrDefaultAsync(r => r.Token == token);
             if (recovery != null)
             {
                 return ValidatePasswordRecovery(recovery);

@@ -1,4 +1,5 @@
 ﻿using AstralDelivery.Domain.Entities;
+using System;
 
 namespace AstralDelivery.Domain.Models
 {
@@ -31,5 +32,9 @@ namespace AstralDelivery.Domain.Models
         /// Роль
         /// </summary>
         public Role Role { get; set; }
+        /// <summary>
+        /// Идентификатор пункта выдача
+        /// </summary>
+        public Guid DeliveryPointGuid { get; set; }
     }
 }

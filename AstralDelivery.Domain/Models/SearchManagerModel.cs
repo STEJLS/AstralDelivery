@@ -12,7 +12,7 @@
         /// <summary>
         /// Поле по которому будет производиться сортировка
         /// </summary>
-        public SortField Field { get; set; } = SortField.City;
+        public SortField Field { get; set; } = SortField.Date;
         /// <summary>
         /// Направление сортировки
         /// </summary>

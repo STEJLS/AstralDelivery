@@ -10,6 +10,7 @@
         Surname,
         Name,
         Patronymic,
-        IsActivated
+        IsActivated,
+        Date
     }
 }

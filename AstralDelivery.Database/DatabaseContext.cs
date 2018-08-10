@@ -11,7 +11,11 @@ namespace AstralDelivery.Database
         /// <summary />
         public DbSet<User> Users { get; set; }
         /// <summary />
-        public DbSet<PasswordRecovery> passwordRecoveries { get; set; }
+        public DbSet<PasswordRecovery> PasswordRecoveries { get; set; }
+        /// <summary />
+        public DbSet<DeliveryPoint> DeliveryPoints { get; set; }
+        /// <summary />
+        public DbSet<WorkTime> WorkTimes { get; set; }
 
         /// <summary />
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
@@ -25,6 +29,7 @@ namespace AstralDelivery.Database
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<User>().HasIndex(a => a.Email).IsUnique();
+            modelBuilder.Entity<WorkTime>().HasKey(w => new { w.DeliveryPointGuid, w.DayOfWeek });
         }
     }
 

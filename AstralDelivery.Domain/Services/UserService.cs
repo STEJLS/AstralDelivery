@@ -29,9 +29,9 @@ namespace AstralDelivery.Domain.Services
         }
 
         /// <inheritdoc />
-        public async Task<Guid> CreateAdmin(string email, string password)
+        public async Task<Guid> CreateAdmin(string email, string password, Guid deliveryPointGuid)
         {
-            User user = new User(email, _hashingService.Get(password), Role.Admin);
+            User user = new User(email, _hashingService.Get(password), Role.Admin, deliveryPointGuid);
             await _dbContext.Users.AddAsync(user);
             await _dbContext.SaveChangesAsync();
             return user.UserGuid;
@@ -47,7 +47,7 @@ namespace AstralDelivery.Domain.Services
             }
 
             string password = Guid.NewGuid().ToString().Replace("-", string.Empty).Substring(0, 10);
-            user = new User(model.Email, _hashingService.Get(password), model.City, model.Surname, model.Name, model.Patronymic, model.Role);
+            user = new User(model.Email, _hashingService.Get(password), model.City, model.Surname, model.Name, model.Patronymic, model.Role, model.DeliveryPointGuid);
             await _dbContext.Users.AddAsync(user);
             await _mailService.SendAsync(model.Email, password, "Пароль от учетной записи");
             await _dbContext.SaveChangesAsync();
