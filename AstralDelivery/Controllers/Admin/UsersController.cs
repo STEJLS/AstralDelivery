@@ -49,7 +49,7 @@ namespace AstralDelivery.Controllers.Admin
         /// <summary>
         /// Удаляет менеджера
         /// </summary>
-        /// <param name="model"> <see cref="Guid"/> </param>
+        /// <param name="userGuid"> <see cref="Guid"/> </param>
         /// <returns></returns>
         [HttpDelete("User/{userGuid}")]
         public new async Task User([FromRoute] Guid userGuid)

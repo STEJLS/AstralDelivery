@@ -12,5 +12,12 @@ namespace AstralDelivery.Domain.Abstractions
         /// <param name="model"> <see cref="DeliveryPointModel"/> </param>
         /// <returns></returns>
         Task<Guid> Create(DeliveryPointModel model);
+
+        /// <summary>
+        /// Удаляет пункт выдачи
+        /// </summary>
+        /// <param name="DeliveryPointGuid"> <see cref="Guid"/> </param>
+        /// <returns></returns>
+        Task Delete(Guid DeliveryPointGuid);
     }
 }

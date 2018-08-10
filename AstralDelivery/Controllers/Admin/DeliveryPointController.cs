@@ -34,5 +34,16 @@ namespace AstralDelivery.Controllers.Admin
         {
             return await _deliveryPointService.Create(model);
         }
+
+        /// <summary>
+        /// Удаляет пункт выдачи
+        /// </summary>
+        /// <param name="DeliveryPointGuid"> <see cref="Guid"/> </param>
+        /// <returns></returns>
+        [HttpDelete("DeliveryPoint/{DeliveryPointGuid}")]
+        public async Task DeliveryPoint([FromRoute] Guid DeliveryPointGuid)
+        {
+            await _deliveryPointService.Delete(DeliveryPointGuid);
+        }
     }
 }
