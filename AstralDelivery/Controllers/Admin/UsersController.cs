@@ -2,6 +2,7 @@
 using AstralDelivery.Domain.Entities;
 using AstralDelivery.Domain.Models;
 using AstralDelivery.Domain.Utils;
+using AstralDelivery.Domain.Models.Search;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -62,13 +63,13 @@ namespace AstralDelivery.Controllers.Admin
         /// </summary>
         /// <returns></returns>
         [HttpGet("SearchManagers")]
-        public ManagerSearchResult SearchManagers([FromQuery] SearchManagerModel model)
+        public SearchResult<UserModel> SearchManagers([FromQuery] SearchManagerModel model)
         {
             var managers = _userService.SearchManagers(model.SearchString);
 
-            return new ManagerSearchResult(
+            return new SearchResult<UserModel>(
                 managers.Count(),
-                UserSortManager.Sort(managers, model.Field, model.Direction, model.Count, model.Offset));
+                SortManager.SortManagers(managers, model.Field, model.Direction, model.Count, model.Offset));
         }
     }
 }

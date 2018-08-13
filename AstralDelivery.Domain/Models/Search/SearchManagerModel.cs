@@ -1,4 +1,6 @@
-﻿namespace AstralDelivery.Domain.Models
+﻿using AstralDelivery.Domain.Models.Enums;
+
+namespace AstralDelivery.Domain.Models.Search
 {
     /// <summary>
     /// Модель для поиска и сортировки менеджеров
@@ -12,7 +14,7 @@
         /// <summary>
         /// Поле по которому будет производиться сортировка
         /// </summary>
-        public SortField Field { get; set; } = SortField.Date;
+        public UserSortField Field { get; set; } = UserSortField.Date;
         /// <summary>
         /// Направление сортировки
         /// </summary>

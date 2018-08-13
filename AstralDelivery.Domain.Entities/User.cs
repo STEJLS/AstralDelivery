@@ -26,7 +26,7 @@ namespace AstralDelivery.Domain.Entities
         /// <summary>
         /// Город
         /// </summary>
-        public string City { get; set; }
+        public string DeliveryPointName { get; set; }
         /// <summary>
         /// Фамилия
         /// </summary>
@@ -81,19 +81,20 @@ namespace AstralDelivery.Domain.Entities
             IsDeleted = false;
             IsActivated = false;
             DeliveryPointGuid = deliveryPointGuid;
+            Date = DateTime.Now;            
         }
 
         /// <summary/>
         /// <param name="email"> Почта </param>
         /// <param name="password"> Пароль </param>
-        /// <param name="city"> Город </param>
+        /// <param name="deliveryPointName"> Город </param>
         /// <param name="surname"> Фамилия </param>
         /// <param name="name"> Имя </param>
         /// <param name="patronymic"> Отчество </param>
         /// <param name="role"> Роль </param>
-        public User(string email, string password, string city, string surname, string name, string patronymic, Role role, Guid deliveryPointGuid) : this(email, password, role, deliveryPointGuid)
+        public User(string email, string password, string deliveryPointName, string surname, string name, string patronymic, Role role, Guid deliveryPointGuid) : this(email, password, role, deliveryPointGuid)
         {
-            City = city;
+            DeliveryPointName = deliveryPointName;
             Surname = surname;
             Name = name;
             Patronymic = patronymic;

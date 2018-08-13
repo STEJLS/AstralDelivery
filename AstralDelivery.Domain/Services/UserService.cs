@@ -46,8 +46,14 @@ namespace AstralDelivery.Domain.Services
                 throw new Exception("Пользователь с указанной почтой уже существует");
             }
 
+            var point = await _dbContext.DeliveryPoints.FirstOrDefaultAsync(p => p.Guid == model.DeliveryPointGuid);
+            if (point == null)
+            {
+                throw new Exception("Указанного пункта выдачи не существует");
+            }
+
             string password = Guid.NewGuid().ToString().Replace("-", string.Empty).Substring(0, 10);
-            user = new User(model.Email, _hashingService.Get(password), model.City, model.Surname, model.Name, model.Patronymic, model.Role, model.DeliveryPointGuid);
+            user = new User(model.Email, _hashingService.Get(password), GetDeliveryPointNameForUser(point), model.Surname, model.Name, model.Patronymic, model.Role, model.DeliveryPointGuid);
             await _dbContext.Users.AddAsync(user);
             await _mailService.SendAsync(model.Email, password, "Пароль от учетной записи");
             await _dbContext.SaveChangesAsync();
@@ -73,7 +79,7 @@ namespace AstralDelivery.Domain.Services
         }
 
         /// <inheritdoc />
-        public async Task AdminEdit(Guid guid, UserInfo userModel)
+        public async Task AdminEdit(Guid guid, UserInfo model)
         {
             User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == guid && u.IsDeleted == false);
             if (user == null)
@@ -81,12 +87,19 @@ namespace AstralDelivery.Domain.Services
                 throw new Exception("Пользователя с таким идентификатором не существует");
             }
 
-            user.Email = userModel.Email;
-            user.City = userModel.City;
-            user.Surname = userModel.Surname;
-            user.Name = userModel.Name;
-            user.Patronymic = userModel.Patronymic;
-            user.Role = userModel.Role;
+            var point = await _dbContext.DeliveryPoints.FirstOrDefaultAsync(p => p.Guid == model.DeliveryPointGuid);
+            if (point == null)
+            {
+                throw new Exception("Указанного пункта выдачи не существует");
+            }
+
+            user.Email = model.Email;
+            user.DeliveryPointName = GetDeliveryPointNameForUser(point);
+            user.Surname = model.Surname;
+            user.Name = model.Name;
+            user.Patronymic = model.Patronymic;
+            user.Role = model.Role;
+            user.DeliveryPointGuid = model.DeliveryPointGuid;
 
             await _dbContext.SaveChangesAsync();
         }
@@ -135,11 +148,16 @@ namespace AstralDelivery.Domain.Services
             {
                 searchString = searchString.Trim().ToUpper();
                 managers = managers.Where(u => u.Email.ToUpper().Contains(searchString) ||
-                     u.City.ToUpper().Contains(searchString) ||
+                     u.DeliveryPointName.ToUpper().Contains(searchString) ||
                     $"{u.Surname} {u.Name} {u.Patronymic}".ToUpper().Contains(searchString));
             }
 
             return managers;
+        }
+
+        private string GetDeliveryPointNameForUser(DeliveryPoint point)
+        {
+            return $"{point.Name} {point.City}";
         }
     }
 }

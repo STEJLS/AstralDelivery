@@ -4,6 +4,7 @@ using AstralDelivery.Domain.Entities;
 using AstralDelivery.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,7 +19,7 @@ namespace AstralDelivery.Domain.Services
             _dbContext = dbContext;
         }
 
-        public async Task<Guid> Create(DeliveryPointModel model)
+        public async Task<Guid> Create(DeliveryPointInfo model)
         {
             DeliveryPoint point = new DeliveryPoint(model.Name, model.City, model.Street, model.Building, model.Corpus, model.Office);
 
@@ -46,6 +47,59 @@ namespace AstralDelivery.Domain.Services
             point.IsDeleted = true;
 
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task Edit(Guid DeliveryPointGuid, DeliveryPointInfo model)
+        {
+            var point = await _dbContext.DeliveryPoints.Include(p => p.WorksSchedule).FirstOrDefaultAsync(p => p.Guid == DeliveryPointGuid && p.IsDeleted == false);
+            if(point == null)
+            {
+                throw new Exception("Пункт выдачи с таким идентификатором не существует");
+            }
+
+            point.Name = model.Name;
+            point.City = model.City;
+            point.Street = model.Street;
+            point.Building = model.Building;
+            point.Corpus = model.Corpus;
+            point.Office = model.Office;
+
+            foreach (var workTime in model.WorksSchedule)
+            {
+                workTime.DeliveryPointGuid = point.Guid;
+            }
+
+            point.WorksSchedule = model.WorksSchedule.ToList();
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<DeliveryPointModel> Get(Guid deliveryPointGuid)
+        {
+            var point = await _dbContext.DeliveryPoints.Include(p => p.Managers).Include(p => p.WorksSchedule).FirstOrDefaultAsync(p => p.Guid == deliveryPointGuid && p.IsDeleted == false);
+            if (point == null)
+            {
+                throw new Exception("Пункт выдачи с таким идентификатором не существует");
+            }
+
+            return new DeliveryPointModel(point);
+        }
+
+        public IEnumerable<DeliveryPoint> SearchDeliveryPoints(string searchString)
+        {
+            var points = _dbContext.DeliveryPoints.AsNoTracking()
+                    .Where(p => p.IsDeleted == false);
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.Trim().ToUpper();
+                points = points.Where(p => p.Name.ToUpper().Contains(searchString) ||
+                     p.City.ToUpper().Contains(searchString) ||
+                    p.Street.ToUpper().Contains(searchString));
+            }
+
+            return points.Include(p => p.Managers)
+                    .Include(p => p.WorksSchedule);
         }
     }
 }

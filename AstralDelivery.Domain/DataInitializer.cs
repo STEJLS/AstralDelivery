@@ -36,7 +36,7 @@ namespace AstralDelivery.Domain
         {
             if (!await _databaseContext.Users.AnyAsync())
             {
-                Guid pointGuid = await _pointService.Create(new DeliveryPointModel { Name = "Admin Point" });
+                Guid pointGuid = await _pointService.Create(new DeliveryPointInfo { Name = "Admin Point" });
                 await _userService.CreateAdmin(_options.AdminEmail, _options.AdminPassword, pointGuid);
             }
         }

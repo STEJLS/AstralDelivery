@@ -1,10 +1,12 @@
 ﻿using AstralDelivery.Domain.Entities;
+using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace AstralDelivery.Domain.Models
 {
     /// <summary>
-    /// Входная модель для пункта выдачи
+    /// Выходная модель пункта выдачи
     /// </summary>
     public class DeliveryPointModel
     {
@@ -19,22 +21,32 @@ namespace AstralDelivery.Domain.Models
         /// <summary>
         /// Улица
         /// </summary>
-        public string Street { get; set; }
+        public string Address { get; set; }
         /// <summary>
-        /// Дом
+        /// Количество менеджеров
         /// </summary>
-        public int Building { get; set; }
-        /// <summary>
-        /// Корпус
-        /// </summary>
-        public string Corpus { get; set; }
-        /// <summary>
-        /// Офис
-        /// </summary>
-        public int Office { get; set; }
+        public int CountOfManagers { get; set; }
         /// <summary>
         /// <see cref="WorkTime"/>
         /// </summary>
         public ICollection<WorkTime> WorksSchedule { get; set; }
+        /// <summary>
+        /// Дата создания
+        /// </summary>
+        public DateTime Date { get; set; }
+
+        public DeliveryPointModel(DeliveryPoint point)
+        {
+            Name = point.Name;
+            City = point.City;
+            Address = $"улица {point.Street} дом {point.Building}{point.Corpus}";
+            if (point.Office != 0)
+            {
+                Address += $" офис {point.Office}";
+            }
+            CountOfManagers = point.Managers.Count;
+            WorksSchedule = point.WorksSchedule;
+            Date = point.Date;
+        }
     }
 }

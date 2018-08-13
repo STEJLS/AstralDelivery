@@ -13,10 +13,6 @@ namespace AstralDelivery.Domain.Models
         /// </summary>
         public string Email { get; set; }
         /// <summary>
-        /// Город
-        /// </summary>
-        public string City { get; set; }
-        /// <summary>
         /// Фамилия
         /// </summary>
         public string Surname { get; set; }

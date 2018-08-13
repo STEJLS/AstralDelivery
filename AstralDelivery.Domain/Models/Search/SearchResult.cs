@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 
-namespace AstralDelivery.Domain.Models
+namespace AstralDelivery.Domain.Models.Search
 {
     /// <summary>
-    /// Модель представляющая результат поиска и сортировки менеджеров
+    /// Модель представляющая результат поиска и сортировки
     /// </summary>
-    public class ManagerSearchResult
+    public class SearchResult<T>
     {
         /// <summary>
         /// Общее кол-во элементов
@@ -15,12 +15,12 @@ namespace AstralDelivery.Domain.Models
         /// <summary>
         /// Результат поиска и сортировки
         /// </summary>
-        public IEnumerable<UserModel> Managers { get; set; }
+        public IEnumerable<T> Entities { get; set; }
 
-        public ManagerSearchResult(int count, IEnumerable<UserModel> managers)
+        public SearchResult(int count, IEnumerable<T> entities)
         {
             Count = count;
-            Managers = managers;
+            Entities = entities;
         }
     }
 }

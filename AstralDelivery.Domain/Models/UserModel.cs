@@ -19,7 +19,7 @@ namespace AstralDelivery.Domain.Models
         /// <summary>
         /// Город
         /// </summary>
-        public string City { get; set; }
+        public string DeliveryPointName { get; set; }
         /// <summary>
         /// Фамилия
         /// </summary>
@@ -40,6 +40,10 @@ namespace AstralDelivery.Domain.Models
         /// Активированный ли аккаунт
         /// </summary>
         public bool IsActivated { get; set; }
+        /// <summary>
+        /// Идентификатор пункта выдачи
+        /// /// </summary>
+        public Guid DeliveryPointGuid { get; set; }
 
         public UserModel()
         {
@@ -50,12 +54,13 @@ namespace AstralDelivery.Domain.Models
         {
             UserGuid = user.UserGuid;
             Email = user.Email;
-            City = user.City;
+            DeliveryPointName = user.DeliveryPointName;
             Surname = user.Surname;
             Name = user.Name;
             Patronymic = user.Patronymic;
             Role = user.Role;
             IsActivated = user.IsActivated;
+            DeliveryPointGuid = user.DeliveryPointGuid;
         }
     }
 }
