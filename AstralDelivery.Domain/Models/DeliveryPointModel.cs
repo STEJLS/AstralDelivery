@@ -11,6 +11,10 @@ namespace AstralDelivery.Domain.Models
     public class DeliveryPointModel
     {
         /// <summary>
+        /// Идентификатор
+        /// </summary>
+        public Guid Guid{ get; set; }
+        /// <summary>
         /// Название
         /// </summary>
         public string Name { get; set; }
@@ -37,6 +41,7 @@ namespace AstralDelivery.Domain.Models
 
         public DeliveryPointModel(DeliveryPoint point)
         {
+            Guid = point.Guid;
             Name = point.Name;
             City = point.City;
             Address = $"улица {point.Street} дом {point.Building}{point.Corpus}";

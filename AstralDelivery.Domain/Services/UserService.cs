@@ -52,8 +52,28 @@ namespace AstralDelivery.Domain.Services
                 throw new Exception("Указанного пункта выдачи не существует");
             }
 
-            string password = Guid.NewGuid().ToString().Replace("-", string.Empty).Substring(0, 10);
+            string password = GetNewPassword();
             user = new User(model.Email, _hashingService.Get(password), GetDeliveryPointNameForUser(point), model.Surname, model.Name, model.Patronymic, model.Role, model.DeliveryPointGuid);
+            await _dbContext.Users.AddAsync(user);
+            await _mailService.SendAsync(model.Email, password, "Пароль от учетной записи");
+            await _dbContext.SaveChangesAsync();
+
+            return user.UserGuid;
+        }
+
+        /// <inheritdoc />
+        public async Task<Guid> CreateCourier(UserInfo model)
+        {
+            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
+            if (user != null)
+            {
+                throw new Exception("Пользователь с указанной почтой уже существует");
+            }
+
+            User manager = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == _sessionContext.UserGuid && u.IsDeleted == false);
+
+            string password = GetNewPassword();
+            user = new User(model.Email, password, manager.DeliveryPointName, model.Surname, model.Name, model.Patronymic, Role.Сourier, manager.DeliveryPointGuid);
             await _dbContext.Users.AddAsync(user);
             await _mailService.SendAsync(model.Email, password, "Пароль от учетной записи");
             await _dbContext.SaveChangesAsync();
@@ -105,9 +125,23 @@ namespace AstralDelivery.Domain.Services
         }
 
         /// <inheritdoc />
-        public async Task Delete(Guid UserGuid)
+        public async Task DeleteManager(Guid UserGuid)
         {
-            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == UserGuid && u.IsDeleted == false);
+            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == UserGuid && u.IsDeleted == false && u.Role == Role.Manager);
+            if (user == null)
+            {
+                throw new Exception("Пользователя с таким идентификатором не существует");
+            }
+
+            user.IsDeleted = true;
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+        /// <inheritdoc />
+        public async Task DeleteCourier(Guid UserGuid)
+        {
+            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == UserGuid && u.IsDeleted == false && u.Role == Role.Сourier);
             if (user == null)
             {
                 throw new Exception("Пользователя с таким идентификатором не существует");
@@ -122,10 +156,6 @@ namespace AstralDelivery.Domain.Services
         public async Task ChangePassword(ChangePasswordModel model)
         {
             User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == _sessionContext.UserGuid && u.IsDeleted == false);
-            if (user == null)
-            {
-                throw new Exception("Пользователя с таким идентификатором не существует");
-            }
 
             if (user.Password != _hashingService.Get(model.OldPassword))
             {
@@ -144,15 +174,50 @@ namespace AstralDelivery.Domain.Services
                     .Where(u => u.Role == Role.Manager)
                     .Where(u => u.IsDeleted == false);
 
+            return UserFilter(managers, searchString);
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<User>> SearchCouriers(string searchString)
+        {
+            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == _sessionContext.UserGuid && u.IsDeleted == false);
+
+            var couriers = _dbContext.Users.AsNoTracking()
+                    .Where(u => u.Role == Role.Сourier)
+                    .Where(u => u.DeliveryPointGuid == user.DeliveryPointGuid)
+                    .Where(u => u.IsDeleted == false);
+
+            return UserFilter(couriers, searchString);
+        }
+
+        private IEnumerable<User> UserFilter(IEnumerable<User> users, string searchString)
+        {
             if (!String.IsNullOrEmpty(searchString))
             {
                 searchString = searchString.Trim().ToUpper();
-                managers = managers.Where(u => u.Email.ToUpper().Contains(searchString) ||
+                return users.Where(u => u.Email.ToUpper().Contains(searchString) ||
                      u.DeliveryPointName.ToUpper().Contains(searchString) ||
                     $"{u.Surname} {u.Name} {u.Patronymic}".ToUpper().Contains(searchString));
             }
 
-            return managers;
+            return users;
+        }
+
+        /// <inheritdoc />
+        public async Task<UserModel> GetUserInfo(Guid guid)
+        {
+            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == guid && u.IsDeleted == false);
+            if (user == null)
+            {
+                throw new Exception("Пользователя с таким идентификатором не существует");
+            }
+
+            return new UserModel(user);
+        }
+
+        private string GetNewPassword()
+        {
+            return Guid.NewGuid().ToString().Replace("-", string.Empty).Substring(0, 10);
         }
 
         private string GetDeliveryPointNameForUser(DeliveryPoint point)

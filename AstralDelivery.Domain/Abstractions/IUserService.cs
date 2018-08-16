@@ -20,6 +20,13 @@ namespace AstralDelivery.Domain.Abstractions
         Task<Guid> CreateAdmin(string email, string password, Guid deliveryPointGuid);
 
         /// <summary>
+        /// Создает нового курьера
+        /// </summary>
+        /// <param name="model"> <see cref="UserInfo"/> </param>
+        /// <returns></returns>
+        Task<Guid> CreateCourier(UserInfo model);
+
+        /// <summary>
         /// Соездает нового пользователя 
         /// </summary>
         /// <param name="model"> <see cref="UserInfo"/> </param>
@@ -44,11 +51,25 @@ namespace AstralDelivery.Domain.Abstractions
         Task Edit(Guid guid, UserInfo model);
 
         /// <summary>
-        /// Удаляет пользователя
+        /// Возвращает информацию о пользователе
+        /// </summary>
+        /// <param name="guid"> <see cref="Guid"/> </param>
+        /// <returns></returns>
+        Task<UserModel> GetUserInfo(Guid guid);
+
+        /// <summary>
+        /// Удаляет менеджера
         /// </summary>
         /// <param name="UserGuid"> Идентификатор </param>
         /// <returns></returns>
-        Task Delete(Guid UserGuid);
+        Task DeleteManager(Guid UserGuid);
+
+        /// <summary>
+        /// Удаляет курьера
+        /// </summary>
+        /// <param name="UserGuid"> Идентификатор </param>
+        /// <returns></returns>
+        Task DeleteCourier(Guid UserGuid);
 
         /// <summary>
         /// Изменяет пароль пользователя
@@ -58,10 +79,17 @@ namespace AstralDelivery.Domain.Abstractions
         Task ChangePassword(ChangePasswordModel model);
 
         /// <summary>
-        /// Осуществляет поиск по строке
+        /// Осуществляет поиск менеджеров
         /// </summary>
         /// <param name="searchString"> Строка для поиска </param>
         /// <returns></returns>
         IEnumerable<User> SearchManagers(string searchString);
+
+        /// <summary>
+        /// Осуществляет поиск курьеров
+        /// </summary>
+        /// <param name="searchString"> Строка для поиска </param>
+        /// <returns></returns>
+        Task<IEnumerable<User>> SearchCouriers(string searchString);
     }
 }

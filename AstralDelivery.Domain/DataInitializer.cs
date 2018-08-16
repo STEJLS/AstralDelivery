@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using AstralDelivery.Database;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using AstralDelivery.Domain.Entities;
 
 namespace AstralDelivery.Domain
 {
@@ -36,7 +38,7 @@ namespace AstralDelivery.Domain
         {
             if (!await _databaseContext.Users.AnyAsync())
             {
-                Guid pointGuid = await _pointService.Create(new DeliveryPointInfo { Name = "Admin Point" });
+                Guid pointGuid = await _pointService.Create(new DeliveryPointInfo { Name = "Admin Point", WorksSchedule = new List<WorkTime>() });
                 await _userService.CreateAdmin(_options.AdminEmail, _options.AdminPassword, pointGuid);
             }
         }

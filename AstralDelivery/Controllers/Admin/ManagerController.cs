@@ -14,13 +14,13 @@ namespace AstralDelivery.Controllers.Admin
     /// <summary>
     /// Контроллер администратора управляющий менеджерами
     /// </summary>
-    [Route("Admin")]
+    [Route("Admin/Manager")]
     [Authorize(Roles = nameof(Role.Admin))]
-    public class UsersController : Controller
+    public class ManagerController : Controller
     {
         private readonly IUserService _userService;
 
-        public UsersController(IUserService userService)
+        public ManagerController(IUserService userService)
         {
             _userService = userService;
         }
@@ -30,8 +30,8 @@ namespace AstralDelivery.Controllers.Admin
         /// </summary>
         /// <param name="model"> <see cref="ManagerModel"/> </param>
         /// <returns></returns>
-        [HttpPost("User")]
-        public new async Task<Guid> User([FromBody] UserInfo model)
+        [HttpPost]
+        public async Task<Guid> Manager([FromBody] UserInfo model)
         {
             return await _userService.Create(model);
         }
@@ -41,10 +41,10 @@ namespace AstralDelivery.Controllers.Admin
         /// </summary>
         /// <param name="model"> <see cref="UserInfo"/> </param>
         /// <returns></returns>
-        [HttpPut("User/{userGuid}")]
-        public new async Task User([FromRoute] Guid userGuid, [FromBody] UserInfo model)
+        [HttpPut("{managerGuid}")]
+        public async Task Manager([FromRoute] Guid managerGuid, [FromBody] UserInfo model)
         {
-            await _userService.AdminEdit(userGuid, model);
+            await _userService.AdminEdit(managerGuid, model);
         }
 
         /// <summary>
@@ -52,18 +52,18 @@ namespace AstralDelivery.Controllers.Admin
         /// </summary>
         /// <param name="userGuid"> <see cref="Guid"/> </param>
         /// <returns></returns>
-        [HttpDelete("User/{userGuid}")]
-        public new async Task User([FromRoute] Guid userGuid)
+        [HttpDelete("{userGuid}")]
+        public async Task Manager([FromRoute] Guid userGuid)
         {
-            await _userService.Delete(userGuid);
+            await _userService.DeleteManager(userGuid);
         }
 
         /// <summary>
         /// Поиск и сортировка менеджеров
         /// </summary>
         /// <returns></returns>
-        [HttpGet("SearchManagers")]
-        public SearchResult<UserModel> SearchManagers([FromQuery] SearchManagerModel model)
+        [HttpGet]
+        public SearchResult<UserModel> Manager([FromQuery] SearchManagerModel model)
         {
             var managers = _userService.SearchManagers(model.SearchString);
 
