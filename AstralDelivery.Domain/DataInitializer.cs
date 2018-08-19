@@ -1,11 +1,12 @@
-﻿using AstralDelivery.Domain.Abstractions;
-using AstralDelivery.Domain.Models;
+﻿using System;
 using System.Threading.Tasks;
-using AstralDelivery.Database;
-using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using AstralDelivery.Domain.Abstractions;
+using AstralDelivery.Domain.Models;
+using AstralDelivery.Domain.Models.DeliveryPoint;
 using AstralDelivery.Domain.Entities;
+using AstralDelivery.Database;
 
 namespace AstralDelivery.Domain
 {

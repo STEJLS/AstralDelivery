@@ -45,14 +45,13 @@ namespace AstralDelivery.Domain.Entities
         /// </summary>
         public string Phone { get; set; }
         /// <summary>
-        /// Удален ли пользователь
+        /// Удален ли пункт выдачи
         /// </summary>
         public bool IsDeleted { get; set; }
         /// <summary>
         /// Дата создания
         /// </summary>
         public DateTime Date { get; set; }
-
         /// <summary>
         /// Адрес в виде строки
         /// </summary>
@@ -68,7 +67,6 @@ namespace AstralDelivery.Domain.Entities
                 return address;
             }
         }
-
         /// <summary>
         /// График работы в виде строки
         /// </summary>

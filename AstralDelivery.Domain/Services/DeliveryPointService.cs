@@ -1,7 +1,7 @@
 ﻿using AstralDelivery.Database;
 using AstralDelivery.Domain.Abstractions;
 using AstralDelivery.Domain.Entities;
-using AstralDelivery.Domain.Models;
+using AstralDelivery.Domain.Models.DeliveryPoint;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -75,7 +75,7 @@ namespace AstralDelivery.Domain.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<DeliveryPoint> Get(Guid deliveryPointGuid)
+        public async Task<DeliveryPointFullInfo> Get(Guid deliveryPointGuid)
         {
             var point = await _dbContext.DeliveryPoints.Include(p => p.Managers).Include(p => p.WorksSchedule).FirstOrDefaultAsync(p => p.Guid == deliveryPointGuid && p.IsDeleted == false);
             if (point == null)
@@ -85,7 +85,7 @@ namespace AstralDelivery.Domain.Services
 
             point.Managers.ForEach(m => m.Password = string.Empty);
 
-            return point;
+            return new DeliveryPointFullInfo(point);
         }
 
         public IEnumerable<DeliveryPoint> SearchDeliveryPoints(string searchString)

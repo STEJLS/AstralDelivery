@@ -1,7 +1,7 @@
 ﻿using AstralDelivery.Domain.Entities;
 using System.Collections.Generic;
 
-namespace AstralDelivery.Domain.Models
+namespace AstralDelivery.Domain.Models.DeliveryPoint
 {
     /// <summary>
     /// Входная модель для пункта выдачи
