@@ -45,5 +45,43 @@ namespace AstralDelivery.Domain.Services
 
             return product.Guid;
         }
+
+        public async Task Edit(Guid productGuid, ProductInfo productInfo)
+        {
+            Product product = await _dbContext.Products.FirstOrDefaultAsync(p => p.Guid == productGuid);
+            if (product == null)
+            {
+                throw new Exception("Указанного товара не существует");
+            }
+
+            if (product.DeliveryStatus != DeliveryStatus.ArrivedFromWarehouse)
+            {
+                throw new Exception("Запрещено редактирование товара, статус которого не 'Прибыл со склада'");
+            }
+
+            if (product.DeliveryType == DeliveryType.Courier && productInfo.DeliveryType == DeliveryType.Pickup)
+            {
+                User manager = await _dbContext.Users.Include(u => u.DeliveryPoint).ThenInclude(d => d.WorksSchedule).FirstOrDefaultAsync(u => u.UserGuid == _sessionContext.UserGuid);
+                await _mailService.SendAsync(product.Email,
+                 $"может забрать товар по адресу {manager.DeliveryPoint.Address}. График работы:  {manager.DeliveryPoint.Timetable}. Подробности по телефону {manager.DeliveryPoint.Phone}.",
+                 "Выдача товара");
+            }
+
+            product.Article = productInfo.Article;
+            product.Name = productInfo.Name;
+            product.Count = productInfo.Count;
+            product.Phone = productInfo.Phone;
+            product.Email = productInfo.Email;
+            product.Price = productInfo.Price;
+            product.DeliveryType = productInfo.DeliveryType;
+            product.PaymentType = productInfo.PaymentType;
+            product.City = productInfo.City;
+            product.Street = productInfo.Street;
+            product.House = productInfo.House;
+            product.Corpus = productInfo.Corpus;
+            product.Flat = productInfo.Flat;
+
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

@@ -24,5 +24,12 @@ namespace AstralDelivery.Controllers.Manager
         {
             return await _productService.Create(productInfo);
         }
+
+        [HttpPut]
+        [Route("{productGuid}")]
+        public async Task Product([FromRoute] Guid productGuid, [FromBody] ProductInfo productInfo)
+        {
+            await _productService.Edit(productGuid, productInfo);
+        }
     }
 }

@@ -54,9 +54,9 @@ namespace AstralDelivery.Controllers.Admin
         /// <param name="model"> <see cref="DeliveryPointInfo"/> </param>
         /// <returns></returns>
         [HttpPut("{DeliveryPointGuid}")]
-        public async Task DeliveryPoint([FromRoute] Guid DeliveryPointGuid, [FromBody] DeliveryPointInfo model)
+        public async Task DeliveryPoint([FromRoute] Guid deliveryPointGuid, [FromBody] DeliveryPointInfo model)
         {
-            await _deliveryPointService.Edit(DeliveryPointGuid, model);
+            await _deliveryPointService.Edit(deliveryPointGuid, model);
         }
 
         [HttpGet("{DeliveryPointGuid}")]

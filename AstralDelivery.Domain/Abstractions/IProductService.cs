@@ -7,5 +7,6 @@ namespace AstralDelivery.Domain.Abstractions
     public interface IProductService
     {
         Task<Guid> Create(ProductInfo productInfo);
+        Task Edit(Guid productGuid, ProductInfo productInfo);
     }
 }
