@@ -33,6 +33,10 @@ namespace AstralDelivery.Domain.Models
         /// </summary>
         public int Office { get; set; }
         /// <summary>
+        /// Телефон
+        /// </summary>
+        public string Phone { get; set; }
+        /// <summary>
         /// <see cref="WorkTime"/>
         /// </summary>
         public ICollection<WorkTime> WorksSchedule { get; set; }

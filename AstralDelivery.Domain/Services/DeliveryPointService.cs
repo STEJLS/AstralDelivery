@@ -21,7 +21,7 @@ namespace AstralDelivery.Domain.Services
 
         public async Task<Guid> Create(DeliveryPointInfo model)
         {
-            DeliveryPoint point = new DeliveryPoint(model.Name, model.City, model.Street, model.Building, model.Corpus, model.Office);
+            DeliveryPoint point = new DeliveryPoint(model.Name, model.City, model.Street, model.Building, model.Corpus, model.Office, model.Phone);
 
             foreach (var workTime in model.WorksSchedule)
             {
@@ -52,7 +52,7 @@ namespace AstralDelivery.Domain.Services
         public async Task Edit(Guid DeliveryPointGuid, DeliveryPointInfo model)
         {
             var point = await _dbContext.DeliveryPoints.Include(p => p.WorksSchedule).FirstOrDefaultAsync(p => p.Guid == DeliveryPointGuid && p.IsDeleted == false);
-            if(point == null)
+            if (point == null)
             {
                 throw new Exception("Пункт выдачи с таким идентификатором не существует");
             }
@@ -63,6 +63,7 @@ namespace AstralDelivery.Domain.Services
             point.Building = model.Building;
             point.Corpus = model.Corpus;
             point.Office = model.Office;
+            point.Phone = model.Phone;
 
             foreach (var workTime in model.WorksSchedule)
             {
@@ -74,7 +75,7 @@ namespace AstralDelivery.Domain.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<DeliveryPointModel> Get(Guid deliveryPointGuid)
+        public async Task<DeliveryPoint> Get(Guid deliveryPointGuid)
         {
             var point = await _dbContext.DeliveryPoints.Include(p => p.Managers).Include(p => p.WorksSchedule).FirstOrDefaultAsync(p => p.Guid == deliveryPointGuid && p.IsDeleted == false);
             if (point == null)
@@ -82,7 +83,9 @@ namespace AstralDelivery.Domain.Services
                 throw new Exception("Пункт выдачи с таким идентификатором не существует");
             }
 
-            return new DeliveryPointModel(point);
+            point.Managers.ForEach(m => m.Password = string.Empty);
+
+            return point;
         }
 
         public IEnumerable<DeliveryPoint> SearchDeliveryPoints(string searchString)

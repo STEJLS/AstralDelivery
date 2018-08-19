@@ -33,6 +33,10 @@ namespace AstralDelivery.Domain.Models
         /// </summary>
         public string Patronymic { get; set; }
         /// <summary>
+        /// Телефон
+        /// </summary>
+        public string Phone { get; set; }
+        /// <summary>
         /// Роль
         /// </summary>
         public Role Role { get; set; }
@@ -58,6 +62,7 @@ namespace AstralDelivery.Domain.Models
             Surname = user.Surname;
             Name = user.Name;
             Patronymic = user.Patronymic;
+            Phone = user.Phone;
             Role = user.Role;
             IsActivated = user.IsActivated;
             DeliveryPointGuid = user.DeliveryPointGuid;

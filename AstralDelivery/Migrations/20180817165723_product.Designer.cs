@@ -3,15 +3,17 @@ using System;
 using AstralDelivery.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AstralDelivery.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20180817165723_product")]
+    partial class product
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,8 +38,6 @@ namespace AstralDelivery.Migrations
                     b.Property<string>("Name");
 
                     b.Property<int>("Office");
-
-                    b.Property<string>("Phone");
 
                     b.Property<string>("Street");
 
@@ -77,10 +77,6 @@ namespace AstralDelivery.Migrations
 
                     b.Property<DateTime>("DateTime");
 
-                    b.Property<Guid>("DeliveryPointGuid");
-
-                    b.Property<int>("DeliveryStatus");
-
                     b.Property<int>("DeliveryType");
 
                     b.Property<string>("Email");
@@ -100,8 +96,6 @@ namespace AstralDelivery.Migrations
                     b.Property<string>("Street");
 
                     b.HasKey("Guid");
-
-                    b.HasIndex("DeliveryPointGuid");
 
                     b.ToTable("Products");
                 });
@@ -127,8 +121,6 @@ namespace AstralDelivery.Migrations
                     b.Property<string>("Password");
 
                     b.Property<string>("Patronymic");
-
-                    b.Property<string>("Phone");
 
                     b.Property<int>("Role");
 
@@ -166,14 +158,6 @@ namespace AstralDelivery.Migrations
                     b.HasOne("AstralDelivery.Domain.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserGuid")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("AstralDelivery.Domain.Entities.Product", b =>
-                {
-                    b.HasOne("AstralDelivery.Domain.Entities.DeliveryPoint", "DeliveryPoint")
-                        .WithMany()
-                        .HasForeignKey("DeliveryPointGuid")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

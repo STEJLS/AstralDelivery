@@ -1,7 +1,6 @@
 ﻿using AstralDelivery.Domain.Entities;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace AstralDelivery.Domain.Models
 {
@@ -13,7 +12,7 @@ namespace AstralDelivery.Domain.Models
         /// <summary>
         /// Идентификатор
         /// </summary>
-        public Guid Guid{ get; set; }
+        public Guid Guid { get; set; }
         /// <summary>
         /// Название
         /// </summary>
@@ -26,6 +25,10 @@ namespace AstralDelivery.Domain.Models
         /// Улица
         /// </summary>
         public string Address { get; set; }
+        /// <summary>
+        /// Телефон
+        /// </summary>
+        public string Phone { get; set; }
         /// <summary>
         /// Количество менеджеров
         /// </summary>
@@ -44,14 +47,11 @@ namespace AstralDelivery.Domain.Models
             Guid = point.Guid;
             Name = point.Name;
             City = point.City;
-            Address = $"улица {point.Street} дом {point.Building}{point.Corpus}";
-            if (point.Office != 0)
-            {
-                Address += $" офис {point.Office}";
-            }
+            Address = point.Address;
             CountOfManagers = point.Managers.Count;
             WorksSchedule = point.WorksSchedule;
             Date = point.Date;
+            Phone = point.Phone;
         }
     }
 }

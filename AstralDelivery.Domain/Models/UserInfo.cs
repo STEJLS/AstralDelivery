@@ -8,7 +8,7 @@ namespace AstralDelivery.Domain.Models
     /// </summary>
     public class UserInfo
     {
-        /// <summary>
+        /// <summary>в
         /// Почта
         /// </summary>
         public string Email { get; set; }
@@ -24,6 +24,10 @@ namespace AstralDelivery.Domain.Models
         /// Отчество
         /// </summary>
         public string Patronymic { get; set; }
+        /// <summary>
+        /// Телефон
+        /// </summary>
+        public string Phone { get; set; }
         /// <summary>
         /// Роль
         /// </summary>

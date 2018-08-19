@@ -53,7 +53,7 @@ namespace AstralDelivery.Domain.Services
             }
 
             string password = GetNewPassword();
-            user = new User(model.Email, _hashingService.Get(password), GetDeliveryPointNameForUser(point), model.Surname, model.Name, model.Patronymic, model.Role, model.DeliveryPointGuid);
+            user = new User(model.Email, _hashingService.Get(password), GetDeliveryPointNameForUser(point), model.Surname, model.Name, model.Patronymic, model.Phone, model.Role, model.DeliveryPointGuid);
             await _dbContext.Users.AddAsync(user);
             await _mailService.SendAsync(model.Email, password, "Пароль от учетной записи");
             await _dbContext.SaveChangesAsync();
@@ -73,7 +73,7 @@ namespace AstralDelivery.Domain.Services
             User manager = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == _sessionContext.UserGuid && u.IsDeleted == false);
 
             string password = GetNewPassword();
-            user = new User(model.Email, password, manager.DeliveryPointName, model.Surname, model.Name, model.Patronymic, Role.Сourier, manager.DeliveryPointGuid);
+            user = new User(model.Email, password, manager.DeliveryPointName, model.Surname, model.Name, model.Patronymic, model.Phone, Role.Сourier, manager.DeliveryPointGuid);
             await _dbContext.Users.AddAsync(user);
             await _mailService.SendAsync(model.Email, password, "Пароль от учетной записи");
             await _dbContext.SaveChangesAsync();
@@ -94,6 +94,7 @@ namespace AstralDelivery.Domain.Services
             user.Surname = model.Surname;
             user.Name = model.Name;
             user.Patronymic = model.Patronymic;
+            user.Phone = model.Phone;
 
             await _dbContext.SaveChangesAsync();
         }
@@ -118,6 +119,7 @@ namespace AstralDelivery.Domain.Services
             user.Surname = model.Surname;
             user.Name = model.Name;
             user.Patronymic = model.Patronymic;
+            user.Phone = model.Phone;
             user.Role = model.Role;
             user.DeliveryPointGuid = model.DeliveryPointGuid;
 

@@ -35,7 +35,7 @@ namespace AstralDelivery.Domain.Abstractions
         /// </summary>
         /// <param name="deliveryPointGuid"> <see cref="Guid"/> </param>
         /// <returns></returns>
-        Task<DeliveryPointModel> Get(Guid deliveryPointGuid);
+        Task<DeliveryPoint> Get(Guid deliveryPointGuid);
 
         /// <summary>
         /// Осуществляет поиск по строке

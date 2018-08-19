@@ -16,6 +16,8 @@ namespace AstralDelivery.Database
         public DbSet<DeliveryPoint> DeliveryPoints { get; set; }
         /// <summary />
         public DbSet<WorkTime> WorkTimes { get; set; }
+        /// <summary />
+        public DbSet<Product> Products { get; set; }
 
         /// <summary />
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
@@ -30,6 +32,7 @@ namespace AstralDelivery.Database
 
             modelBuilder.Entity<User>().HasIndex(a => a.Email).IsUnique();
             modelBuilder.Entity<WorkTime>().HasKey(w => new { w.DeliveryPointGuid, w.DayOfWeek });
+            modelBuilder.Entity<Product>().HasKey(p => p.Guid);
         }
     }
 

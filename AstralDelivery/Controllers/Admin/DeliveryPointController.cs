@@ -60,9 +60,10 @@ namespace AstralDelivery.Controllers.Admin
         }
 
         [HttpGet("{DeliveryPointGuid}")]
-        public async Task<DeliveryPointModel> GetDeliveryPoint([FromRoute] Guid deliveryPointGuid)
+        public async Task<DeliveryPoint> GetDeliveryPoint([FromRoute] Guid deliveryPointGuid)
         {
-            return await _deliveryPointService.Get(deliveryPointGuid);
+            DeliveryPoint point = await _deliveryPointService.Get(deliveryPointGuid);
+            return point;
         }
 
         /// <summary>

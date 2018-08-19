@@ -40,6 +40,10 @@ namespace AstralDelivery.Domain.Entities
         /// </summary>
         public string Patronymic { get; set; }
         /// <summary>
+        /// Телефон
+        /// </summary>
+        public string Phone { get; set; }
+        /// <summary>
         /// Роль
         /// </summary>
         public Role Role { get; set; }
@@ -55,10 +59,15 @@ namespace AstralDelivery.Domain.Entities
         /// Дата создания
         /// </summary>
         public DateTime Date { get; set; }
-
+        /// <summary>
+        /// Идентификатор пункта выдачи
+        /// </summary>
         [ForeignKey(nameof(DeliveryPoint))]
         public Guid DeliveryPointGuid { get; set; }
-        public DeliveryPoint DeliveryPoint { get; set; }
+        /// <summary>
+        /// Пункт выдачи
+        /// </summary>
+        public virtual DeliveryPoint DeliveryPoint { get; set; }
 
         /// <summary>
         /// Конструктор по умолчанию 
@@ -81,7 +90,7 @@ namespace AstralDelivery.Domain.Entities
             IsDeleted = false;
             IsActivated = false;
             DeliveryPointGuid = deliveryPointGuid;
-            Date = DateTime.Now;            
+            Date = DateTime.Now;
         }
 
         /// <summary/>
@@ -92,12 +101,13 @@ namespace AstralDelivery.Domain.Entities
         /// <param name="name"> Имя </param>
         /// <param name="patronymic"> Отчество </param>
         /// <param name="role"> Роль </param>
-        public User(string email, string password, string deliveryPointName, string surname, string name, string patronymic, Role role, Guid deliveryPointGuid) : this(email, password, role, deliveryPointGuid)
+        public User(string email, string password, string deliveryPointName, string surname, string name, string patronymic, string phone, Role role, Guid deliveryPointGuid) : this(email, password, role, deliveryPointGuid)
         {
             DeliveryPointName = deliveryPointName;
             Surname = surname;
             Name = name;
             Patronymic = patronymic;
+            Phone = phone;
         }
     }
 }

@@ -41,6 +41,10 @@ namespace AstralDelivery.Domain.Entities
         /// </summary>
         public int Office { get; set; }
         /// <summary>
+        /// Телефон
+        /// </summary>
+        public string Phone { get; set; }
+        /// <summary>
         /// Удален ли пользователь
         /// </summary>
         public bool IsDeleted { get; set; }
@@ -48,6 +52,39 @@ namespace AstralDelivery.Domain.Entities
         /// Дата создания
         /// </summary>
         public DateTime Date { get; set; }
+
+        /// <summary>
+        /// Адрес в виде строки
+        /// </summary>
+        public string Address
+        {
+            get
+            {
+                string address = $"Город {City} улица {Street} дом {Building}{Corpus}";
+                if (Office != 0)
+                {
+                    address += $" офис {Office}";
+                }
+                return address;
+            }
+        }
+
+        /// <summary>
+        /// График работы в виде строки
+        /// </summary>
+        public string Timetable
+        {
+            get
+            {
+                string timetable = string.Empty;
+
+                foreach (var entity in WorksSchedule)
+                {
+                    timetable += $"{entity.DayOfWeek.ToString()}: c {entity.Begin.ToString("g")} до {entity.End.ToString("g")} \n";
+                }
+                return timetable;
+            }
+        }
         /// <summary>
         /// <see cref="WorkTime"/>
         /// </summary>
@@ -69,7 +106,7 @@ namespace AstralDelivery.Domain.Entities
         /// <param name="building"> Дом </param>
         /// <param name="corpus"> Корпус </param>
         /// <param name="office"> Офис </param>
-        public DeliveryPoint(string name, string city, string street, int building, string corpus, int office)
+        public DeliveryPoint(string name, string city, string street, int building, string corpus, int office, string phone)
         {
             Guid = Guid.NewGuid();
             Name = name;
@@ -80,6 +117,7 @@ namespace AstralDelivery.Domain.Entities
             Office = office;
             IsDeleted = false;
             Date = DateTime.Now;
+            Phone = phone;
         }
     }
 }
