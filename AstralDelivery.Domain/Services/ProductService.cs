@@ -10,6 +10,7 @@ using AstralDelivery.MailService.Abstractions;
 
 namespace AstralDelivery.Domain.Services
 {
+    /// <inheritdoc />
     class ProductService : IProductService
     {
         private readonly DatabaseContext _dbContext;
@@ -23,6 +24,7 @@ namespace AstralDelivery.Domain.Services
             _mailService = mailService;
         }
 
+        /// <inheritdoc />
         public async Task<Guid> Create(ProductInfo productInfo)
         {
             User manager = await _dbContext.Users.Include(u => u.DeliveryPoint).ThenInclude(d => d.WorksSchedule).FirstOrDefaultAsync(u => u.UserGuid == _sessionContext.UserGuid);
@@ -47,9 +49,10 @@ namespace AstralDelivery.Domain.Services
             return product.Guid;
         }
 
+        /// <inheritdoc />
         public async Task Delete(Guid productGuid)
         {
-            Product product = await GetProduct(productGuid);
+            Product product = await Get(productGuid);
 
             if (product.DeliveryStatus != DeliveryStatus.ArrivedFromWarehouse)
             {
@@ -60,9 +63,10 @@ namespace AstralDelivery.Domain.Services
             await _dbContext.SaveChangesAsync();
         }
 
+        /// <inheritdoc />
         public async Task Edit(Guid productGuid, ProductInfo productInfo)
         {
-            Product product = await GetProduct(productGuid);
+            Product product = await Get(productGuid);
 
             if (product.DeliveryStatus != DeliveryStatus.ArrivedFromWarehouse)
             {
@@ -94,7 +98,8 @@ namespace AstralDelivery.Domain.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        private async Task<Product> GetProduct(Guid guid)
+        /// <inheritdoc />
+        public async Task<Product> Get(Guid guid)
         {
             User manager = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == _sessionContext.UserGuid);
 

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace AstralDelivery.Domain.Abstractions
 {
+    /// <summary>
+    /// Сервис для работы с пунктами выдачи
+    /// </summary>
     public interface IDeliveryPointService
     {
         /// <summary>

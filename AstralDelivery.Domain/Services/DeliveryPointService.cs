@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace AstralDelivery.Domain.Services
 {
+    /// <inheritdoc />
     public class DeliveryPointService : IDeliveryPointService
     {
         private readonly DatabaseContext _dbContext;
@@ -19,6 +20,7 @@ namespace AstralDelivery.Domain.Services
             _dbContext = dbContext;
         }
 
+        /// <inheritdoc />
         public async Task<Guid> Create(DeliveryPointInfo model)
         {
             DeliveryPoint point = new DeliveryPoint(model.Name, model.City, model.Street, model.Building, model.Corpus, model.Office, model.Phone);
@@ -35,6 +37,7 @@ namespace AstralDelivery.Domain.Services
             return point.Guid;
         }
 
+        /// <inheritdoc />
         public async Task Delete(Guid DeliveryPointGuid)
         {
             var point = await _dbContext.DeliveryPoints.Include(p => p.Managers).FirstOrDefaultAsync(p => p.Guid == DeliveryPointGuid && p.IsDeleted == false);
@@ -49,6 +52,7 @@ namespace AstralDelivery.Domain.Services
             await _dbContext.SaveChangesAsync();
         }
 
+        /// <inheritdoc />
         public async Task Edit(Guid DeliveryPointGuid, DeliveryPointInfo model)
         {
             var point = await _dbContext.DeliveryPoints.Include(p => p.WorksSchedule).FirstOrDefaultAsync(p => p.Guid == DeliveryPointGuid && p.IsDeleted == false);
@@ -75,6 +79,7 @@ namespace AstralDelivery.Domain.Services
             await _dbContext.SaveChangesAsync();
         }
 
+        /// <inheritdoc />
         public async Task<DeliveryPointFullInfo> Get(Guid deliveryPointGuid)
         {
             var point = await _dbContext.DeliveryPoints.Include(p => p.Managers).Include(p => p.WorksSchedule).FirstOrDefaultAsync(p => p.Guid == deliveryPointGuid && p.IsDeleted == false);
@@ -88,6 +93,7 @@ namespace AstralDelivery.Domain.Services
             return new DeliveryPointFullInfo(point);
         }
 
+        /// <inheritdoc />
         public IEnumerable<DeliveryPoint> SearchDeliveryPoints(string searchString)
         {
             var points = _dbContext.DeliveryPoints.AsNoTracking()

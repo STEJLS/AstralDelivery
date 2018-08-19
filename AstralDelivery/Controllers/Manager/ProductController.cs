@@ -38,5 +38,13 @@ namespace AstralDelivery.Controllers.Manager
         {
             await _productService.Delete(productGuid);
         }
+
+        [HttpGet]
+        [Route("{productGuid}")]
+        public async Task<Product> GetProduct([FromRoute] Guid productGuid)
+        {
+           return await _productService.Get(productGuid);
+        }
+
     }
 }
