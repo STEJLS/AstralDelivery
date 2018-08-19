@@ -8,5 +8,6 @@ namespace AstralDelivery.Domain.Abstractions
     {
         Task<Guid> Create(ProductInfo productInfo);
         Task Edit(Guid productGuid, ProductInfo productInfo);
+        Task Delete(Guid productGuid);
     }
 }

@@ -26,6 +26,7 @@ namespace AstralDelivery.Domain.Services
         public async Task<Guid> Create(ProductInfo productInfo)
         {
             User manager = await _dbContext.Users.Include(u => u.DeliveryPoint).ThenInclude(d => d.WorksSchedule).FirstOrDefaultAsync(u => u.UserGuid == _sessionContext.UserGuid);
+
             Product product;
             if (productInfo.DeliveryType == DeliveryType.Courier)
             {
@@ -46,13 +47,22 @@ namespace AstralDelivery.Domain.Services
             return product.Guid;
         }
 
+        public async Task Delete(Guid productGuid)
+        {
+            Product product = await GetProduct(productGuid);
+
+            if (product.DeliveryStatus != DeliveryStatus.ArrivedFromWarehouse)
+            {
+                throw new Exception("Запрещено удаление товара, статус которого не 'Прибыл со склада'");
+            }
+
+            _dbContext.Products.Remove(product);
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task Edit(Guid productGuid, ProductInfo productInfo)
         {
-            Product product = await _dbContext.Products.FirstOrDefaultAsync(p => p.Guid == productGuid);
-            if (product == null)
-            {
-                throw new Exception("Указанного товара не существует");
-            }
+            Product product = await GetProduct(productGuid);
 
             if (product.DeliveryStatus != DeliveryStatus.ArrivedFromWarehouse)
             {
@@ -82,6 +92,19 @@ namespace AstralDelivery.Domain.Services
             product.Flat = productInfo.Flat;
 
             await _dbContext.SaveChangesAsync();
+        }
+
+        private async Task<Product> GetProduct(Guid guid)
+        {
+            User manager = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == _sessionContext.UserGuid);
+
+            Product product = await _dbContext.Products.FirstOrDefaultAsync(p => p.Guid == guid && p.DeliveryPointGuid == manager.DeliveryPointGuid);
+            if (product == null)
+            {
+                throw new Exception("Указанного товара не существует");
+            }
+
+            return product;
         }
     }
 }
