@@ -114,6 +114,7 @@ namespace AstralDelivery.Domain.Services
             return product;
         }
 
+        /// <inheritdoc />
         public IEnumerable<Product> Search(string searchString, DateTime? dateFilter, DeliveryType? deliveryTypeFilter, DeliveryStatus? deliveryStatusFilter)
         {
             var products = _dbContext.Products.AsNoTracking();
@@ -138,6 +139,22 @@ namespace AstralDelivery.Domain.Services
             }
 
             return products;
+        }
+
+        /// <inheritdoc />
+        public async Task SetCourier(Guid productGuid, CourierInfoModel model)
+        {
+            Product product = await Get(productGuid);
+            User manager = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.UserGuid == _sessionContext.UserGuid && u.IsDeleted == false);
+            User courier = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.UserGuid == model.Guid && u.IsDeleted == false && u.DeliveryPointGuid == manager.DeliveryPointGuid);
+            if(courier == null)
+            {
+                throw new Exception("Указанного курьера не существует");
+            }
+
+            product.CourierGuid = model.Guid;
+
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AstralDelivery.Domain.Abstractions;
 using AstralDelivery.Domain.Entities;
+using AstralDelivery.Domain.Models;
 using AstralDelivery.Domain.Models.Product;
 using AstralDelivery.Domain.Models.Search;
 using AstralDelivery.Domain.Utils;
@@ -83,6 +84,19 @@ namespace AstralDelivery.Controllers.Manager
             return new SearchResult<ProductSearchInfo>(
                 products.Count(),
                 SortManager.SortProducts(products, model.ProductSortField, model.Direction, model.Count, model.Offset));
+        }
+
+        /// <summary>
+        /// Назначает курьера
+        /// </summary>
+        /// <param name="productGuid"></param>
+        /// <param name="courierGuid"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("SetCourier/{productGuid}")]
+        public async Task Product([FromRoute] Guid productGuid, [FromBody] CourierInfoModel model)
+        {
+            await _productService.SetCourier(productGuid, model);
         }
     }
 }
