@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AstralDelivery.Domain.Entities
 {
@@ -47,6 +48,10 @@ namespace AstralDelivery.Domain.Entities
         /// </summary>
         public DeliveryStatus DeliveryStatus { get; set; }
         /// <summary>
+        /// Дата и время добавления товара
+        /// </summary>
+        public DateTime CreationDate { get; set; }
+        /// <summary>
         /// Дата и время доставки
         /// </summary>
         public DateTime DateTime { get; set; }
@@ -73,11 +78,21 @@ namespace AstralDelivery.Domain.Entities
         /// <summary>
         /// Идентификатор пунта выдачи
         /// </summary>
+        [ForeignKey(nameof(DeliveryPoint))]
         public Guid DeliveryPointGuid { get; set; }
         /// <summary>
         /// Пункт выдачи
         /// </summary>
         public virtual DeliveryPoint DeliveryPoint { get; set; }
+        /// <summary>
+        /// Идентификатор курьера
+        /// </summary>
+        [ForeignKey("Courier")]
+        public Guid? CourierGuid { get; set; }
+        /// <summary>
+        /// Курьер
+        /// </summary>
+        public virtual User Courier { get; set; }
 
         /// <summary>
         /// Конструктор
@@ -103,6 +118,7 @@ namespace AstralDelivery.Domain.Entities
             DeliveryType = DeliveryType.Pickup;
             DeliveryPointGuid = deliveryPointGuid;
             DeliveryStatus = DeliveryStatus.ArrivedFromWarehouse;
+            CreationDate = DateTime.Now;
         }
 
         /// <summary>

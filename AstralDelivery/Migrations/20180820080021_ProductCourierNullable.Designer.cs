@@ -3,15 +3,17 @@ using System;
 using AstralDelivery.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AstralDelivery.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20180820080021_ProductCourierNullable")]
+    partial class ProductCourierNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,8 +78,6 @@ namespace AstralDelivery.Migrations
                     b.Property<int>("Count");
 
                     b.Property<Guid?>("CourierGuid");
-
-                    b.Property<DateTime>("CreationDate");
 
                     b.Property<DateTime>("DateTime");
 

@@ -7,6 +7,8 @@ using System;
 using System.Threading.Tasks;
 using AstralDelivery.Domain.Models;
 using AstralDelivery.MailService.Abstractions;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace AstralDelivery.Domain.Services
 {
@@ -110,6 +112,32 @@ namespace AstralDelivery.Domain.Services
             }
 
             return product;
+        }
+
+        public IEnumerable<Product> Search(string searchString, DateTime? dateFilter, DeliveryType? deliveryTypeFilter, DeliveryStatus? deliveryStatusFilter)
+        {
+            var products = _dbContext.Products.AsNoTracking();
+
+            if (dateFilter.HasValue)
+            {
+                products = products.Where(p => p.DateTime.Date == dateFilter.Value.Date);
+            }
+            if (deliveryTypeFilter.HasValue)
+            {
+                products = products.Where(p => p.DeliveryType == deliveryTypeFilter.Value);
+            }
+            if (deliveryStatusFilter.HasValue)
+            {
+                products = products.Where(p => p.DeliveryStatus == deliveryStatusFilter.Value);
+            }
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.Trim().ToUpper();
+                products = products.Where(p => p.Article.ToUpper().Contains(searchString) || p.Name.ToUpper().Contains(searchString));
+            }
+
+            return products;
         }
     }
 }

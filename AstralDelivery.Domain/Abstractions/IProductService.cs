@@ -1,6 +1,7 @@
 ﻿using AstralDelivery.Domain.Entities;
 using AstralDelivery.Domain.Models.Product;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace AstralDelivery.Domain.Abstractions
@@ -38,5 +39,15 @@ namespace AstralDelivery.Domain.Abstractions
         /// <param name="productGuid"> Идентификатор </param>
         /// <returns></returns>
         Task<Product> Get(Guid productGuid);
+
+        /// <summary>
+        /// Осуществляет поиск товаров
+        /// </summary>
+        /// <param name="searchString"> Строка для поиска </param>
+        /// <param name="dateFilter"> Дата доставки </param>
+        /// <param name="deliveryTypeFilter"> Тип доставки </param>
+        /// <param name="deliveryStatusFilter"> Статус доставки </param>
+        /// <returns></returns>
+        IEnumerable<Product> Search(string searchString, DateTime? dateFilter, DeliveryType? deliveryTypeFilter, DeliveryStatus? deliveryStatusFilter);
     }
 }

@@ -32,7 +32,6 @@ namespace AstralDelivery.Database
 
             modelBuilder.Entity<User>().HasIndex(a => a.Email).IsUnique();
             modelBuilder.Entity<WorkTime>().HasKey(w => new { w.DeliveryPointGuid, w.DayOfWeek });
-            modelBuilder.Entity<Product>().HasKey(p => p.Guid);
         }
     }
 

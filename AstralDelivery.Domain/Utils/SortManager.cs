@@ -4,6 +4,7 @@ using AstralDelivery.Domain.Entities;
 using AstralDelivery.Domain.Models.DeliveryPoint;
 using System.Linq;
 using System.Collections.Generic;
+using AstralDelivery.Domain.Models.Product;
 
 namespace AstralDelivery.Domain.Utils
 {
@@ -133,6 +134,53 @@ namespace AstralDelivery.Domain.Utils
             }
 
             return result.Skip(offset).Take(count);
+        }
+
+        public static IEnumerable<ProductSearchInfo> SortProducts(IEnumerable<Product> products, ProductSortField field, bool direction, int count, int offset)
+        {
+            IOrderedEnumerable<Product> result = null;
+            if (direction)
+            {
+                switch (field)
+                {
+                    case ProductSortField.CreationDate:
+                        result = products.OrderBy(p => p.CreationDate);
+                        break;
+                    case ProductSortField.Article:
+                        result = products.OrderBy(p => p.Article);
+                        break;
+                    case ProductSortField.Name:
+                        result = products.OrderBy(p => p.Name);
+                        break;
+                    case ProductSortField.Date:
+                        result = products.OrderBy(p => p.DateTime);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                switch (field)
+                {
+                    case ProductSortField.CreationDate:
+                        result = products.OrderByDescending(p => p.CreationDate);
+                        break;
+                    case ProductSortField.Article:
+                        result = products.OrderByDescending(p => p.Article);
+                        break;
+                    case ProductSortField.Name:
+                        result = products.OrderByDescending(p => p.Name);
+                        break;
+                    case ProductSortField.Date:
+                        result = products.OrderByDescending(p => p.DateTime);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            return result.Skip(offset).Take(count).Select(p => new ProductSearchInfo(p));
         }
     }
 }
