@@ -68,7 +68,7 @@ namespace AstralDelivery.Controllers.Manager
         [Route("{productGuid}")]
         public async Task<Product> GetProduct([FromRoute] Guid productGuid)
         {
-            return await _productService.Get(productGuid);
+            return await _productService.GetProductForManager(productGuid);
         }
 
         /// <summary>

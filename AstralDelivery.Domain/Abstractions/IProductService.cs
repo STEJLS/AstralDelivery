@@ -20,6 +20,21 @@ namespace AstralDelivery.Domain.Abstractions
         Task<Guid> Create(ProductInfo productInfo);
 
         /// <summary>
+        /// Возвращает информацию о товаре для курьера
+        /// </summary>
+        /// <param name="productGuid"> Идентификатор </param>
+        /// <returns></returns>
+        Task<Product> GetProductForCourier(Guid productGuid);
+
+        /// <summary>
+        /// Устанавливает статус товара 
+        /// </summary>
+        /// <param name="productGuid"> Идентификатор товара </param>
+        /// <param name="deliveryStatus"> Новый статус </param>
+        /// <returns></returns>
+        Task SetStatus(Guid productGuid, DeliveryStatus deliveryStatus);
+
+        /// <summary>
         /// Редактирует товар
         /// </summary>
         /// <param name="productGuid"> Идентификатор </param>
@@ -35,11 +50,11 @@ namespace AstralDelivery.Domain.Abstractions
         Task Delete(Guid productGuid);
 
         /// <summary>
-        /// Возвращает информацию о товаре
+        /// Возвращает информацию о товаре для менеджера
         /// </summary>
         /// <param name="productGuid"> Идентификатор </param>
         /// <returns></returns>
-        Task<Product> Get(Guid productGuid);
+        Task<Product> GetProductForManager(Guid productGuid);
 
         /// <summary>
         /// Осуществляет поиск товаров

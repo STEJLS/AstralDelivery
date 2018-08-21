@@ -149,5 +149,10 @@ namespace AstralDelivery.Domain.Entities
             Corpus = corpus;
             Flat = flat;
         }
+
+        /// <summary>
+        /// Возвращает адрес доставки
+        /// </summary>
+        public string Address => $"Город {City} улица {Street} дом {House}{Corpus} квартира {Flat}";
     }
 }

@@ -54,7 +54,7 @@ namespace AstralDelivery.Domain.Services
         /// <inheritdoc />
         public async Task Delete(Guid productGuid)
         {
-            Product product = await Get(productGuid);
+            Product product = await GetProductForManager(productGuid);
 
             if (product.DeliveryStatus != DeliveryStatus.ArrivedFromWarehouse)
             {
@@ -68,7 +68,7 @@ namespace AstralDelivery.Domain.Services
         /// <inheritdoc />
         public async Task Edit(Guid productGuid, ProductInfo productInfo)
         {
-            Product product = await Get(productGuid);
+            Product product = await GetProductForManager(productGuid);
 
             if (product.DeliveryStatus != DeliveryStatus.ArrivedFromWarehouse)
             {
@@ -101,7 +101,7 @@ namespace AstralDelivery.Domain.Services
         }
 
         /// <inheritdoc />
-        public async Task<Product> Get(Guid guid)
+        public async Task<Product> GetProductForManager(Guid guid)
         {
             User manager = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == _sessionContext.UserGuid);
 
@@ -113,6 +113,18 @@ namespace AstralDelivery.Domain.Services
 
             return product;
         }
+
+        public async Task<Product> GetProductForCourier(Guid guid)
+        {
+            Product product = await _dbContext.Products.FirstOrDefaultAsync(p => p.Guid == guid && p.CourierGuid == _sessionContext.UserGuid);
+            if (product == null)
+            {
+                throw new Exception("Указанного товара не существует");
+            }
+
+            return product;
+        }
+
 
         /// <inheritdoc />
         public IEnumerable<Product> Search(string searchString, DateTime? dateFilter, DeliveryType? deliveryTypeFilter, DeliveryStatus? deliveryStatusFilter)
@@ -144,15 +156,72 @@ namespace AstralDelivery.Domain.Services
         /// <inheritdoc />
         public async Task SetCourier(Guid productGuid, CourierInfoModel model)
         {
-            Product product = await Get(productGuid);
+            Product product = await GetProductForManager(productGuid);
             User manager = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.UserGuid == _sessionContext.UserGuid && u.IsDeleted == false);
             User courier = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.UserGuid == model.Guid && u.IsDeleted == false && u.DeliveryPointGuid == manager.DeliveryPointGuid);
-            if(courier == null)
+            if (courier == null)
             {
                 throw new Exception("Указанного курьера не существует");
             }
 
             product.CourierGuid = model.Guid;
+
+            await _dbContext.SaveChangesAsync();
+        }
+
+        /// <inheritdoc />
+        public async Task SetStatus(Guid productGuid, DeliveryStatus deliveryStatus)
+        {
+            Product product = await _dbContext.Products.FirstOrDefaultAsync(p => p.Guid == productGuid && p.CourierGuid == _sessionContext.UserGuid);
+            if (product == null)
+            {
+                throw new Exception("Указанного товара не существует");
+            }
+
+            switch (deliveryStatus)
+            {
+                case DeliveryStatus.GivenToCourier:
+                    {
+                        if (product.DeliveryStatus != DeliveryStatus.ArrivedFromWarehouse)
+                        {
+                            throw new Exception("Статус 'передан курьеру' устанавливается только после 'прибыл со склада'");
+                        }
+                        product.DeliveryStatus = deliveryStatus;
+
+                        User courier = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == _sessionContext.UserGuid);
+
+                        await _mailService.SendAsync(product.Email, $"Курьер {courier.FIO} получил товар и доставит его {product.DateTime.ToString(@"MM\/dd\/yyyy HH:mm")} " +
+                            $"по адресу { product.Address}. Связаться с курьером можно по телефону { courier.Phone}", "Доставка");
+                    }
+                    break;
+                case DeliveryStatus.Delivered:
+                    {
+                        if (product.DeliveryStatus != DeliveryStatus.GivenToCourier)
+                        {
+                            throw new Exception("Статус 'доставлен' устанавливается только после 'передан курьеру'");
+                        }
+                        product.DeliveryStatus = deliveryStatus;
+                    }
+                    break;
+                case DeliveryStatus.CouldntDelivered:
+                    {
+                        if (product.DeliveryStatus != DeliveryStatus.GivenToCourier)
+                        {
+                            throw new Exception("Статус 'не смог доставить' устанавливается только после 'передан курьеру'");
+                        }
+                        product.DeliveryStatus = deliveryStatus;
+
+                        User courier = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == _sessionContext.UserGuid);
+                        DeliveryPoint point = await _dbContext.DeliveryPoints.Include(p => p.WorksSchedule).FirstOrDefaultAsync(p => p.Guid == courier.DeliveryPointGuid);
+                        await _mailService.SendAsync(product.Email, $"Курьер {courier.FIO} не смог доставить вам товар. Вы можете забрать его самостоятельно по адресу {point.Address}." +
+                            $"График работы: {point.Timetable}. Дополнительную информацию вы можете получить по телефону {point.Phone}", "Доставка");
+                    }
+                    break;
+                default:
+                    {
+                        throw new Exception("Указанный статус невозможно установить");
+                    }
+            }
 
             await _dbContext.SaveChangesAsync();
         }

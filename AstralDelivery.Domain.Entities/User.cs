@@ -109,5 +109,10 @@ namespace AstralDelivery.Domain.Entities
             Patronymic = patronymic;
             Phone = phone;
         }
+
+        /// <summary>
+        /// Возвращает ФИО пользователя
+        /// </summary>
+        public string FIO => $"{Surname} {Name} {Patronymic}";
     }
 }
