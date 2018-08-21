@@ -77,13 +77,13 @@ namespace AstralDelivery.Controllers.Manager
         /// <param name="model"> <see cref="SearchProductModel"/> </param>
         /// <returns></returns>
         [HttpGet]
-        public SearchResult<ProductSearchInfo> Product([FromQuery] SearchProductModel model)
+        public SearchResult<ProductSearchInfoForManager> Product([FromQuery] SearchProductModel model)
         {
             var products = _productService.Search(model.SearchString, model.DateFilter, model.DeliveryTypeFilter, model.DeliveryStatusFilter);
 
-            return new SearchResult<ProductSearchInfo>(
+            return new SearchResult<ProductSearchInfoForManager>(
                 products.Count(),
-                SortManager.SortProducts(products, model.ProductSortField, model.Direction, model.Count, model.Offset));
+                SortManager.SortProductsForManager(products, model.ProductSortField, model.Direction, model.Count, model.Offset));
         }
 
         /// <summary>

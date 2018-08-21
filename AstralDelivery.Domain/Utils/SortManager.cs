@@ -136,7 +136,21 @@ namespace AstralDelivery.Domain.Utils
             return result.Skip(offset).Take(count);
         }
 
-        public static IEnumerable<ProductSearchInfo> SortProducts(IEnumerable<Product> products, ProductSortField field, bool direction, int count, int offset)
+        public static IEnumerable<ProductSearchInfoForManager> SortProductsForManager(IEnumerable<Product> products, ProductSortField field, bool direction, int count, int offset)
+        {
+            IOrderedEnumerable<Product> result = SortProducts(products, field, direction);
+
+            return result.Skip(offset).Take(count).Select(p => new ProductSearchInfoForManager(p));
+        }
+
+        public static IEnumerable<ProductSearchInfoForCourier> SortProductsForCourier(IEnumerable<Product> products, ProductSortField field, bool direction, int count, int offset)
+        {
+            IOrderedEnumerable<Product> result = SortProducts(products, field, direction);
+
+            return result.Skip(offset).Take(count).Select(p => new ProductSearchInfoForCourier(p));
+        }
+
+        private static IOrderedEnumerable<Product> SortProducts(IEnumerable<Product> products, ProductSortField field, bool direction)
         {
             IOrderedEnumerable<Product> result = null;
             if (direction)
@@ -180,7 +194,7 @@ namespace AstralDelivery.Domain.Utils
                 }
             }
 
-            return result.Skip(offset).Take(count).Select(p => new ProductSearchInfo(p));
+            return result;
         }
     }
 }

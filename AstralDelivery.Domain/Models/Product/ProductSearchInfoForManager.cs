@@ -4,9 +4,9 @@ using System;
 namespace AstralDelivery.Domain.Models.Product
 {
     /// <summary>
-    /// Выходная модель для поиска товаров 
+    /// Выходная модель для поиска товаров для менеджера
     /// </summary>
-    public class ProductSearchInfo
+    public class ProductSearchInfoForManager
     {
         /// <summary>
         /// Артикул
@@ -32,8 +32,8 @@ namespace AstralDelivery.Domain.Models.Product
         /// <summary>
         /// Конструктор
         /// </summary>
-        /// <param name="product"> <see cref="Product"/> </param>
-        public ProductSearchInfo(Entities.Product product)
+        /// <param name="product"> <see cref="ProductInfo"/> </param>
+        public ProductSearchInfoForManager(Entities.Product product)
         {
             Article = product.Article;
             Name = product.Name;
