@@ -1,7 +1,7 @@
 ﻿using AstralDelivery.Domain.Abstractions;
 using AstralDelivery.Domain.Entities;
 using AstralDelivery.Domain.Models;
-using AstralDelivery.Domain.Utils;
+using AstralDelivery.Utils;
 using AstralDelivery.Domain.Models.Search;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +31,7 @@ namespace AstralDelivery.Controllers.Admin
         /// <param name="model"> <see cref="ManagerModel"/> </param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<Guid> Manager([FromBody] UserInfo model)
+        public async Task<Guid> CreateManager([FromBody] UserInfo model)
         {
             return await _userService.Create(model);
         }
@@ -42,7 +42,7 @@ namespace AstralDelivery.Controllers.Admin
         /// <param name="model"> <see cref="UserInfo"/> </param>
         /// <returns></returns>
         [HttpPut("{managerGuid}")]
-        public async Task Manager([FromRoute] Guid managerGuid, [FromBody] UserInfo model)
+        public async Task EditManager([FromRoute] Guid managerGuid, [FromBody] UserInfo model)
         {
             await _userService.AdminEdit(managerGuid, model);
         }
@@ -53,7 +53,7 @@ namespace AstralDelivery.Controllers.Admin
         /// <param name="userGuid"> <see cref="Guid"/> </param>
         /// <returns></returns>
         [HttpDelete("{userGuid}")]
-        public async Task Manager([FromRoute] Guid userGuid)
+        public async Task DeleteManager([FromRoute] Guid userGuid)
         {
             await _userService.DeleteManager(userGuid);
         }
@@ -63,7 +63,7 @@ namespace AstralDelivery.Controllers.Admin
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public SearchResult<UserModel> Manager([FromQuery] SearchManagerModel model)
+        public SearchResult<UserModel> SearchManager([FromQuery] ManagerSearchModel model)
         {
             var managers = _userService.SearchManagers(model.SearchString);
 

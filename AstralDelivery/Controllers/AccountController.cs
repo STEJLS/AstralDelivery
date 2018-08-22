@@ -38,7 +38,7 @@ namespace AstralDelivery.Controllers
         /// <param name="model"> <see cref="EditUserModel"/> </param>
         /// <returns></returns>
         [HttpPut("Edit/{userGuid}")]
-        public async Task Edit([FromRoute] Guid userGuid, [FromBody] UserInfo model)
+        public async Task EditProfile([FromRoute] Guid userGuid, [FromBody] UserInfo model)
         {
             await _userService.Edit(userGuid, model);
         }

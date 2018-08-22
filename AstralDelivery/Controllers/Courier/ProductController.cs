@@ -3,22 +3,25 @@ using AstralDelivery.Domain.Entities;
 using AstralDelivery.Domain.Models;
 using AstralDelivery.Domain.Models.Product;
 using AstralDelivery.Domain.Models.Search;
-using AstralDelivery.Domain.Utils;
+using AstralDelivery.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AstralDelivery.Controllers
+namespace AstralDelivery.Controllers.Courier
 {
+    /// <summary>
+    /// Контроллер курьера для управления товарами
+    /// </summary>
     [Authorize(Roles = nameof(Role.Сourier))]
     [Route("Courier")]
-    public class CourierController : Controller
+    public class ProductController : Controller
     {
         private readonly IProductService _productService;
 
-        public CourierController(IProductService productService)
+        public ProductController(IProductService productService)
         {
             _productService = productService;
         }
@@ -32,7 +35,7 @@ namespace AstralDelivery.Controllers
         [Route("/GetProduct/{ProductGuid}")]
         public async Task<Product> GetProduct([FromRoute] Guid productGuid)
         {
-           return await _productService.GetProductForCourier(productGuid);
+            return await _productService.GetProductForCourier(productGuid);
         }
 
         /// <summary>
@@ -41,7 +44,7 @@ namespace AstralDelivery.Controllers
         /// <param name="productGuid"></param>
         /// <param name="model"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPut]
         [Route("/SetProductStatus/{ProductGuid}")]
         public async Task SetProductStatus([FromRoute] Guid productGuid, [FromBody] SetStatusModel model)
         {
@@ -51,11 +54,11 @@ namespace AstralDelivery.Controllers
         /// <summary>
         /// Поиск, сортировка, фильтрация товара
         /// </summary>
-        /// <param name="model"> <see cref="SearchProductModel"/> </param>
+        /// <param name="model"> <see cref="ProductSearchModel"/> </param>
         /// <returns></returns>
         [HttpGet]
         [Route("/SearchProducts")]
-        public SearchResult<ProductSearchInfoForCourier> Product([FromQuery] SearchProductModel model)
+        public SearchResult<ProductSearchInfoForCourier> SearchProduct([FromQuery] ProductSearchModel model)
         {
             var products = _productService.Search(model.SearchString, model.DateFilter, model.DeliveryTypeFilter, null);
 

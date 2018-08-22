@@ -6,7 +6,7 @@ using System.Linq;
 using System.Collections.Generic;
 using AstralDelivery.Domain.Models.Product;
 
-namespace AstralDelivery.Domain.Utils
+namespace AstralDelivery.Utils
 {
     public static class SortManager
     {

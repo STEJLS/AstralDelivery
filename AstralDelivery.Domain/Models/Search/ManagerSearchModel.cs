@@ -5,7 +5,7 @@ namespace AstralDelivery.Domain.Models.Search
     /// <summary>
     /// Модель для поиска и сортировки менеджеров
     /// </summary>
-    public class SearchManagerModel
+    public class ManagerSearchModel
     {
         /// <summary>
         /// Строка по которой ведется поиск

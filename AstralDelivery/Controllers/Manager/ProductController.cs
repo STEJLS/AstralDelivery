@@ -3,7 +3,7 @@ using AstralDelivery.Domain.Entities;
 using AstralDelivery.Domain.Models;
 using AstralDelivery.Domain.Models.Product;
 using AstralDelivery.Domain.Models.Search;
-using AstralDelivery.Domain.Utils;
+using AstralDelivery.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -29,7 +29,7 @@ namespace AstralDelivery.Controllers.Manager
         /// <param name="productInfo"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<Guid> Product([FromBody] ProductInfo productInfo)
+        public async Task<Guid> CreateProduct([FromBody] ProductInfo productInfo)
         {
             return await _productService.Create(productInfo);
         }
@@ -42,7 +42,7 @@ namespace AstralDelivery.Controllers.Manager
         /// <returns></returns>
         [HttpPut]
         [Route("{productGuid}")]
-        public async Task Product([FromRoute] Guid productGuid, [FromBody] ProductInfo productInfo)
+        public async Task EditProduct([FromRoute] Guid productGuid, [FromBody] ProductInfo productInfo)
         {
             await _productService.Edit(productGuid, productInfo);
         }
@@ -54,7 +54,7 @@ namespace AstralDelivery.Controllers.Manager
         /// <returns></returns>
         [HttpDelete]
         [Route("{productGuid}")]
-        public async Task Product([FromRoute] Guid productGuid)
+        public async Task DeleteProduct([FromRoute] Guid productGuid)
         {
             await _productService.Delete(productGuid);
         }
@@ -74,10 +74,10 @@ namespace AstralDelivery.Controllers.Manager
         /// <summary>
         /// Поиск, сортировка, фильтрация товара
         /// </summary>
-        /// <param name="model"> <see cref="SearchProductModel"/> </param>
+        /// <param name="model"> <see cref="ProductSearchModel"/> </param>
         /// <returns></returns>
         [HttpGet]
-        public SearchResult<ProductSearchInfoForManager> Product([FromQuery] SearchProductModel model)
+        public SearchResult<ProductSearchInfoForManager> SearchProduct([FromQuery] ProductSearchModel model)
         {
             var products = _productService.Search(model.SearchString, model.DateFilter, model.DeliveryTypeFilter, model.DeliveryStatusFilter);
 
@@ -94,7 +94,7 @@ namespace AstralDelivery.Controllers.Manager
         /// <returns></returns>
         [HttpPut]
         [Route("SetCourier/{productGuid}")]
-        public async Task Product([FromRoute] Guid productGuid, [FromBody] CourierInfoModel model)
+        public async Task SetCourier([FromRoute] Guid productGuid, [FromBody] CourierInfoModel model)
         {
             await _productService.SetCourier(productGuid, model);
         }

@@ -38,9 +38,9 @@ namespace AstralDelivery.Domain.Services
         }
 
         /// <inheritdoc />
-        public async Task Delete(Guid DeliveryPointGuid)
+        public async Task Delete(Guid deliveryPointGuid)
         {
-            var point = await _dbContext.DeliveryPoints.Include(p => p.Managers).FirstOrDefaultAsync(p => p.Guid == DeliveryPointGuid && p.IsDeleted == false);
+            var point = await _dbContext.DeliveryPoints.Include(p => p.Managers).FirstOrDefaultAsync(p => p.Guid == deliveryPointGuid && p.IsDeleted == false);
             if (point == null)
             {
                 throw new Exception("Пункт выдачи с таким идентификатором не существует");
@@ -53,9 +53,9 @@ namespace AstralDelivery.Domain.Services
         }
 
         /// <inheritdoc />
-        public async Task Edit(Guid DeliveryPointGuid, DeliveryPointInfo model)
+        public async Task Edit(Guid deliveryPointGuid, DeliveryPointInfo model)
         {
-            var point = await _dbContext.DeliveryPoints.Include(p => p.WorksSchedule).FirstOrDefaultAsync(p => p.Guid == DeliveryPointGuid && p.IsDeleted == false);
+            var point = await _dbContext.DeliveryPoints.Include(p => p.WorksSchedule).FirstOrDefaultAsync(p => p.Guid == deliveryPointGuid && p.IsDeleted == false);
             if (point == null)
             {
                 throw new Exception("Пункт выдачи с таким идентификатором не существует");

@@ -127,9 +127,9 @@ namespace AstralDelivery.Domain.Services
         }
 
         /// <inheritdoc />
-        public async Task DeleteManager(Guid UserGuid)
+        public async Task DeleteManager(Guid userGuid)
         {
-            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == UserGuid && u.IsDeleted == false && u.Role == Role.Manager);
+            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == userGuid && u.IsDeleted == false && u.Role == Role.Manager);
             if (user == null)
             {
                 throw new Exception("Пользователя с таким идентификатором не существует");
@@ -141,9 +141,9 @@ namespace AstralDelivery.Domain.Services
         }
 
         /// <inheritdoc />
-        public async Task DeleteCourier(Guid UserGuid)
+        public async Task DeleteCourier(Guid userGuid)
         {
-            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == UserGuid && u.IsDeleted == false && u.Role == Role.Сourier);
+            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == userGuid && u.IsDeleted == false && u.Role == Role.Сourier);
             if (user == null)
             {
                 throw new Exception("Пользователя с таким идентификатором не существует");

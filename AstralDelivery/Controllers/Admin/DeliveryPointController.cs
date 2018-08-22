@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using AstralDelivery.Domain.Entities;
 using AstralDelivery.Domain.Abstractions;
 using AstralDelivery.Domain.Models.Search;
-using AstralDelivery.Domain.Utils;
+using AstralDelivery.Utils;
 using AstralDelivery.Domain.Models.DeliveryPoint;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +31,7 @@ namespace AstralDelivery.Controllers.Admin
         /// <param name="model"> <see cref="DeliveryPointInfo"/> </param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<Guid> DeliveryPoint([FromBody] DeliveryPointInfo model)
+        public async Task<Guid> CreateDeliveryPoint([FromBody] DeliveryPointInfo model)
         {
             return await _deliveryPointService.Create(model);
         }
@@ -39,12 +39,12 @@ namespace AstralDelivery.Controllers.Admin
         /// <summary>
         /// Удаляет пункт выдачи
         /// </summary>
-        /// <param name="DeliveryPointGuid"> <see cref="Guid"/> </param>
+        /// <param name="deliveryPointGuid"> <see cref="Guid"/> </param>
         /// <returns></returns>
         [HttpDelete("{DeliveryPointGuid}")]
-        public async Task DeliveryPoint([FromRoute] Guid DeliveryPointGuid)
+        public async Task DeleteDeliveryPoint([FromRoute] Guid deliveryPointGuid)
         {
-            await _deliveryPointService.Delete(DeliveryPointGuid);
+            await _deliveryPointService.Delete(deliveryPointGuid);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace AstralDelivery.Controllers.Admin
         /// <param name="model"> <see cref="DeliveryPointInfo"/> </param>
         /// <returns></returns>
         [HttpPut("{DeliveryPointGuid}")]
-        public async Task DeliveryPoint([FromRoute] Guid deliveryPointGuid, [FromBody] DeliveryPointInfo model)
+        public async Task EditDeliveryPoint([FromRoute] Guid deliveryPointGuid, [FromBody] DeliveryPointInfo model)
         {
             await _deliveryPointService.Edit(deliveryPointGuid, model);
         }
@@ -71,7 +71,7 @@ namespace AstralDelivery.Controllers.Admin
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public SearchResult<DeliveryPointModel> SearchManagers([FromQuery] SearchDeliveryPointModel model)
+        public SearchResult<DeliveryPointModel> SearchManagers([FromQuery] DeliveryPointSearchModel model)
         {
             var points = _deliveryPointService.SearchDeliveryPoints(model.SearchString);
 

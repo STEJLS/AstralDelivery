@@ -21,17 +21,17 @@ namespace AstralDelivery.Domain.Abstractions
         /// <summary>
         /// Удаляет пункт выдачи
         /// </summary>
-        /// <param name="DeliveryPointGuid"> <see cref="Guid"/> </param>
+        /// <param name="deliveryPointGuid"> <see cref="Guid"/> </param>
         /// <returns></returns>
-        Task Delete(Guid DeliveryPointGuid);
+        Task Delete(Guid deliveryPointGuid);
 
         /// <summary>
         /// Редактирует пункт выдачи
         /// </summary>
-        /// <param name="DeliveryPointGuid"> <see cref="Guid"/> </param>
+        /// <param name="deliveryPointGuid"> <see cref="Guid"/> </param>
         /// <param name="model"> <see cref="DeliveryPointInfo"/> </param>
         /// <returns></returns>
-        Task Edit(Guid DeliveryPointGuid, DeliveryPointInfo model);
+        Task Edit(Guid deliveryPointGuid, DeliveryPointInfo model);
 
         /// <summary>
         /// Возвращает информацию о пункте выдачи

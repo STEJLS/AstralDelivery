@@ -1,20 +1,34 @@
-﻿using AstralDelivery.Domain.Models.Enums;
+﻿using AstralDelivery.Domain.Entities;
+using AstralDelivery.Domain.Models.Enums;
+using System;
 
 namespace AstralDelivery.Domain.Models.Search
 {
     /// <summary>
-    /// Модель для поиска и сортировки пунктов выдачи
+    /// Модель для поиска товаров
     /// </summary>
-    public class SearchDeliveryPointModel
+    public class ProductSearchModel
     {
         /// <summary>
         /// Строка по которой ведется поиск
         /// </summary>
         public string SearchString { get; set; } = "";
         /// <summary>
-        /// Поле по которому будет производиться сортировка
+        /// <see cref="ProductSortField"/>
         /// </summary>
-        public DeliveryPointSortField Field { get; set; } = DeliveryPointSortField.Date;
+        public ProductSortField ProductSortField { get; set; }
+        /// <summary>
+        /// Фильтрация по дате доставки
+        /// </summary>
+        public DateTime? DateFilter { get; set; }
+        /// <summary>
+        /// Фильтрация по типу доставки
+        /// </summary>
+        public DeliveryType? DeliveryTypeFilter { get; set; }
+        /// <summary>
+        /// Фильтрация по статусу доставки
+        /// </summary>
+        public DeliveryStatus? DeliveryStatusFilter { get; set; }
         /// <summary>
         /// Направление сортировки
         /// </summary>
