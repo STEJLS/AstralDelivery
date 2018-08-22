@@ -1,6 +1,5 @@
 ﻿using AstralDelivery.Database;
 using AstralDelivery.Domain.Abstractions;
-using AstralDelivery.Domain.Models.Product;
 using AstralDelivery.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -114,6 +113,7 @@ namespace AstralDelivery.Domain.Services
             return product;
         }
 
+        /// <inheritdoc />
         public async Task<Product> GetProductForCourier(Guid guid)
         {
             Product product = await _dbContext.Products.FirstOrDefaultAsync(p => p.Guid == guid && p.CourierGuid == _sessionContext.UserGuid);
@@ -154,17 +154,17 @@ namespace AstralDelivery.Domain.Services
         }
 
         /// <inheritdoc />
-        public async Task SetCourier(Guid productGuid, CourierInfoModel model)
+        public async Task SetCourier(Guid productGuid, Guid courierGuid)
         {
             Product product = await GetProductForManager(productGuid);
             User manager = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.UserGuid == _sessionContext.UserGuid && u.IsDeleted == false);
-            User courier = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.UserGuid == model.Guid && u.IsDeleted == false && u.DeliveryPointGuid == manager.DeliveryPointGuid);
+            User courier = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.UserGuid == courierGuid && u.IsDeleted == false && u.DeliveryPointGuid == manager.DeliveryPointGuid);
             if (courier == null)
             {
                 throw new Exception("Указанного курьера не существует");
             }
 
-            product.CourierGuid = model.Guid;
+            product.CourierGuid = courierGuid;
 
             await _dbContext.SaveChangesAsync();
         }

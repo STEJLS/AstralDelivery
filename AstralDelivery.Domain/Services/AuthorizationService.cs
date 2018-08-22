@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using AstralDelivery.Domain.Abstractions;
 using AstralDelivery.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using AstralDelivery.Domain.Models;
 
 namespace AstralDelivery.Domain.Services
 {
@@ -25,7 +24,7 @@ namespace AstralDelivery.Domain.Services
         }
 
         /// <inheritdoc />
-        public async Task<UserModel> Login(string email, string password, bool rememberMe)
+        public async Task<User> Login(string email, string password, bool rememberMe)
         {
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
@@ -42,7 +41,7 @@ namespace AstralDelivery.Domain.Services
             }
 
             await _signInManager.SignInAsync(user, rememberMe);
-            return new UserModel(user);
+            return user;
         }
 
         /// <inheritdoc />

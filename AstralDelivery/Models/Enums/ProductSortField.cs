@@ -1,4 +1,4 @@
-﻿namespace AstralDelivery.Domain.Models.Enums
+﻿namespace AstralDelivery.Models.Enums
 {
     /// <summary>
     /// Поля по которым ведется сортировка товаров

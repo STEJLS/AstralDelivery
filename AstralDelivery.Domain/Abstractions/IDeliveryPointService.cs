@@ -1,5 +1,5 @@
 ﻿using AstralDelivery.Domain.Entities;
-using AstralDelivery.Domain.Models.DeliveryPoint;
+using AstralDelivery.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -38,7 +38,7 @@ namespace AstralDelivery.Domain.Abstractions
         /// </summary>
         /// <param name="deliveryPointGuid"> <see cref="Guid"/> </param>
         /// <returns></returns>
-        Task<DeliveryPointFullInfo> Get(Guid deliveryPointGuid);
+        Task<DeliveryPoint> Get(Guid deliveryPointGuid);
 
         /// <summary>
         /// Осуществляет поиск по строке

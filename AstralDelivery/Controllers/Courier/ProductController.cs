@@ -1,8 +1,8 @@
 ﻿using AstralDelivery.Domain.Abstractions;
 using AstralDelivery.Domain.Entities;
-using AstralDelivery.Domain.Models;
-using AstralDelivery.Domain.Models.Product;
-using AstralDelivery.Domain.Models.Search;
+using AstralDelivery.Models;
+using AstralDelivery.Models.Product;
+using AstralDelivery.Models.Search;
 using AstralDelivery.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

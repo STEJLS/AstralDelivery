@@ -3,11 +3,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using AstralDelivery.Domain.Entities;
 using AstralDelivery.Domain.Abstractions;
-using AstralDelivery.Domain.Models.Search;
 using AstralDelivery.Utils;
-using AstralDelivery.Domain.Models.DeliveryPoint;
+using AstralDelivery.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using AstralDelivery.Models.DeliveryPoint;
+using AstralDelivery.Models.Search;
 
 namespace AstralDelivery.Controllers.Admin
 {
@@ -63,7 +64,7 @@ namespace AstralDelivery.Controllers.Admin
         public async Task<DeliveryPointFullInfo> GetDeliveryPoint([FromRoute] Guid deliveryPointGuid)
         {
             var point = await _deliveryPointService.Get(deliveryPointGuid);
-            return point;
+            return new DeliveryPointFullInfo(point);
         }
 
         /// <summary>

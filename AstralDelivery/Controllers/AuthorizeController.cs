@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using AstralDelivery.Domain.Abstractions;
 using AstralDelivery.Domain.Models;
+using AstralDelivery.Models;
 
 namespace AstralDelivery.Controllers
 {
@@ -25,9 +26,9 @@ namespace AstralDelivery.Controllers
         /// <param name="model"> <see cref="LoginModel"/> </param>
         /// <returns></returns>
         [HttpPost("Login")]
-        public async Task<UserModel> Login([FromBody]LoginModel model)
+        public async Task<UserModel> Login([FromBody] LoginModel model)
         {
-            return await _authorizationService.Login(model.Email, model.Password, model.RememberMe);
+            return new UserModel(await _authorizationService.Login(model.Email, model.Password, model.RememberMe));
         }
 
         /// <summary>

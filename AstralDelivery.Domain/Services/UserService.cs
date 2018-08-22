@@ -127,9 +127,9 @@ namespace AstralDelivery.Domain.Services
         }
 
         /// <inheritdoc />
-        public async Task DeleteManager(Guid userGuid)
+        public async Task DeleteManager(Guid UserGuid)
         {
-            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == userGuid && u.IsDeleted == false && u.Role == Role.Manager);
+            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == UserGuid && u.IsDeleted == false && u.Role == Role.Manager);
             if (user == null)
             {
                 throw new Exception("Пользователя с таким идентификатором не существует");
@@ -141,9 +141,9 @@ namespace AstralDelivery.Domain.Services
         }
 
         /// <inheritdoc />
-        public async Task DeleteCourier(Guid userGuid)
+        public async Task DeleteCourier(Guid UserGuid)
         {
-            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == userGuid && u.IsDeleted == false && u.Role == Role.Сourier);
+            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == UserGuid && u.IsDeleted == false && u.Role == Role.Сourier);
             if (user == null)
             {
                 throw new Exception("Пользователя с таким идентификатором не существует");
@@ -155,16 +155,16 @@ namespace AstralDelivery.Domain.Services
         }
 
         /// <inheritdoc />
-        public async Task ChangePassword(ChangePasswordModel model)
+        public async Task ChangePassword(string oldPassword, string newPassword)
         {
             User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == _sessionContext.UserGuid && u.IsDeleted == false);
 
-            if (user.Password != _hashingService.Get(model.OldPassword))
+            if (user.Password != _hashingService.Get(oldPassword))
             {
                 throw new Exception("Неверный пароль");
             }
 
-            user.Password = _hashingService.Get(model.NewPassword);
+            user.Password = _hashingService.Get(newPassword);
             user.IsActivated = true;
             await _dbContext.SaveChangesAsync();
         }
@@ -192,6 +192,18 @@ namespace AstralDelivery.Domain.Services
             return UserFilter(couriers, searchString);
         }
 
+        /// <inheritdoc />
+        public async Task<User> GetUserInfo(Guid guid)
+        {
+            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == guid && u.IsDeleted == false);
+            if (user == null)
+            {
+                throw new Exception("Пользователя с таким идентификатором не существует");
+            }
+
+            return user;
+        }
+
         private IEnumerable<User> UserFilter(IEnumerable<User> users, string searchString)
         {
             if (!String.IsNullOrEmpty(searchString))
@@ -205,17 +217,6 @@ namespace AstralDelivery.Domain.Services
             return users;
         }
 
-        /// <inheritdoc />
-        public async Task<UserModel> GetUserInfo(Guid guid)
-        {
-            User user = await _dbContext.Users.FirstOrDefaultAsync(u => u.UserGuid == guid && u.IsDeleted == false);
-            if (user == null)
-            {
-                throw new Exception("Пользователя с таким идентификатором не существует");
-            }
-
-            return new UserModel(user);
-        }
 
         private string GetNewPassword()
         {

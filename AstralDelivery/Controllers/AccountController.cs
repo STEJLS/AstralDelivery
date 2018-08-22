@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using System;
+using AstralDelivery.Models;
 
 namespace AstralDelivery.Controllers
 {
@@ -29,7 +30,7 @@ namespace AstralDelivery.Controllers
         [HttpPut("ChangePassword")]
         public async Task ChangePassword([FromBody] ChangePasswordModel model)
         {
-            await _userService.ChangePassword(model);
+            await _userService.ChangePassword(model.OldPassword, model.NewPassword);
         }
 
         /// <summary>

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace AstralDelivery.Domain.Models.DeliveryPoint
+namespace AstralDelivery.Models.DeliveryPoint
 {
     /// <summary>
     /// Выходная модель пункта выдачи
@@ -42,7 +42,7 @@ namespace AstralDelivery.Domain.Models.DeliveryPoint
         /// </summary>
         public DateTime Date { get; set; }
 
-        public DeliveryPointModel(Entities.DeliveryPoint point)
+        public DeliveryPointModel(Domain.Entities.DeliveryPoint point)
         {
             Guid = point.Guid;
             Name = point.Name;

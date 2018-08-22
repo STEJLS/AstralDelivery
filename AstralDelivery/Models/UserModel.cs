@@ -1,7 +1,7 @@
 ﻿using AstralDelivery.Domain.Entities;
 using System;
 
-namespace AstralDelivery.Domain.Models
+namespace AstralDelivery.Models
 {
     /// <summary>
     /// Выходная модель пользователя

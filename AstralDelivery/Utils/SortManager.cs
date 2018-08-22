@@ -1,10 +1,10 @@
-﻿using AstralDelivery.Domain.Models;
-using AstralDelivery.Domain.Models.Enums;
+﻿using AstralDelivery.Models.Enums;
 using AstralDelivery.Domain.Entities;
-using AstralDelivery.Domain.Models.DeliveryPoint;
-using System.Linq;
+using AstralDelivery.Models.DeliveryPoint;
+using AstralDelivery.Models.Product;
+using AstralDelivery.Models;
 using System.Collections.Generic;
-using AstralDelivery.Domain.Models.Product;
+using System.Linq;
 
 namespace AstralDelivery.Utils
 {
@@ -136,11 +136,9 @@ namespace AstralDelivery.Utils
             return result.Skip(offset).Take(count);
         }
 
-        public static IEnumerable<ProductSearchInfoForManager> SortProductsForManager(IEnumerable<Product> products, ProductSortField field, bool direction, int count, int offset)
+        public static IEnumerable<Product> SortProductsForManager(IEnumerable<Product> products, ProductSortField field, bool direction, int count, int offset)
         {
-            IOrderedEnumerable<Product> result = SortProducts(products, field, direction);
-
-            return result.Skip(offset).Take(count).Select(p => new ProductSearchInfoForManager(p));
+            return SortProducts(products, field, direction).Skip(offset).Take(count);
         }
 
         public static IEnumerable<ProductSearchInfoForCourier> SortProductsForCourier(IEnumerable<Product> products, ProductSortField field, bool direction, int count, int offset)

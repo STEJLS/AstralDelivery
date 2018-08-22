@@ -1,7 +1,8 @@
 ﻿using AstralDelivery.Domain.Abstractions;
 using AstralDelivery.Domain.Entities;
 using AstralDelivery.Domain.Models;
-using AstralDelivery.Domain.Models.Search;
+using AstralDelivery.Models;
+using AstralDelivery.Models.Search;
 using AstralDelivery.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -67,7 +68,7 @@ namespace AstralDelivery.Controllers.Manager
         [HttpGet("{CourierGuid}")]
         public async Task<UserModel> GetCourier([FromRoute]Guid courierGuid)
         {
-            return await _userService.GetUserInfo(courierGuid);
+            return new UserModel(await _userService.GetUserInfo(courierGuid));
         }
 
         /// <summary>

@@ -1,8 +1,8 @@
 ﻿using AstralDelivery.Domain.Entities;
-using AstralDelivery.Domain.Models.Enums;
+using AstralDelivery.Models.Enums;
 using System;
 
-namespace AstralDelivery.Domain.Models.Search
+namespace AstralDelivery.Models.Search
 {
     /// <summary>
     /// Модель для поиска товаров

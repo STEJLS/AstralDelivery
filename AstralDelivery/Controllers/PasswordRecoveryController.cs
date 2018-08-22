@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using AstralDelivery.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using AstralDelivery.Domain.Abstractions;
+using AstralDelivery.Models;
 
 namespace AstralDelivery.Controllers
 {

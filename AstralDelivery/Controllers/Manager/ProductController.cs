@@ -1,8 +1,9 @@
 ﻿using AstralDelivery.Domain.Abstractions;
 using AstralDelivery.Domain.Entities;
 using AstralDelivery.Domain.Models;
-using AstralDelivery.Domain.Models.Product;
-using AstralDelivery.Domain.Models.Search;
+using AstralDelivery.Models;
+using AstralDelivery.Models.Product;
+using AstralDelivery.Models.Search;
 using AstralDelivery.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,9 @@ using System.Threading.Tasks;
 
 namespace AstralDelivery.Controllers.Manager
 {
+    /// <summary>
+    /// Контроллер манеджера управляющий товарами
+    /// </summary>
     [Authorize(Roles = nameof(Role.Manager))]
     [Route("Manager/Product")]
     public class ProductController : Controller
@@ -83,7 +87,8 @@ namespace AstralDelivery.Controllers.Manager
 
             return new SearchResult<ProductSearchInfoForManager>(
                 products.Count(),
-                SortManager.SortProductsForManager(products, model.ProductSortField, model.Direction, model.Count, model.Offset));
+                SortManager.SortProductsForManager(products, model.ProductSortField, model.Direction, model.Count, model.Offset).Select(p => new ProductSearchInfoForManager(p))
+                );
         }
 
         /// <summary>
@@ -96,7 +101,7 @@ namespace AstralDelivery.Controllers.Manager
         [Route("SetCourier/{productGuid}")]
         public async Task SetCourier([FromRoute] Guid productGuid, [FromBody] CourierInfoModel model)
         {
-            await _productService.SetCourier(productGuid, model);
+            await _productService.SetCourier(productGuid, model.Guid);
         }
     }
 }

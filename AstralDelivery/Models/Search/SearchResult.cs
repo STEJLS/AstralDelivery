@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AstralDelivery.Domain.Models.Search
+namespace AstralDelivery.Models.Search
 {
     /// <summary>
     /// Модель представляющая результат поиска и сортировки

@@ -1,12 +1,12 @@
 ﻿using AstralDelivery.Domain.Entities;
 using System;
 
-namespace AstralDelivery.Domain.Models.Product
+namespace AstralDelivery.Models.Product
 {
     /// <summary>
-    /// Выходная модель для поиска товаров для менеджера
+    /// Выходная модель для поиска товаров для курьера
     /// </summary>
-    public class ProductSearchInfoForManager
+    public class ProductSearchInfoForCourier
     {
         /// <summary>
         /// Артикул
@@ -21,24 +21,20 @@ namespace AstralDelivery.Domain.Models.Product
         /// </summary>
         public DateTime DateTime { get; set; }
         /// <summary>
-        /// Тип доставки
+        /// Адрес
         /// </summary>
-        public DeliveryType DeliveryType { get; set; }
+        public string Address { get; set; }
         /// <summary>
         /// Статус доставки
         /// </summary>
         public DeliveryStatus DeliveryStatus { get; set; }
 
-        /// <summary>
-        /// Конструктор
-        /// </summary>
-        /// <param name="product"> <see cref="ProductInfo"/> </param>
-        public ProductSearchInfoForManager(Entities.Product product)
+        public ProductSearchInfoForCourier(Domain.Entities.Product product)
         {
             Article = product.Article;
             Name = product.Name;
             DateTime = product.DateTime;
-            DeliveryType = product.DeliveryType;
+            Address = product.Address;
             DeliveryStatus = product.DeliveryStatus;
         }
     }

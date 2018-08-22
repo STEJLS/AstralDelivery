@@ -55,7 +55,7 @@ namespace AstralDelivery.Domain.Abstractions
         /// </summary>
         /// <param name="guid"> <see cref="Guid"/> </param>
         /// <returns></returns>
-        Task<UserModel> GetUserInfo(Guid guid);
+        Task<User> GetUserInfo(Guid guid);
 
         /// <summary>
         /// Удаляет менеджера
@@ -74,9 +74,10 @@ namespace AstralDelivery.Domain.Abstractions
         /// <summary>
         /// Изменяет пароль пользователя
         /// </summary>
-        /// <param name="model"> <see cref="ChangePasswordModel"/> </param>
+        /// <param name="oldPassword"> Старый пароль </param>
+        /// <param name="newPassword"> Новый пароль </param>
         /// <returns></returns>
-        Task ChangePassword(ChangePasswordModel model);
+        Task ChangePassword(string oldPassword, string newPassword);
 
         /// <summary>
         /// Осуществляет поиск менеджеров

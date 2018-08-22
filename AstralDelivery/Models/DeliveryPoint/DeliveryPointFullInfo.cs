@@ -1,10 +1,9 @@
 ﻿using AstralDelivery.Domain.Entities;
-using AstralDelivery.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AstralDelivery.Domain.Models.DeliveryPoint
+namespace AstralDelivery.Models.DeliveryPoint
 {
     /// <summary>
     /// Выходная, полная модель пункта выдачи
@@ -60,7 +59,7 @@ namespace AstralDelivery.Domain.Models.DeliveryPoint
         /// Конструктор
         /// </summary>
         /// <param name="point"> <see cref="Entities.DeliveryPoint "/> </param>
-        public DeliveryPointFullInfo(Entities.DeliveryPoint point)
+        public DeliveryPointFullInfo(Domain.Entities.DeliveryPoint point)
         {
             Guid = point.Guid;
             Name = point.Name;

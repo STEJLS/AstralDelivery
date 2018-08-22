@@ -1,4 +1,4 @@
-﻿namespace AstralDelivery.Domain.Models
+﻿namespace AstralDelivery.Models
 {
     /// <summary>
     /// Модель для входа в систему

@@ -1,6 +1,5 @@
 ﻿using AstralDelivery.Domain.Entities;
 using AstralDelivery.Domain.Models;
-using AstralDelivery.Domain.Models.Product;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -72,6 +71,6 @@ namespace AstralDelivery.Domain.Abstractions
         /// <param name="productGuid"> Идентификатор товара </param>
         /// <param name="courierGuid"> Идентификатор курьера </param>
         /// <returns></returns>
-        Task SetCourier(Guid productGuid, CourierInfoModel model);
+        Task SetCourier(Guid productGuid, Guid courierGuid);
     }
 }

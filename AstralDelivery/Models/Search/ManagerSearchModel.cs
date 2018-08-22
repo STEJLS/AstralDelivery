@@ -1,11 +1,11 @@
-﻿using AstralDelivery.Domain.Models.Enums;
+﻿using AstralDelivery.Models.Enums;
 
-namespace AstralDelivery.Domain.Models.Search
+namespace AstralDelivery.Models.Search
 {
     /// <summary>
-    /// Модель для поиска и сортировки пунктов выдачи
+    /// Модель для поиска и сортировки менеджеров
     /// </summary>
-    public class DeliveryPointSearchModel
+    public class ManagerSearchModel
     {
         /// <summary>
         /// Строка по которой ведется поиск
@@ -14,7 +14,7 @@ namespace AstralDelivery.Domain.Models.Search
         /// <summary>
         /// Поле по которому будет производиться сортировка
         /// </summary>
-        public DeliveryPointSortField Field { get; set; } = DeliveryPointSortField.Date;
+        public UserSortField Field { get; set; } = UserSortField.Date;
         /// <summary>
         /// Направление сортировки
         /// </summary>

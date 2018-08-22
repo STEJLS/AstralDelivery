@@ -1,7 +1,7 @@
 ﻿using AstralDelivery.Domain.Entities;
 using System;
 
-namespace AstralDelivery.Domain.Models.Product
+namespace AstralDelivery.Domain.Models
 {
     /// <summary>
     /// Входная модель товара
