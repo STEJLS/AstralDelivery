@@ -227,5 +227,17 @@ namespace AstralDelivery.Domain.Services
         {
             return $"{point.Name} {point.City}";
         }
+
+        public async Task<List<User>> GetFreeCourier(DateTime dateTime)
+        {
+            User manager = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.UserGuid == _sessionContext.UserGuid && u.IsDeleted == false);
+
+            return _dbContext.Users.AsNoTracking().Where(u => u.DeliveryPointGuid == manager.DeliveryPointGuid)
+                .Where(u => _dbContext.Products.AsNoTracking()
+                    .Where(p => p.CourierGuid == u.UserGuid)
+                    .Where(p => p.DateTime.Date == dateTime.Date)
+                    .Count() < 6)
+                    .ToList();
+        }
     }
 }

@@ -9,6 +9,10 @@ namespace AstralDelivery.Models.Product
     public class ProductSearchInfoForCourier
     {
         /// <summary>
+        /// Идентификатор
+        /// </summary>
+        public Guid Guid { get; set; }
+        /// <summary>
         /// Артикул
         /// </summary>
         public string Article { get; set; }
@@ -31,6 +35,7 @@ namespace AstralDelivery.Models.Product
 
         public ProductSearchInfoForCourier(Domain.Entities.Product product)
         {
+            Guid = product.Guid;
             Article = product.Article;
             Name = product.Name;
             DateTime = product.DateTime;

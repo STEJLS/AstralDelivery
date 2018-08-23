@@ -62,8 +62,9 @@ namespace AstralDelivery.Domain.Abstractions
         /// <param name="dateFilter"> Дата доставки </param>
         /// <param name="deliveryTypeFilter"> Тип доставки </param>
         /// <param name="deliveryStatusFilter"> Статус доставки </param>
+        /// <param name="courierGuid"> Идентификатор курьера </param>
         /// <returns></returns>
-        IEnumerable<Product> Search(string searchString, DateTime? dateFilter, DeliveryType? deliveryTypeFilter, DeliveryStatus? deliveryStatusFilter);
+        IEnumerable<Product> Search(string searchString, DateTime? dateFilter, DeliveryType? deliveryTypeFilter, DeliveryStatus? deliveryStatusFilter, Guid? courierGuid);
 
         /// <summary>
         /// Назначает курьера

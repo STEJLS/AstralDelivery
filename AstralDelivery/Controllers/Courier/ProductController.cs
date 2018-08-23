@@ -60,7 +60,7 @@ namespace AstralDelivery.Controllers.Courier
         [Route("/SearchProducts")]
         public SearchResult<ProductSearchInfoForCourier> SearchProduct([FromQuery] ProductSearchModel model)
         {
-            var products = _productService.Search(model.SearchString, model.DateFilter, model.DeliveryTypeFilter, null);
+            var products = _productService.Search(model.SearchString, model.DateFilter, model.DeliveryTypeFilter, null, null);
 
             return new SearchResult<ProductSearchInfoForCourier>(
                 products.Count(),

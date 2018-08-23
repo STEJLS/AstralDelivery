@@ -92,5 +92,12 @@ namespace AstralDelivery.Domain.Abstractions
         /// <param name="searchString"> Строка для поиска </param>
         /// <returns></returns>
         Task<IEnumerable<User>> SearchCouriers(string searchString);
+
+        /// <summary>
+        /// Возвращает курьеров у которых меньше 6 заказов в конкретный день
+        /// </summary>
+        /// <param name="dateTime"> День на который осуществляется запрос </param>
+        /// <returns></returns>
+        Task<List<User>> GetFreeCourier(DateTime dateTime);
     }
 }

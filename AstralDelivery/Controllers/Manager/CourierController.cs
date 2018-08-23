@@ -2,11 +2,13 @@
 using AstralDelivery.Domain.Entities;
 using AstralDelivery.Domain.Models;
 using AstralDelivery.Models;
+using AstralDelivery.Models.Product;
 using AstralDelivery.Models.Search;
 using AstralDelivery.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,10 +22,12 @@ namespace AstralDelivery.Controllers.Manager
     public class CourierController : Controller
     {
         private readonly IUserService _userService;
+        private readonly IProductService _productService;
 
-        public CourierController(IUserService userService)
+        public CourierController(IUserService userService, IProductService productService)
         {
             _userService = userService;
+            _productService = productService;
         }
 
         /// <summary>
@@ -84,5 +88,34 @@ namespace AstralDelivery.Controllers.Manager
                 managers.Count(),
                 SortManager.SortManagers(managers, model.Field, model.Direction, model.Count, model.Offset));
         }
+
+        /// <summary>
+        /// Возвращает курьеров у которых меньше 6 заказов в конкретный день
+        /// </summary>
+        /// <param name="dateTime"> День на который осуществляется запрос </param>
+        /// <returns></returns>
+        [HttpGet("GetFree")]
+        public async Task<List<UserModel>> GetFreeCourier([FromQuery] DateTime dateTime)
+        {
+            return (await _userService.GetFreeCourier(dateTime)).Select(u => new UserModel(u)).ToList();
+        }
+
+        /// <summary>
+        /// Возвращает, сортирует доставленные товары курьера
+        /// </summary>
+        /// <param name="courierGuid"> идентификатор курьера </param>
+        /// <param name="model"> <see cref="ProductSearchModel"/> </param>
+        /// <returns></returns>
+        [HttpGet("GetDeliveryHistory/{CourierGuid}")]
+        public SearchResult<ProductSearchInfoForManager> GetDeliveryHistory([FromRoute] Guid courierGuid, [FromQuery] ProductSearchModel model)
+        {
+            var products = _productService.Search(model.SearchString, model.DateFilter, DeliveryType.Courier, DeliveryStatus.Delivered, courierGuid);
+
+            return new SearchResult<ProductSearchInfoForManager>(
+                products.Count(),
+                SortManager.SortProductsForManager(products, model.ProductSortField, model.Direction, model.Count, model.Offset).Select(p => new ProductSearchInfoForManager(p))
+                );
+        }
+
     }
 }

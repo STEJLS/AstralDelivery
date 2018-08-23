@@ -7,6 +7,10 @@
         /// </summary>
         ArrivedFromWarehouse,
         /// <summary>
+        /// Товар назначен курьеру
+        /// </summary>
+        AssignedToCourier,
+        /// <summary>
         /// Товар отдан курьеру
         /// </summary>
         GivenToCourier,

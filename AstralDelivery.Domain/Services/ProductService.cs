@@ -127,7 +127,7 @@ namespace AstralDelivery.Domain.Services
 
 
         /// <inheritdoc />
-        public IEnumerable<Product> Search(string searchString, DateTime? dateFilter, DeliveryType? deliveryTypeFilter, DeliveryStatus? deliveryStatusFilter)
+        public IEnumerable<Product> Search(string searchString, DateTime? dateFilter, DeliveryType? deliveryTypeFilter, DeliveryStatus? deliveryStatusFilter, Guid? courierGuid)
         {
             var products = _dbContext.Products.AsNoTracking();
 
@@ -142,6 +142,10 @@ namespace AstralDelivery.Domain.Services
             if (deliveryStatusFilter.HasValue)
             {
                 products = products.Where(p => p.DeliveryStatus == deliveryStatusFilter.Value);
+            }
+            if (courierGuid.HasValue)
+            {
+                products = products.Where(p => p.CourierGuid == courierGuid.Value);
             }
 
             if (!String.IsNullOrEmpty(searchString))
@@ -164,7 +168,16 @@ namespace AstralDelivery.Domain.Services
                 throw new Exception("Указанного курьера не существует");
             }
 
+            if (_dbContext.Products.AsNoTracking()
+                    .Where(p => p.CourierGuid == courierGuid)
+                    .Where(p => p.DateTime.Date == product.DateTime.Date)
+                    .Count() >= 6)
+            {
+                throw new Exception("Указанный курьер уже занят в указанный день");
+            }
+
             product.CourierGuid = courierGuid;
+            product.DeliveryStatus = DeliveryStatus.AssignedToCourier;
 
             await _dbContext.SaveChangesAsync();
         }

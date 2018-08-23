@@ -83,7 +83,7 @@ namespace AstralDelivery.Controllers.Manager
         [HttpGet]
         public SearchResult<ProductSearchInfoForManager> SearchProduct([FromQuery] ProductSearchModel model)
         {
-            var products = _productService.Search(model.SearchString, model.DateFilter, model.DeliveryTypeFilter, model.DeliveryStatusFilter);
+            var products = _productService.Search(model.SearchString, model.DateFilter, model.DeliveryTypeFilter, model.DeliveryStatusFilter, null);
 
             return new SearchResult<ProductSearchInfoForManager>(
                 products.Count(),
