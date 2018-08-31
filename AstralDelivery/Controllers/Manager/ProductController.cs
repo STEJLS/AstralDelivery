@@ -103,5 +103,17 @@ namespace AstralDelivery.Controllers.Manager
         {
             await _productService.SetCourier(productGuid, model.Guid);
         }
+
+        /// <summary>
+        /// Выдает товар заказчику
+        /// </summary>
+        /// <param name="productGuid"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Issue/{productGuid}")]
+        public async Task Issue([FromRoute] Guid productGuid)
+        {
+            await _productService.Issue(productGuid);
+        }        
     }
 }

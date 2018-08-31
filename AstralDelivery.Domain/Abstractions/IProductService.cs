@@ -73,5 +73,12 @@ namespace AstralDelivery.Domain.Abstractions
         /// <param name="courierGuid"> Идентификатор курьера </param>
         /// <returns></returns>
         Task SetCourier(Guid productGuid, Guid courierGuid);
+
+        /// <summary>
+        /// Выдает товар заказчику
+        /// </summary>
+        /// <param name="productGuid"> Идентификатор товара </param>
+        /// <returns></returns>
+        Task Issue(Guid productGuid);
     }
 }

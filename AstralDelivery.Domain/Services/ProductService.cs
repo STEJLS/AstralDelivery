@@ -238,5 +238,14 @@ namespace AstralDelivery.Domain.Services
 
             await _dbContext.SaveChangesAsync();
         }
+
+        /// <inheritdoc />
+        public async Task Issue(Guid productGuid)
+        {
+            Product product = await GetProductForManager(productGuid);
+
+            product.DeliveryStatus = DeliveryStatus.Issued;
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }
