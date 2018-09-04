@@ -114,6 +114,19 @@ namespace AstralDelivery.Controllers.Manager
         public async Task Issue([FromRoute] Guid productGuid)
         {
             await _productService.Issue(productGuid);
-        }        
+        }
+
+        /// <summary>
+        /// Возвращает excel файл с товарами
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("GetExcel")]
+        public async Task<FileResult> GetExcel([FromQuery] XMLFilterModel model)
+        {
+            var products = await _productService.Filter(model.DateFilter, model.DeliveryTypeFilter, model.DeliveryStatusFilter);
+            return File(ExcelManager.Products(products).ToArray(), "application/vnd.ms-excel", DateTime.Now.ToString() + " Products.xls");
+        }
     }
 }

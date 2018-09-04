@@ -158,6 +158,30 @@ namespace AstralDelivery.Domain.Services
         }
 
         /// <inheritdoc />
+        public async Task<IEnumerable<Product>> Filter(DateTime? dateFilter, DeliveryType? deliveryTypeFilter, DeliveryStatus? deliveryStatusFilter)
+        {
+            User manager = await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.UserGuid == _sessionContext.UserGuid);
+            var products = _dbContext.Products.AsNoTracking();
+
+            if (dateFilter.HasValue)
+            {
+                products = products.Where(p => p.DateTime.Date == dateFilter.Value.Date);
+            }
+            if (deliveryTypeFilter.HasValue)
+            {
+                products = products.Where(p => p.DeliveryType == deliveryTypeFilter.Value);
+            }
+            if (deliveryStatusFilter.HasValue)
+            {
+                products = products.Where(p => p.DeliveryStatus == deliveryStatusFilter.Value);
+            }
+
+            products = products.Where(p => p.DeliveryPointGuid == manager.DeliveryPointGuid).Include(p => p.Courier);
+
+            return products;
+        }
+
+        /// <inheritdoc />
         public async Task SetCourier(Guid productGuid, Guid courierGuid)
         {
             Product product = await GetProductForManager(productGuid);
